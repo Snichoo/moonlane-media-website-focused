@@ -1,0 +1,105 @@
+// Parses the raw Chromatix contact page and emits cleaned inner HTML of its
+// `.sub-page.sub-page--contact` container into src/sections/contact.ts, with
+// the same cleaning + Moonlane Media rebrand as the case-study extraction.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { parse } from 'node-html-parser';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, '..');
+const SCRATCH = process.env.CS_SCRATCH ||
+  'C:/Users/samsn/AppData/Local/Temp/claude/c--dev-moonlane-media-website/d81fafde-b935-49f2-9f8d-cb429eabb656/scratchpad';
+
+const rewriteUrl = (u) => u
+  .replace(/https?:\/\/www\.chromatix\.com\.au\/wp-content\//g, '/wp-content/')
+  .replace(/\/\/www\.chromatix\.com\.au\/wp-content\//g, '/wp-content/');
+
+function clean(el) {
+  el.querySelectorAll('script, noscript, iframe').forEach(n => n.remove());
+  // reCAPTCHA renders a broken widget without keys — the forms are neutralised anyway
+  el.querySelectorAll('.g-recaptcha').forEach(n => n.remove());
+  // Trim the project form: no "Services of Interest" picker (keep the
+  // project-description textarea that shares part-2) and no part-4
+  // ("Call us curious cats..." / how-did-you-hear).
+  el.querySelectorAll('.control-wrap.services-of-interest').forEach(n => n.remove());
+  el.querySelectorAll('h3').forEach(n => {
+    if (n.textContent.includes('Services of Interest')) n.remove();
+  });
+  el.querySelectorAll('.part-4').forEach(n => n.remove());
+  el.querySelectorAll('[data-src], [data-srcset], [data-lazy-src]').forEach(n => {
+    const ds = n.getAttribute('data-src');
+    const dss = n.getAttribute('data-srcset');
+    const dls = n.getAttribute('data-lazy-src');
+    if (ds) { n.setAttribute('src', rewriteUrl(ds)); n.removeAttribute('data-src'); }
+    if (dls) { n.setAttribute('src', rewriteUrl(dls)); n.removeAttribute('data-lazy-src'); }
+    if (dss) { n.setAttribute('srcset', rewriteUrl(dss)); n.removeAttribute('data-srcset'); }
+    const cls = n.getAttribute('class');
+    if (cls) n.setAttribute('class', cls.replace(/\blazy\b/g, '').replace(/\s+/g, ' ').trim());
+  });
+  el.querySelectorAll('[src], [srcset], [poster], [style]').forEach(n => {
+    for (const attr of ['src', 'srcset', 'poster', 'style']) {
+      const v = n.getAttribute(attr);
+      if (v && v.includes('chromatix.com.au/wp-content')) n.setAttribute(attr, rewriteUrl(v));
+    }
+  });
+  el.querySelectorAll('video').forEach(v => {
+    v.setAttribute('playsinline', '');
+    v.setAttribute('muted', '');
+    v.setAttribute('preload', 'auto');
+  });
+  el.querySelectorAll('form').forEach(f => { f.setAttribute('action', '#'); f.setAttribute('onsubmit', 'return false;'); });
+  el.querySelectorAll('*').forEach(n => {
+    for (const a of Object.keys(n.attributes)) {
+      if (/^on/i.test(a) && n.tagName !== 'FORM') n.removeAttribute(a);
+    }
+  });
+  let html = el.innerHTML;
+  html = html.replace(/<\?xml[^>]*\?>/g, '');
+  return html.trim();
+}
+
+function rebrand(s) {
+  s = s.split('hello@chromatix.com.au').join('contact@moonlanemedia.com');
+  s = s.split('03 9912 6403').join('0414 134 081');
+  s = s.split('0399126403').join('0414134081');
+  s = s.split('Suite 169, Tenancy 111, 793 Burke Road, Camberwell VIC 3124').join('3/77 Hudson Road, Albion QLD 4010');
+  s = s.split('Suite 169, Tenancy 111,').join('3/77 Hudson Road,');
+  s = s.split('793 Burke Road, Camberwell VIC 3124').join('Albion QLD 4010');
+  s = s.split('Camberwell office').join('Albion office');
+  s = s.split('https://api.chromatix.com.au/v1/email/chromatix-com-au').join('#');
+  s = s.split('https://www.facebook.com/chromatixau').join('#');
+  s = s.split('https://twitter.com/chromatixau').join('#');
+  s = s.split('https://www.chromatix.com.au/').join('/');
+  s = s.split('https://www.chromatix.com.au').join('/');
+  s = s.split('Chromatix').join('Moonlane Media');
+  s = s.split('Melbourne Design Awards').join('«MDA»');
+  for (const noun of ['Web', 'web', 'businesses', 'business', 'agencies', 'audiences', 'market', 'team', 'family', 'UI', 'presence', 'project', 'websites', 'website', 'B2B', 'Small', 'office']) {
+    s = s.split(`Melbourne ${noun}`).join(`Australian ${noun}`);
+  }
+  s = s.split('Melbourne-based').join('Australia-based');
+  s = s.split('Melbourne').join('Australia');
+  s = s.split('melbourne').join('australia');
+  s = s.split('«MDA»').join('Melbourne Design Awards');
+  return s;
+}
+
+const raw = fs.readFileSync(path.join(SCRATCH, 'contact.html'), 'utf8');
+const root = parse(raw, { comment: false, blockTextElements: { script: false, noscript: false, style: true, pre: true } });
+const el = root.querySelector('.sub-page.sub-page--contact');
+if (!el) throw new Error('contact container not found');
+const title = rebrand((root.querySelector('title')?.textContent || 'Contact').trim());
+const html = rebrand(clean(el));
+
+let out = '// AUTO-GENERATED by scripts/extract-contact.mjs — cleaned inner HTML of the\n';
+out += '// contact page (.sub-page.sub-page--contact) from the live site, assets\n';
+out += '// rewritten to the /public mirror, Moonlane Media rebranding applied.\n\n';
+out += `export const contactTitle: string = ${JSON.stringify(title)};\n\n`;
+out += `export const contactHtml: string = ${JSON.stringify(html)};\n`;
+fs.writeFileSync(path.join(ROOT, 'src', 'sections', 'contact.ts'), out);
+
+console.log('title:', title, '| html chars:', html.length);
+console.log('Leftover live refs:', (html.match(/chromatix\.com\.au/g) || []).length);
+console.log('Leftover Melbourne:', (html.match(/Melbourne(?! Design Awards)/g) || []).length);
+console.log('Leftover Chromatix:', (html.match(/Chromatix/g) || []).length);
+console.log('Leftover recaptcha:', (html.match(/g-recaptcha/g) || []).length);

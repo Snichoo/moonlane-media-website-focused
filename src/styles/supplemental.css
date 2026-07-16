@@ -1,0 +1,113 @@
+/* Supplemental overrides layered on top of the ported Chromatix theme CSS.
+   Kept intentionally small — the theme stylesheet does the heavy lifting. */
+
+/* The theme parks the fixed side-form tab off-screen (translateX(100%)) and
+   reveals it via a mousemove handler when the pointer enters the right third.
+   We reproduce that reveal with a body class toggled in behaviours.ts. */
+body.side-form-peek .side-form-open-btn {
+  transform: translateX(0);
+}
+
+/* Guard against Tailwind preflight forcing block display on inline SVG icons
+   used inside buttons/links, which would break the theme's inline icon layout. */
+.chr-header-phone .svg-wrapper svg,
+.button svg,
+.rate svg,
+.star {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* The Moonlane Media logo is 4.125:1, not the old theme's 8:1 (160x20) —
+   undo the fixed box that squashes it and render it larger. */
+.chr-logo-container img {
+  width: 220px;
+  height: 53px;
+  object-fit: contain;
+}
+
+/* Only one logo file exists; the `.white-a` slot (shown over sub-page banners
+   until the header gains `.scroll`) renders it knocked out to all-white, like
+   the theme's original white logo variant. */
+.chr-logo-container img.white-a {
+  filter: brightness(0) invert(1);
+}
+
+/* Ensure the autoplaying background videos always cover their stage. */
+.home-banner-video,
+.butterfly-video {
+  object-fit: cover;
+}
+
+/* The hero video is decorative: ignore pointer input and crop the encoded
+   bottom/right edge pixels that can appear as dark seams on desktop. */
+.home-banner-video {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media screen and (min-width: 1240px) {
+  .home-banner-video {
+    clip-path: inset(0 2px 2px 0);
+  }
+}
+
+/* Remove the complete lower footer navigation strip on every screen size. */
+.chr-footer-bottom {
+  display: none;
+}
+
+/* Base styles from the chromatix-social-media-icons plugin stylesheet
+   (styles.min.css v2.0.2), which the theme CSS only overrides — without
+   these the footer social SVGs render unsized and the hidden network
+   names ("facebook"/"twitter") become visible. */
+.chrsmi ul {
+  margin: 0;
+  list-style-type: none;
+}
+
+.chrsmi-network-wrap {
+  display: inline-block;
+  position: relative;
+  margin: 0 0.5em;
+  width: 1.5em;
+  height: 1.5em;
+  list-style-type: none;
+  transition: background-color 0.5s;
+}
+
+.chrsmi-network-wrap.round {
+  padding: 0.75em;
+  border-radius: 100%;
+}
+
+.chrsmi-network-wrap.square {
+  padding: 0.75em;
+}
+
+.chrsmi-network-wrap.nobg {
+  background-color: transparent !important;
+}
+
+.chrsmi-network-link {
+  position: absolute;
+  top: -0.4em;
+  right: -0.4em;
+  bottom: -0.4em;
+  left: -0.4em;
+}
+
+.chrsmi-network-name {
+  display: block;
+  height: 0;
+  color: transparent !important;
+  text-indent: 100%;
+  overflow: hidden;
+}
+
+.chrsmi-network-svg {
+  width: 100%;
+  height: 100%;
+  transition: fill 0.5s;
+}
