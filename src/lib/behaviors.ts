@@ -295,10 +295,81 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
   };
   on(document, "click", onAnchorClick);
 
-  /* ---- 8. Neutralise form submits (no backend in the clone) ---- */
-  qa<HTMLFormElement>("form").forEach((f) =>
-    on(f, "submit", (e) => e.preventDefault()),
-  );
+  /* ---- 8. Contact forms → POST /api/contact (Resend) ----
+     Both the contact-page `#project-form` and the site-wide side form
+     `#ict-project-form` carry class `project-form`. The theme's markup fires
+     submit via a hidden `<input type="submit">` behind the `.button` label, so
+     intercepting the form's submit event covers the click. Any other form on
+     the page is simply neutralised (no backend). */
+  const val = (f: HTMLFormElement, name: string) =>
+    (f.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null)
+      ?.value.trim() ?? "";
+
+  qa<HTMLFormElement>("form").forEach((f) => {
+    if (!f.classList.contains("project-form")) {
+      on(f, "submit", (e) => e.preventDefault());
+      return;
+    }
+
+    const output = f.querySelector<HTMLElement>(".response-output");
+    const loader = f.querySelector<HTMLElement>(".ajax-loader");
+    const setOutput = (msg: string, kind: "success" | "error" | "") => {
+      if (!output) return;
+      output.textContent = msg;
+      output.classList.remove("success", "error");
+      if (kind) output.classList.add(kind);
+    };
+
+    let submitting = false;
+    on(f, "submit", (e) => {
+      e.preventDefault();
+      if (submitting) return;
+
+      const payload = {
+        name: val(f, "your-name"),
+        company: val(f, "your-company"),
+        email: val(f, "your-email"),
+        phone: val(f, "your-phone"),
+        message: val(f, "project-description"),
+        subject: val(f, "email-subject"),
+        pageTitle: val(f, "page-title"),
+        pageUrl: val(f, "page-url"),
+      };
+
+      if (!payload.name || !payload.email || !payload.phone) {
+        setOutput("Please fill in your name, email and phone.", "error");
+        return;
+      }
+
+      submitting = true;
+      if (loader) loader.style.display = "block";
+      setOutput("Sending…", "");
+
+      fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then(async (res) => {
+          const data = (await res.json().catch(() => ({}))) as {
+            error?: string;
+          };
+          if (!res.ok) throw new Error(data.error || "Something went wrong.");
+          setOutput("Thanks! Your message has been sent.", "success");
+          f.reset();
+        })
+        .catch((err: Error) => {
+          setOutput(
+            err.message || "Sorry, we couldn't send your message. Please try again.",
+            "error",
+          );
+        })
+        .finally(() => {
+          submitting = false;
+          if (loader) loader.style.display = "none";
+        });
+    });
+  });
 
   return () => cleanups.forEach((c) => c());
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 // Ported theme stylesheets (unlayered → override Tailwind preflight) + small supplements.
 // chromatix-main.css = sitewide/sub-page styles (case-study routes) and
@@ -78,6 +79,18 @@ export default function RootLayout({
       {/* WordPress body classes preserved so theme selectors (e.g. .home) still match */}
       <body className="home wp-singular page-template-default page page-id-217 wp-theme-chromatix-2018 wp-child-theme-chromatix-2018-child">
         {children}
+
+        {/* Google tag (gtag.js) — Google Ads AW-17920438382 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17920438382"
+          strategy="afterInteractive"
+        />
+        <Script id="google-gtag" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-17920438382');`}
+        </Script>
       </body>
     </html>
   );
