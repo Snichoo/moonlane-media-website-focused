@@ -16,11 +16,22 @@ export const GADS_ID = process.env.NEXT_PUBLIC_GADS_ID || "AW-17920438382";
 
 export type ConversionAction = "formSubmit" | "phoneClick" | "emailClick";
 
-/* NEXT_PUBLIC_* vars are inlined at build time by static analysis, so each one
+/* Labels default to the live conversion actions so tracking survives a deploy
+   to a host with no env vars configured — an unset NEXT_PUBLIC_* silently
+   becomes undefined in the bundle, which previously made every conversion a
+   no-op. These are not secrets: the label ships in the page source of any site
+   running the tag. Set the matching env var only to override.
+
+   NEXT_PUBLIC_* vars are inlined at build time by static analysis, so each one
    must appear as a complete literal expression — never build these keys
    dynamically or they resolve to undefined in the browser bundle. */
 const LABELS: Record<ConversionAction, string | undefined> = {
-  formSubmit: process.env.NEXT_PUBLIC_GADS_LABEL_FORM_SUBMIT,
+  // Google Ads → "Submit lead form" (source: Website).
+  formSubmit:
+    process.env.NEXT_PUBLIC_GADS_LABEL_FORM_SUBMIT || "8B3FCIThifAbEO7gkOFC",
+  // No click-to-call / click-to-email conversion action exists in the account
+  // yet, so these stay unset and their events are skipped. Create the actions
+  // in Google Ads, then paste each label here or in the env var.
   phoneClick: process.env.NEXT_PUBLIC_GADS_LABEL_PHONE_CLICK,
   emailClick: process.env.NEXT_PUBLIC_GADS_LABEL_EMAIL_CLICK,
 };
