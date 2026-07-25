@@ -58,6 +58,88 @@ body.side-form-peek .side-form-open-btn {
   display: none;
 }
 
+/* ---- Mobile menu: sit below the real header, not a hardcoded 72px ----
+   The theme assumes a 72px header, but ours is taller (bigger logo), so the
+   fixed header covered the top of the open menu — the phone link especially.
+   `--chr-header-h` is measured in behaviours.ts; the 72px fallback keeps the
+   original behaviour if the script hasn't run yet. `dvh` also stops the panel
+   running under mobile browser chrome, with `vh` for older browsers. */
+@media screen and (max-width: 1239px) {
+  .chr-menu-wrapper {
+    top: var(--chr-header-h, 72px);
+    height: calc(100vh - var(--chr-header-h, 72px));
+    height: calc(100dvh - var(--chr-header-h, 72px));
+  }
+}
+
+/* ---- Post-submit confirmation ----
+   On success behaviours.ts appends `.form-success` and marks the form
+   `.form-sent`; everything else in the form is then hidden so the panel stands
+   alone. Sized in `cqi` (percentage of the form's own width) rather than `vw`
+   so the narrow side-form panel and the full-width footer form both scale
+   sensibly — a viewport-based size would overflow the side form on desktop.
+   Plain px/rem values precede each clamp as a fallback for browsers without
+   container query units. */
+form.form-sent {
+  container-type: inline-size;
+}
+
+form.form-sent > *:not(.form-success) {
+  display: none !important;
+}
+
+.form-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 32px 20px;
+  padding: clamp(28px, 9cqi, 48px) clamp(16px, 6cqi, 36px);
+  border-radius: 16px;
+  background-color: #f6f6f6;
+  outline: none;
+}
+
+.form-success__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background-color: #fdce08;
+  color: #191919;
+  flex: none;
+}
+
+.form-success__icon svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.form-success__title {
+  margin: 0 0 10px;
+  color: #191919;
+  font-size: 24px;
+  font-size: clamp(20px, 7cqi, 30px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.form-success__text {
+  margin: 0;
+  max-width: 34ch;
+  color: #5b5b5b;
+  font-size: 15px;
+  font-size: clamp(14px, 4cqi, 17px);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
 /* Base styles from the chromatix-social-media-icons plugin stylesheet
    (styles.min.css v2.0.2), which the theme CSS only overrides — without
    these the footer social SVGs render unsized and the hidden network

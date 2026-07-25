@@ -27,10 +27,23 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
   /* ---- 1. Sticky header: toggle `scroll` on header + logo container ---- */
   const header = q(".chr-header");
   const logo = q(".chr-logo-container");
+
+  /* Publish the header's real height so the mobile menu can sit directly below
+     it. The theme hardcodes a 72px offset, but this header is taller (larger
+     logo) and shrinks again on scroll, which left the menu tucked under the
+     fixed header. Measured rather than assumed so it survives header changes. */
+  const syncHeaderHeight = () => {
+    if (!header) return;
+    const h = Math.round(header.getBoundingClientRect().height);
+    if (h > 0) document.documentElement.style.setProperty("--chr-header-h", `${h}px`);
+  };
+
   const onHeaderScroll = () => {
     const scrolled = window.scrollY > 0;
     header?.classList.toggle("scroll", scrolled);
     logo?.classList.toggle("scroll", scrolled);
+    // the `scroll` class resizes the header, so re-measure after it settles
+    syncHeaderHeight();
   };
 
   /* ---- 2. Scroll-driven parallax on hero layers + footer image ---- */
@@ -125,7 +138,10 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
     });
   };
   on(window, "scroll", onScroll, { passive: true });
+  // Rotating a phone changes the header height (and so the menu offset).
+  on(window, "resize", syncHeaderHeight, { passive: true });
   onHeaderScroll();
+  syncHeaderHeight();
   applyParallax();
   applyFaqReveal();
 
@@ -321,6 +337,47 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
     (f.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null)
       ?.value.trim() ?? "";
 
+  /* Swap the whole form out for a confirmation panel once it sends. Leaving the
+     empty fields on screen reads as "nothing happened", so `form-sent` hides
+     every other child (see supplemental.css) and this panel takes their place. */
+  const showSentPanel = (f: HTMLFormElement, name: string) => {
+    if (f.querySelector(".form-success")) return;
+
+    const panel = document.createElement("div");
+    panel.className = "form-success";
+    // `status` announces the swap to screen readers without stealing focus.
+    panel.setAttribute("role", "status");
+    panel.tabIndex = -1;
+
+    const icon = document.createElement("span");
+    icon.className = "form-success__icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M4.5 12.5 10 18 19.5 6.5" stroke="currentColor" stroke-width="2.5" ' +
+      'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    const title = document.createElement("h3");
+    title.className = "form-success__title";
+    const firstName = name.split(/\s+/)[0];
+    title.textContent = firstName ? `Thanks, ${firstName}!` : "Thanks!";
+
+    const text = document.createElement("p");
+    text.className = "form-success__text";
+    text.textContent =
+      "Your message has been sent — we'll get back to you within one business day.";
+
+    panel.append(icon, title, text);
+    f.append(panel);
+    f.classList.add("form-sent");
+
+    // Centre it: collapsing the fields shifts the layout, and on mobile the
+    // sticky "Request a call" bar and fixed header both eat into the viewport,
+    // so anything less can leave the message half-covered.
+    panel.focus({ preventScroll: true });
+    panel.scrollIntoView({ block: "center", behavior: "smooth" });
+  };
+
   qa<HTMLFormElement>("form").forEach((f) => {
     if (
       !f.classList.contains("project-form") &&
@@ -377,11 +434,12 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
             id?: string;
           };
           if (!res.ok) throw new Error(data.error || "Something went wrong.");
-          setOutput("Thanks! Your message has been sent.", "success");
           // Only a delivered enquiry counts — these forms submit over fetch, so
           // no navigation ever happens for a page-load conversion to hook into.
           trackConversion("formSubmit", { transactionId: data.id });
           f.reset();
+          setOutput("", "");
+          showSentPanel(f, payload.name);
         })
         .catch((err: Error) => {
           setOutput(
