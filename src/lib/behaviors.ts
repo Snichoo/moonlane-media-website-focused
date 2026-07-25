@@ -296,17 +296,21 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
   on(document, "click", onAnchorClick);
 
   /* ---- 8. Contact forms → POST /api/contact (Resend) ----
-     Both the contact-page `#project-form` and the site-wide side form
-     `#ict-project-form` carry class `project-form`. The theme's markup fires
-     submit via a hidden `<input type="submit">` behind the `.button` label, so
-     intercepting the form's submit event covers the click. Any other form on
-     the page is simply neutralised (no backend). */
+     Three forms post here: the contact-page `#project-form`, the site-wide side
+     form `#ict-project-form` (both class `project-form`) and the footer
+     `#contact-form` (class `contact-form`). The theme's markup fires submit via
+     a hidden `<input type="submit">` behind the `.button` label, so intercepting
+     the form's submit event covers the click. Any other form on the page is
+     simply neutralised (no backend). */
   const val = (f: HTMLFormElement, name: string) =>
     (f.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null)
       ?.value.trim() ?? "";
 
   qa<HTMLFormElement>("form").forEach((f) => {
-    if (!f.classList.contains("project-form")) {
+    if (
+      !f.classList.contains("project-form") &&
+      !f.classList.contains("contact-form")
+    ) {
       on(f, "submit", (e) => e.preventDefault());
       return;
     }
@@ -330,7 +334,9 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
         company: val(f, "your-company"),
         email: val(f, "your-email"),
         phone: val(f, "your-phone"),
-        message: val(f, "project-description"),
+        // `project-form` names the textarea `project-description`; the footer
+        // `contact-form` names it `your-message`.
+        message: val(f, "project-description") || val(f, "your-message"),
         subject: val(f, "email-subject"),
         pageTitle: val(f, "page-title"),
         pageUrl: val(f, "page-url"),

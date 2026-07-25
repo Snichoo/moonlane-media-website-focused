@@ -63,7 +63,12 @@ export async function POST(request: Request) {
     );
   }
 
-  const to = process.env.CONTACT_TO_EMAIL || "contact@moonlanemedia.com";
+  // Default to the address on the Resend account. While the sender is the shared
+  // `onboarding@resend.dev`, Resend only delivers to that address and rejects
+  // anything else with a 403 — so a bare `contact@` default silently 502s every
+  // submission. Once moonlanemedia.com is verified at resend.com/domains, set
+  // CONTACT_TO_EMAIL (and CONTACT_FROM_EMAIL) to whatever you like.
+  const to = process.env.CONTACT_TO_EMAIL || "sam@moonlanemedia.com";
   const from =
     process.env.CONTACT_FROM_EMAIL || "Moonlane Media <onboarding@resend.dev>";
   const subject = body.subject?.trim() || "New website enquiry";
@@ -108,9 +113,16 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    console.error("Resend send failed:", error.name, "-", error.message);
+    // Log the full reason server-side — the generic user-facing string alone
+    // makes misconfiguration (unverified domain, bad recipient) undiagnosable.
+    console.error(
+      `Resend send failed (from=${from} to=${to}): ${error.name} - ${error.message}`,
+    );
     return NextResponse.json(
-      { error: "Sorry, we couldn't send your message. Please try again." },
+      {
+        error: "Sorry, we couldn't send your message. Please try again.",
+        ...(process.env.NODE_ENV !== "production" && { reason: error.message }),
+      },
       { status: 502 },
     );
   }
