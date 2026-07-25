@@ -5,6 +5,8 @@
 // scroll-driven `data-speed` parallax on the hero layers/leaves + footer image,
 // the hero leaves' entrance rotation, and the FAQ leaf fan-out (`show`).
 
+import { trackConversion } from "./gtag";
+
 type Cleanup = () => void;
 
 export function initBehaviors(root: HTMLElement | Document = document): Cleanup {
@@ -295,6 +297,19 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
   };
   on(document, "click", onAnchorClick);
 
+  /* ---- 7b. Google Ads conversions on click-to-call / click-to-email ----
+     Delegated so it covers the header, footer and side-form links on every
+     route. `tel:`/`mailto:` hand off to the OS rather than unloading the page,
+     so the event has time to send without an `event_callback` redirect dance. */
+  const onContactLinkClick = (e: Event) => {
+    const a = (e.target as HTMLElement)?.closest?.("a[href]") as HTMLAnchorElement | null;
+    if (!a) return;
+    const href = a.getAttribute("href") || "";
+    if (href.startsWith("tel:")) trackConversion("phoneClick");
+    else if (href.startsWith("mailto:")) trackConversion("emailClick");
+  };
+  on(document, "click", onContactLinkClick);
+
   /* ---- 8. Contact forms → POST /api/contact (Resend) ----
      Three forms post here: the contact-page `#project-form`, the site-wide side
      form `#ict-project-form` (both class `project-form`) and the footer
@@ -359,9 +374,13 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
         .then(async (res) => {
           const data = (await res.json().catch(() => ({}))) as {
             error?: string;
+            id?: string;
           };
           if (!res.ok) throw new Error(data.error || "Something went wrong.");
           setOutput("Thanks! Your message has been sent.", "success");
+          // Only a delivered enquiry counts — these forms submit over fetch, so
+          // no navigation ever happens for a page-load conversion to hook into.
+          trackConversion("formSubmit", { transactionId: data.id });
           f.reset();
         })
         .catch((err: Error) => {
