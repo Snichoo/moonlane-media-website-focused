@@ -63,14 +63,15 @@ export async function POST(request: Request) {
     );
   }
 
-  // Default to the address on the Resend account. While the sender is the shared
-  // `onboarding@resend.dev`, Resend only delivers to that address and rejects
-  // anything else with a 403 — so a bare `contact@` default silently 502s every
-  // submission. Once moonlanemedia.com is verified at resend.com/domains, set
-  // CONTACT_TO_EMAIL (and CONTACT_FROM_EMAIL) to whatever you like.
+  // The sender must be on a domain verified at resend.com/domains —
+  // moonlanemedia.com.au is (DKIM + SPF, verified 2026-07-30). These defaults
+  // deliberately avoid Resend's shared `onboarding@resend.dev`: it worked for
+  // months, then Resend restricted it with no notice and every submission
+  // started failing after the API had already returned success.
   const to = process.env.CONTACT_TO_EMAIL || "sam@moonlanemedia.com";
   const from =
-    process.env.CONTACT_FROM_EMAIL || "Moonlane Media <onboarding@resend.dev>";
+    process.env.CONTACT_FROM_EMAIL ||
+    "Moonlane Media <contact@moonlanemedia.com.au>";
   const subject = body.subject?.trim() || "New website enquiry";
   const pageTitle = body.pageTitle?.trim() || "";
   const pageUrl = body.pageUrl?.trim() || "";

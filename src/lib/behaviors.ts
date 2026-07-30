@@ -436,7 +436,12 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
           if (!res.ok) throw new Error(data.error || "Something went wrong.");
           // Only a delivered enquiry counts — these forms submit over fetch, so
           // no navigation ever happens for a page-load conversion to hook into.
-          trackConversion("formSubmit", { transactionId: data.id });
+          // value/currency mirror the Ads event snippet for this action.
+          trackConversion("formSubmit", {
+            value: 1,
+            currency: "AUD",
+            transactionId: data.id,
+          });
           f.reset();
           setOutput("", "");
           showSentPanel(f, payload.name);

@@ -16,19 +16,20 @@ export const GADS_ID = process.env.NEXT_PUBLIC_GADS_ID || "AW-18359320430";
 
 export type ConversionAction = "formSubmit" | "phoneClick" | "emailClick";
 
-/* Labels are unique per Ads account, so none carry over from the previous
-   account (AW-17920438382) this site was tagged with — its "Submit lead form"
-   label would silently record nothing under AW-18359320430. Every action below
-   therefore stays unset and its event is skipped until you paste the label from
-   the new account: Google Ads → Goals → Conversions → (action) → Tag setup.
-   Set it here as the default or via the env var; labels are not secrets, they
+/* Labels are unique per Ads account — none carried over from the previous
+   account (AW-17920438382) this site was tagged with. Only "Submit lead form"
+   exists under AW-18359320430 so far; the click-to-call and click-to-email
+   actions stay unset and their events are skipped until those actions are
+   created in Google Ads → Goals → Conversions → (action) → Tag setup. Set each
+   one here as the default or via the env var; labels are not secrets, they
    ship in the page source of any site running the tag.
 
    NEXT_PUBLIC_* vars are inlined at build time by static analysis, so each one
    must appear as a complete literal expression — never build these keys
    dynamically or they resolve to undefined in the browser bundle. */
 const LABELS: Record<ConversionAction, string | undefined> = {
-  formSubmit: process.env.NEXT_PUBLIC_GADS_LABEL_FORM_SUBMIT,
+  formSubmit:
+    process.env.NEXT_PUBLIC_GADS_LABEL_FORM_SUBMIT || "h53ZCK_06dgcEO7-s7JE",
   phoneClick: process.env.NEXT_PUBLIC_GADS_LABEL_PHONE_CLICK,
   emailClick: process.env.NEXT_PUBLIC_GADS_LABEL_EMAIL_CLICK,
 };
