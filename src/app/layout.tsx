@@ -80,16 +80,16 @@ export default function RootLayout({
       <body className="home wp-singular page-template-default page page-id-217 wp-theme-chromatix-2018 wp-child-theme-chromatix-2018-child">
         {children}
 
-        {/* Google tag (gtag.js) — Google Ads AW-17920438382 */}
+        {/* Google tag (gtag.js) — Google Ads AW-18359320430 */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17920438382"
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18359320430"
           strategy="afterInteractive"
         />
         <Script id="google-gtag" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'AW-17920438382');`}
+gtag('config', 'AW-18359320430');`}
         </Script>
       </body>
     </html>
