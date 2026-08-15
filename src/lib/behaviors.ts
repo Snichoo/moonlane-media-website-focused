@@ -6,6 +6,7 @@
 // the hero leaves' entrance rotation, and the FAQ leaf fan-out (`show`).
 
 import { trackConversion } from "./gtag";
+import { getLocation, getLocationFromPath } from "./locations";
 
 type Cleanup = () => void;
 
@@ -23,6 +24,47 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
   const q = <T extends Element = HTMLElement>(s: string) => root.querySelector<T>(s);
   const qa = <T extends Element = HTMLElement>(s: string) =>
     Array.from(root.querySelectorAll<T>(s));
+
+  /* Preserve the first city landing-page context while the visitor browses.
+     Explicit city URLs always win; the session value is only a fallback for
+     links reached through the generic site. */
+  const locationStorageKey = "moonlane:first-location-v1";
+  const explicitLocation = getLocationFromPath(window.location.pathname);
+  let activeLocation = explicitLocation;
+
+  try {
+    const storedSlug = window.sessionStorage.getItem(locationStorageKey);
+    if (explicitLocation && !storedSlug) {
+      window.sessionStorage.setItem(locationStorageKey, explicitLocation.slug);
+    } else if (!explicitLocation && storedSlug) {
+      activeLocation = getLocation(storedSlug);
+    }
+  } catch {
+    // Route-scoped links still carry the city when storage is unavailable.
+  }
+
+  if (activeLocation) {
+    for (const link of qa<HTMLAnchorElement>(
+      'a[href="/contact"], a[href="/contact/"]',
+    )) {
+      link.href = activeLocation.contactPath;
+    }
+
+    const path = window.location.pathname.replace(/\/+$/, "") || "/";
+    if (path === "/contact") {
+      const banner = q<HTMLElement>(".sub-page--contact .banner-title");
+      const intro = q<HTMLElement>(
+        ".sub-page--contact .right-content .title.sub-title",
+      );
+
+      if (banner) {
+        banner.innerHTML = `Let's chat about <br><span class="highlight">${activeLocation.city} web design</span>`;
+      }
+      if (intro) {
+        intro.innerHTML = `Let's point your ${activeLocation.city} business in <br>the <span class="highlight">right direction</span>`;
+      }
+    }
+  }
 
   /* ---- 1. Sticky header: toggle `scroll` on header + logo container ---- */
   const header = q(".chr-header");
@@ -337,6 +379,68 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
     (f.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null)
       ?.value.trim() ?? "";
 
+  type Attribution = {
+    gclid: string;
+    gbraid: string;
+    wbraid: string;
+    utmSource: string;
+    utmMedium: string;
+    utmCampaign: string;
+    utmTerm: string;
+    utmContent: string;
+    landingUrl: string;
+    referrer: string;
+    capturedAt: string;
+  };
+
+  /* Keep the latest ad/UTM touch for the life of this browser tab. This fixes
+     the imported WordPress hidden fields, which contain the literal value
+     `[no value]`, and preserves the click id when someone visits another page
+     before submitting a form. Session storage is deliberately used instead of
+     a long-lived tracking cookie. */
+  const attributionKey = "moonlane:latest-touch-attribution";
+  const readAttribution = (): Attribution => {
+    const params = new URLSearchParams(window.location.search);
+    const current = {
+      gclid: params.get("gclid")?.trim() ?? "",
+      gbraid: params.get("gbraid")?.trim() ?? "",
+      wbraid: params.get("wbraid")?.trim() ?? "",
+      utmSource: params.get("utm_source")?.trim() ?? "",
+      utmMedium: params.get("utm_medium")?.trim() ?? "",
+      utmCampaign: params.get("utm_campaign")?.trim() ?? "",
+      utmTerm: params.get("utm_term")?.trim() ?? "",
+      utmContent: params.get("utm_content")?.trim() ?? "",
+    };
+    const hasCurrentAttribution = Object.values(current).some(Boolean);
+
+    try {
+      const stored = window.sessionStorage.getItem(attributionKey);
+      if (stored && !hasCurrentAttribution) {
+        return JSON.parse(stored) as Attribution;
+      }
+
+      const attribution: Attribution = {
+        ...current,
+        landingUrl: window.location.href,
+        referrer: document.referrer,
+        capturedAt: new Date().toISOString(),
+      };
+      window.sessionStorage.setItem(attributionKey, JSON.stringify(attribution));
+      return attribution;
+    } catch {
+      // Storage may be unavailable in privacy modes; the current page data is
+      // still useful and must not prevent the form from sending.
+      return {
+        ...current,
+        landingUrl: window.location.href,
+        referrer: document.referrer,
+        capturedAt: new Date().toISOString(),
+      };
+    }
+  };
+
+  const attribution = readAttribution();
+
   /* Swap the whole form out for a confirmation panel once it sends. Leaving the
      empty fields on screen reads as "nothing happened", so `form-sent` hides
      every other child (see supplemental.css) and this panel takes their place. */
@@ -412,6 +516,7 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
         subject: val(f, "email-subject"),
         pageTitle: val(f, "page-title"),
         pageUrl: val(f, "page-url"),
+        attribution,
       };
 
       if (!payload.name || !payload.email || !payload.phone) {
@@ -432,6 +537,7 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
           const data = (await res.json().catch(() => ({}))) as {
             error?: string;
             id?: string;
+            leadId?: string;
           };
           if (!res.ok) throw new Error(data.error || "Something went wrong.");
           // Only a delivered enquiry counts — these forms submit over fetch, so
@@ -440,7 +546,7 @@ export function initBehaviors(root: HTMLElement | Document = document): Cleanup 
           trackConversion("formSubmit", {
             value: 1,
             currency: "AUD",
-            transactionId: data.id,
+            transactionId: data.leadId || data.id,
           });
           f.reset();
           setOutput("", "");

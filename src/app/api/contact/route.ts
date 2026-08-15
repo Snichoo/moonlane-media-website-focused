@@ -15,6 +15,19 @@ interface ContactPayload {
   subject?: string;
   pageTitle?: string;
   pageUrl?: string;
+  attribution?: {
+    gclid?: string;
+    gbraid?: string;
+    wbraid?: string;
+    utmSource?: string;
+    utmMedium?: string;
+    utmCampaign?: string;
+    utmTerm?: string;
+    utmContent?: string;
+    landingUrl?: string;
+    referrer?: string;
+    capturedAt?: string;
+  };
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,6 +39,9 @@ const escapeHtml = (s: string) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+
+const clean = (value: unknown, maxLength = 500) =>
+  typeof value === "string" ? value.trim().slice(0, maxLength) : "";
 
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -44,11 +60,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const name = body.name?.trim() ?? "";
-  const email = body.email?.trim() ?? "";
-  const phone = body.phone?.trim() ?? "";
-  const company = body.company?.trim() ?? "";
-  const message = body.message?.trim() ?? "";
+  const name = clean(body.name, 120);
+  const email = clean(body.email, 254);
+  const phone = clean(body.phone, 60);
+  const company = clean(body.company, 160);
+  const message = clean(body.message, 10_000);
 
   if (!name || !email || !phone) {
     return NextResponse.json(
@@ -72,17 +88,31 @@ export async function POST(request: Request) {
   const from =
     process.env.CONTACT_FROM_EMAIL ||
     "Moonlane Media <contact@moonlanemedia.com.au>";
-  const subject = body.subject?.trim() || "New website enquiry";
-  const pageTitle = body.pageTitle?.trim() || "";
-  const pageUrl = body.pageUrl?.trim() || "";
+  const subject = clean(body.subject, 160) || "New website enquiry";
+  const pageTitle = clean(body.pageTitle, 300);
+  const pageUrl = clean(body.pageUrl, 2_000);
+  const attribution = body.attribution ?? {};
+  const leadId = crypto.randomUUID();
 
   const rows: Array<[string, string]> = [
+    ["Lead ID", leadId],
     ["Name", name],
     ["Company", company],
     ["Email", email],
     ["Phone", phone],
     ["Message", message],
     ["Page", [pageTitle, pageUrl].filter(Boolean).join(" — ")],
+    ["Google click ID", clean(attribution.gclid, 500)],
+    ["GBRAID", clean(attribution.gbraid, 500)],
+    ["WBRAID", clean(attribution.wbraid, 500)],
+    ["UTM source", clean(attribution.utmSource, 300)],
+    ["UTM medium", clean(attribution.utmMedium, 300)],
+    ["UTM campaign", clean(attribution.utmCampaign, 300)],
+    ["UTM term", clean(attribution.utmTerm, 500)],
+    ["UTM content", clean(attribution.utmContent, 500)],
+    ["Original landing page", clean(attribution.landingUrl, 2_000)],
+    ["Original referrer", clean(attribution.referrer, 2_000)],
+    ["Attribution captured", clean(attribution.capturedAt, 100)],
   ].filter(([, v]) => v) as Array<[string, string]>;
 
   const html = `
@@ -128,5 +158,5 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, id: data?.id });
+  return NextResponse.json({ ok: true, id: data?.id, leadId });
 }

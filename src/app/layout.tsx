@@ -10,6 +10,13 @@ import "../styles/chromatix-contact.css";
 import "../styles/chromatix.css";
 import "../styles/supplemental.css";
 
+const GOOGLE_ADS_ID =
+  process.env.NEXT_PUBLIC_GADS_ID || "AW-18359320430";
+const WEBSITE_CALL_LABEL =
+  process.env.NEXT_PUBLIC_GADS_LABEL_WEBSITE_CALL?.trim();
+const BUSINESS_PHONE_DISPLAY = "0414 134 081";
+const BUSINESS_PHONE_TEL = "0414134081";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.moonlanemedia.com"),
   applicationName: "Moonlane Media",
@@ -74,22 +81,45 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const websiteCallConfig = WEBSITE_CALL_LABEL
+    ? `
+(function () {
+  function replaceWebsitePhone(formattedNumber, mobileNumber) {
+    document.querySelectorAll('a[href^="tel:${BUSINESS_PHONE_TEL}"]').forEach(function (link) {
+      link.setAttribute('href', 'tel:' + mobileNumber);
+
+      var numberLabel = link.querySelector('.phone-text');
+      if (numberLabel) {
+        numberLabel.textContent = formattedNumber;
+      } else if ((link.textContent || '').trim() === ${JSON.stringify(BUSINESS_PHONE_DISPLAY)}) {
+        link.textContent = formattedNumber;
+      }
+    });
+  }
+
+  gtag('config', ${JSON.stringify(`${GOOGLE_ADS_ID}/${WEBSITE_CALL_LABEL}`)}, {
+    'phone_conversion_number': ${JSON.stringify(BUSINESS_PHONE_DISPLAY)},
+    'phone_conversion_callback': replaceWebsitePhone
+  });
+})();`
+    : "";
+
   return (
     <html lang="en-AU">
       {/* WordPress body classes preserved so theme selectors (e.g. .home) still match */}
       <body className="home wp-singular page-template-default page page-id-217 wp-theme-chromatix-2018 wp-child-theme-chromatix-2018-child">
         {children}
 
-        {/* Google tag (gtag.js) — Google Ads AW-18359320430 */}
+        {/* Google tag (gtag.js) — Google Ads conversion/call measurement. */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-18359320430"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
           strategy="afterInteractive"
         />
         <Script id="google-gtag" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'AW-18359320430');`}
+gtag('config', ${JSON.stringify(GOOGLE_ADS_ID)});${websiteCallConfig}`}
         </Script>
       </body>
     </html>

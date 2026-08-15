@@ -1,0 +1,183 @@
+import { contactHtml } from "@/sections/contact";
+import * as base from "@/sections/markup";
+import type { LocationConfig } from "@/lib/locations";
+
+export type LocationHomeSections = Readonly<{
+  header: string;
+  sideForm: string;
+  homeBanner: string;
+  sectionTwo: string;
+  ourWork: string;
+  testimonials: string;
+  sectionThree: string;
+  partners: string;
+  faq: string;
+  confidenceBar: string;
+  footer: string;
+  mobileButton: string;
+}>;
+
+export type LocationContactSections = Readonly<{
+  header: string;
+  sideForm: string;
+  body: string;
+  footer: string;
+  mobileButton: string;
+}>;
+
+function replaceOnce(
+  html: string,
+  search: string,
+  replacement: string,
+  label: string,
+): string {
+  if (!html.includes(search)) {
+    throw new Error(`Could not find ${label} in the source markup.`);
+  }
+
+  return html.replace(search, replacement);
+}
+
+function scopeLinks(html: string, location: LocationConfig): string {
+  return html
+    .replaceAll('href="/contact/"', `href="${location.contactPath}"`)
+    .replaceAll('href="/contact"', `href="${location.contactPath}"`)
+    .replaceAll('href="/#', `href="${location.basePath}#`)
+    .replaceAll('href="/"', `href="${location.basePath}"`);
+}
+
+function setHiddenValue(html: string, name: string, value: string): string {
+  const input = new RegExp(
+    `(<input\\b(?=[^>]*\\bname="${name}")[^>]*\\bvalue=")[^"]*(")`,
+    "g",
+  );
+
+  return html.replace(input, `$1${value}$2`);
+}
+
+function scopeForm(
+  html: string,
+  location: LocationConfig,
+  pagePath: string,
+  pageTitle: string,
+): string {
+  return setHiddenValue(
+    setHiddenValue(
+      setHiddenValue(html, "page-url", pagePath),
+      "page-title",
+      pageTitle,
+    ),
+    "email-subject",
+    `${location.city} Website Inquiry`,
+  );
+}
+
+function scopeShellSection(
+  html: string,
+  location: LocationConfig,
+  pagePath: string,
+  pageTitle: string,
+): string {
+  return scopeForm(scopeLinks(html, location), location, pagePath, pageTitle);
+}
+
+export function getLocationHomeSections(
+  location: LocationConfig,
+): LocationHomeSections {
+  const pageTitle = `Web Design ${location.city}`;
+  const homeBanner = replaceOnce(
+    scopeLinks(base.homeBanner, location),
+    "Australian Web Design &amp; Conversion Agency",
+    `${location.city} Web Design &amp; Conversion Agency`,
+    "homepage location heading",
+  );
+
+  let sectionTwo = replaceOnce(
+    scopeLinks(base.sectionTwo, location),
+    "local WEBSITE DESIGN + DIGITAL CONVERSION = BEST ROI RESULTS",
+    `${location.city.toUpperCase()} WEBSITE DESIGN + DIGITAL CONVERSION = BEST ROI RESULTS`,
+    "homepage location section heading",
+  );
+  sectionTwo = replaceOnce(
+    sectionTwo,
+    "<p>Web design is more than just looking good!",
+    `<p>For ${location.city} businesses, web design is more than just looking good!`,
+    "homepage location paragraph",
+  );
+
+  let faq = replaceOnce(
+    scopeLinks(base.faq, location),
+    "While we&#8217;re proudly based in Melbourne and Sydney, we work with clients all across Australia and even internationally.",
+    location.serviceStatement,
+    "location service statement",
+  );
+  faq = replaceOnce(
+    faq,
+    "Come have a chat with our friendly Australian team in our Melbourne or Sydney office &#8211; or jump on a quick video call",
+    location.city === "Brisbane"
+      ? "Jump on a quick video call with our Australian team to discuss your Brisbane business"
+      : `Come have a chat with our friendly Australian team in our ${location.city} office &#8211; or jump on a quick video call`,
+    "location contact invitation",
+  );
+
+  return {
+    header: scopeLinks(base.header, location),
+    sideForm: scopeShellSection(
+      base.sideForm,
+      location,
+      location.basePath,
+      pageTitle,
+    ),
+    homeBanner,
+    sectionTwo,
+    ourWork: scopeLinks(base.ourWork, location),
+    testimonials: scopeLinks(base.testimonials, location),
+    sectionThree: scopeLinks(base.sectionThree, location),
+    partners: scopeLinks(base.partners, location),
+    faq,
+    confidenceBar: scopeLinks(base.confidenceBar, location),
+    footer: scopeShellSection(
+      base.footer,
+      location,
+      location.basePath,
+      pageTitle,
+    ),
+    mobileButton: scopeLinks(base.mobileButton, location),
+  };
+}
+export function getLocationContactSections(
+  location: LocationConfig,
+): LocationContactSections {
+  const pageTitle = `Web Design Enquiry — ${location.city}`;
+  let body = replaceOnce(
+    contactHtml,
+    "Let's chat <br> <span class=\"highlight\">no strings attached</span>",
+    `Let's chat about <br> <span class="highlight">${location.city} web design</span>`,
+    "contact location banner",
+  );
+  body = replaceOnce(
+    body,
+    "Let&#8217;s point you in <br>\nthe <span class=\"highlight\">right direction</span>",
+    `Let&#8217;s point your ${location.city} business in <br>\nthe <span class="highlight">right direction</span>`,
+    "contact location form introduction",
+  );
+  body = scopeForm(body, location, location.contactPath, pageTitle);
+
+  return {
+    header: scopeLinks(base.header, location),
+    sideForm: scopeShellSection(
+      base.sideForm,
+      location,
+      location.contactPath,
+      pageTitle,
+    ),
+    body,
+    footer: scopeShellSection(
+      base.footer,
+      location,
+      location.contactPath,
+      pageTitle,
+    ),
+    mobileButton: scopeLinks(base.mobileButton, location),
+  };
+}
