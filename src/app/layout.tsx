@@ -13,7 +13,8 @@ import "../styles/supplemental.css";
 const GOOGLE_ADS_ID =
   process.env.NEXT_PUBLIC_GADS_ID || "AW-18359320430";
 const WEBSITE_CALL_LABEL =
-  process.env.NEXT_PUBLIC_GADS_LABEL_WEBSITE_CALL?.trim();
+  process.env.NEXT_PUBLIC_GADS_LABEL_WEBSITE_CALL?.trim() ||
+  "U3omCIXD7eEcEO7-s7JE";
 const BUSINESS_PHONE_DISPLAY = "0414 134 081";
 const BUSINESS_PHONE_TEL = "0414134081";
 
