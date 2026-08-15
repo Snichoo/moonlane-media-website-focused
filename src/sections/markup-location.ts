@@ -119,6 +119,30 @@ export function getLocationHomeSections(
       : `Come have a chat with our friendly Australian team in our ${location.city} office &#8211; or jump on a quick video call`,
     "location contact invitation",
   );
+  faq = replaceOnce(
+    faq,
+    "<span>Why choose Moonlane Media for web design in Australia?</span>",
+    `<span>Why choose Moonlane Media for web design in ${location.city}?</span>`,
+    "location claims FAQ question",
+  );
+  faq = replaceOnce(
+    faq,
+    "<p>There are plenty of reasons Australian businesses choose Moonlane Media. Unlike many other Australian agencies that try to do everything, we&#8217;re true web design specialists &#8211; experts in design psychology, conversion strategy and custom website development. We don&#8217;t just make websites look good &#8211; we make them work.</p>",
+    `<p>Trusted by 100+ Aussie brands, our team brings 15+ years of web design experience to every custom, SEO-ready website build for ${location.city} businesses.</p>`,
+    "location experience and trust claims",
+  );
+  faq = replaceOnce(
+    faq,
+    "<p>Our focus is simple: what gets business results. No gimmicks, no shortcuts and no chasing design trends just to look good. We&#8217;ve spent over 15+ years perfecting the craft of high-performing Australian web design, backed by real data and proven outcomes. In fact, we have a list of video testimonials live on our website that demonstrate our results since 2009.</p>",
+    "<p>Our 100% satisfaction guarantee applies to the agreed project scope. Before work begins, we agree in writing on the included revisions and the remedy if the approved requirements are not met.</p>",
+    "location satisfaction guarantee terms",
+  );
+  faq = replaceOnce(
+    faq,
+    "<p>Working with us is simple &#8211; fixed pricing, clear communication and no tech jargon or middlemen. You&#8217;ll work directly with our in-house designers, developers, and our Director himself, who&#8217;s been in digital for over 20 years.</p>",
+    "<p>Pricing is transparent: your proposal confirms the agreed scope and price before work begins, with no hidden fees. Any extra work is discussed and approved first.</p>",
+    "location transparent pricing terms",
+  );
 
   return {
     header: scopeLinks(base.header, location),
