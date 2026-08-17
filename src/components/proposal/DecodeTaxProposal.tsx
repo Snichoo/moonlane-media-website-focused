@@ -1,538 +1,815 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import type { LucideIcon } from "lucide-react";
 import {
-  ArrowDown,
-  ArrowRight,
+  BellRing,
   Check,
   CheckCircle2,
+  ChevronDown,
+  ChevronUp,
   Clock3,
+  CopyX,
   ExternalLink,
+  FileText,
   Globe2,
+  KeyRound,
+  MailCheck,
   MapPinned,
   MessageSquareText,
+  Palette,
+  PenTool,
   Phone,
   SearchCheck,
+  ServerCog,
   ShieldCheck,
   Sparkles,
+  UsersRound,
 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./DecodeTaxProposal.module.css";
 
-const inclusions = [
-  {
-    title: "Custom, High-Conversion Design",
-    description:
-      "The website will be built using a blueprint specifically designed to convert visitors into enquiries. Professional, modern, and built for trust.",
-  },
-  {
-    title: "Service Pages",
-    description:
-      "Dedicated pages for each of your services so potential clients can find exactly what they need and understand how you can help.",
-  },
-  {
-    title: "Suburb Targeting Pages",
-    description:
-      "Location-specific pages to help you rank in local searches across multiple suburbs and areas you want to target.",
-  },
-  {
-    title: "SEO Optimisation",
-    description:
-      "Built from the ground up to help you show up in searches for your targeted keywords.",
-  },
-  {
-    title: "Lead Notifications",
-    description:
-      "Your website's contact form will send leads directly to your phone, email, or wherever you prefer - ensuring you're instantly notified.",
-  },
-  {
-    title: "Full Ownership",
-    description:
-      "A complete hand-off of all login credentials once the site is live. You own everything 100%.",
-  },
+const slides = [
+  "Proposal",
+  "The opportunity",
+  "Why Moonlane",
+  "Convert visitors",
+  "Be found and own it",
+  "Delivery promise",
+  "Selected work",
+  "Accounting experience",
+  "Investment",
+  "Hosting and handover",
+  "Editing and support",
+  "How it works",
+  "Next step",
 ] as const;
 
-const differences = [
-  "No AI-generated content",
-  "No cookie-cutter templates",
-  "No outsourcing",
-  "Built by a senior, experienced website designer",
-] as const;
+type ServiceItem = {
+  description: string;
+  icon: LucideIcon;
+  title: string;
+};
 
 const selectedWork = [
   {
-    name: "CYC",
-    image: "/wp-content/uploads/2026/05/CYC-590x250-2.png",
+    desktop: "/wp-content/uploads/2026/05/CYC-590x250-2.png",
     href: "/case-study/cyc",
-    alt: "CYC website shown on a tablet in a Moonlane Media case study",
+    mobile: "/wp-content/uploads/2026/05/CYC-380x290-2.png",
+    name: "CYC",
+    type: "Strategy, UI/UX and development",
   },
   {
-    name: "Builders of Architecture",
-    image: "/wp-content/uploads/2026/05/BOA-590x250-4.png",
+    desktop: "/wp-content/uploads/2026/05/BOA-590x250-4.png",
     href: "/case-study/boa",
-    alt: "Builders of Architecture website shown on a phone in a Moonlane Media case study",
+    mobile: "/wp-content/uploads/2026/05/BOA-380x290-2.png",
+    name: "Builders of Architecture",
+    type: "Brand-led website design",
   },
   {
-    name: "PowerPlus Energy",
-    image: "/wp-content/uploads/2026/05/PowerPlus-590x250-2.png",
+    desktop: "/wp-content/uploads/2026/05/PowerPlus-590x250-2.png",
     href: "/case-study/powerplus-energy",
-    alt: "PowerPlus Energy website shown on a desktop in a Moonlane Media case study",
+    mobile: "/wp-content/uploads/2026/05/PowerPlus-380x290-2.png",
+    name: "PowerPlus Energy",
+    type: "Conversion-focused digital platform",
   },
 ] as const;
 
 const accountingWork = [
   {
-    name: "Spark Accountants",
-    description: "Modern accounting firm website",
-    domain: "sparkaccountants.com.au",
     href: "https://www.sparkaccountants.com.au",
+    name: "Spark Accountants",
+    note: "Modern accounting firm website",
   },
   {
-    name: "Link Advisors",
-    description: "Professional advisory services",
-    domain: "linkadvisors.com.au",
     href: "https://www.linkadvisors.com.au",
+    name: "Link Advisors",
+    note: "Professional advisory services",
   },
   {
-    name: "Inspire Accountant",
-    description: "Clean, conversion-focused design",
-    domain: "inspire.accountant",
     href: "https://inspire.accountant",
+    name: "Inspire Accountant",
+    note: "Clean, conversion-focused design",
   },
   {
-    name: "Taggart & Partners",
-    description: "Established firm, modern presence",
-    domain: "taggartandpartners.com.au",
     href: "https://www.taggartandpartners.com.au",
+    name: "Taggart & Partners",
+    note: "Established firm, modern presence",
   },
 ] as const;
 
-const nextSteps = [
+const convertItems: ServiceItem[] = [
   {
-    number: "01",
-    title: "Discovery Call",
     description:
-      "We'll have a quick call to understand your vision and plan the website together.",
+      "A professional, modern website built from a conversion blueprint to create trust and turn visitors into enquiries.",
+    icon: Palette,
+    title: "Custom, high-conversion design",
   },
   {
-    number: "02",
-    title: "Pay 50% Deposit ($750)",
     description:
-      "Once we've aligned on the plan, the deposit kicks off the build.",
+      "Dedicated pages make each accounting, tax and advisory service easy to find and understand.",
+    icon: FileText,
+    title: "Service pages",
   },
   {
-    number: "03",
-    title: "We Build Your Website",
     description:
-      "Your site will be ready within 7 days of receiving the deposit.",
+      "Contact-form enquiries go straight to your preferred phone, email or notification destination.",
+    icon: BellRing,
+    title: "Lead notifications",
   },
-  {
-    number: "04",
-    title: "Review & Go Live",
-    description:
-      "A quick 20-minute call to connect your domain and push it live.",
-  },
-] as const;
+];
 
-function Stars() {
+const searchItems: ServiceItem[] = [
+  {
+    description:
+      "Location-specific pages support local search visibility across the suburbs and areas you choose to target.",
+    icon: MapPinned,
+    title: "Suburb targeting pages",
+  },
+  {
+    description:
+      "The site is structured from the ground up around your agreed target keywords and on-page SEO foundations.",
+    icon: SearchCheck,
+    title: "SEO optimisation",
+  },
+  {
+    description:
+      "Once the site is live, every login is handed over. The website and its accounts are yours, 100%.",
+    icon: KeyRound,
+    title: "Full ownership",
+  },
+];
+
+const supportItems: ServiceItem[] = [
+  {
+    description:
+      "All reasonable revisions during the build are included, so the final site feels right before launch.",
+    icon: MessageSquareText,
+    title: "Revisions included during the build",
+  },
+  {
+    description:
+      "A simple editing system lets you update basic text and images yourself, with all login details supplied.",
+    icon: PenTool,
+    title: "Easy editing",
+  },
+  {
+    description:
+      "There is no mandatory maintenance plan. Future updates are available when needed at a flat $50 per hour.",
+    icon: Clock3,
+    title: "Flexible future support",
+  },
+];
+
+function ServiceSlide({
+  eyebrow,
+  id,
+  items,
+  title,
+}: {
+  eyebrow: string;
+  id: string;
+  items: ServiceItem[];
+  title: React.ReactNode;
+}) {
   return (
-    <span className={styles.stars} aria-label="5 out of 5 stars">
-      {Array.from({ length: 5 }, (_, index) => (
-        <span aria-hidden="true" key={index}>
-          ★
-        </span>
-      ))}
-    </span>
+    <section
+      aria-labelledby={`${id}-title`}
+      className={`${styles.slide} ${styles.serviceSlide} single-part service-list-part`}
+      data-proposal-slide
+      id={id}
+      tabIndex={-1}
+    >
+      <div className={`${styles.slideHeading} chr-content-container`}>
+        <p className="small-title">{eyebrow}</p>
+        <h2 className="sub-title" id={`${id}-title`}>
+          {title}
+        </h2>
+      </div>
+      <div className={`services-items-part ${styles.servicesPart}`}>
+        <div className="chr-content-container services-items-container">
+          {items.map(({ description, icon: Icon, title: itemTitle }) => (
+            <article className="single-item" key={itemTitle}>
+              <Icon aria-hidden="true" />
+              <div className="item-content wysiwyg-wrapper">
+                <h3>{itemTitle}</h3>
+                <p>{description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProgressItem({
+  description,
+  icon: Icon,
+  title,
+}: ServiceItem) {
+  return (
+    <div className="single-item">
+      <div className="svg-wrapper">
+        <Icon aria-hidden="true" />
+      </div>
+      <div className="item-content">
+        <h3 className="title">{title}</h3>
+        <span>{description}</span>
+      </div>
+    </div>
   );
 }
 
 export function DecodeTaxProposal() {
+  const deckRef = useRef<HTMLDivElement>(null);
+  const activeIndexRef = useRef(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const goToSlide = useCallback((index: number) => {
+    const deck = deckRef.current;
+    if (!deck) return;
+
+    const slideElements = Array.from(
+      deck.querySelectorAll<HTMLElement>("[data-proposal-slide]"),
+    );
+    const safeIndex = Math.max(0, Math.min(index, slideElements.length - 1));
+    const targetSlide = slideElements[safeIndex];
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    targetSlide?.scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      block: "start",
+    });
+    targetSlide?.focus({ preventScroll: true });
+  }, []);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const deck = deckRef.current;
+    if (!deck) return;
+
+    document.body.classList.add("proposal-deck-open");
+    const slideElements = Array.from(
+      deck.querySelectorAll<HTMLElement>("[data-proposal-slide]"),
+    );
+
+    const syncActiveSlide = () => {
+      const centre = deck.scrollTop + deck.clientHeight / 2;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      slideElements.forEach((slide, index) => {
+        const slideCentre = slide.offsetTop + slide.offsetHeight / 2;
+        const distance = Math.abs(slideCentre - centre);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      setActiveIndex(closestIndex);
+    };
+
+    const handleKeyboard = (event: KeyboardEvent) => {
+      const eventTarget = event.target;
+      if (
+        eventTarget instanceof HTMLElement &&
+        eventTarget.closest(
+          "a, button, input, textarea, select, [role='button'], [contenteditable='true']",
+        )
+      ) {
+        return;
+      }
+
+      const current = activeIndexRef.current;
+      if (["ArrowDown", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        goToSlide(current + 1);
+      } else if (["ArrowUp", "PageUp"].includes(event.key)) {
+        event.preventDefault();
+        goToSlide(current - 1);
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        goToSlide(0);
+      } else if (event.key === "End") {
+        event.preventDefault();
+        goToSlide(slideElements.length - 1);
+      }
+    };
+
+    deck.addEventListener("scroll", syncActiveSlide, { passive: true });
+    window.addEventListener("keydown", handleKeyboard);
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncVideoMotion = () => {
+      deck.querySelectorAll("video").forEach((video) => {
+        if (reduceMotion.matches) video.pause();
+        else void video.play().catch(() => undefined);
+      });
+    };
+    reduceMotion.addEventListener("change", syncVideoMotion);
+    syncVideoMotion();
+    syncActiveSlide();
+
+    return () => {
+      document.body.classList.remove("proposal-deck-open");
+      deck.removeEventListener("scroll", syncActiveSlide);
+      window.removeEventListener("keydown", handleKeyboard);
+      reduceMotion.removeEventListener("change", syncVideoMotion);
+    };
+  }, [goToSlide]);
+
   return (
-    <div className={styles.proposal}>
-      <a className={styles.skipLink} href="#proposal-content">
-        Skip to proposal content
+    <div className={`chr-content ${styles.proposal}`}>
+      <a className={styles.skipLink} href="#proposal-deck">
+        Skip to proposal
       </a>
 
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <Link className={styles.brand} href="/" aria-label="Moonlane Media home">
-            <Image
-              alt="Moonlane Media"
-              height={61}
-              priority
-              src="/images/moonlane-logo.png"
-              width={246}
-            />
-          </Link>
-
-          <nav className={styles.nav} aria-label="Proposal sections">
-            <a href="#scope">Scope</a>
-            <a href="#investment">Investment</a>
-            <a href="#work">Our work</a>
-          </nav>
-
-          <a className={styles.headerCta} href="#next-steps">
-            Next steps <ArrowRight aria-hidden="true" size={18} />
-          </a>
+      <header className={styles.deckHeader}>
+        <Link aria-label="Moonlane Media home" href="/">
+          <Image
+            alt="Moonlane Media"
+            height={40}
+            priority
+            src="/images/moonlane-logo.png"
+            width={165}
+          />
+        </Link>
+        <div className={styles.headerStatus}>
+          <span className={styles.headerLabel}>{slides[activeIndex]}</span>
+          <span aria-live="polite" className={styles.counter}>
+            <span className={styles.srOnly}>{slides[activeIndex]}. </span>
+            {String(activeIndex + 1).padStart(2, "0")} / {slides.length}
+          </span>
+        </div>
+        <div aria-hidden="true" className={styles.progressTrack}>
+          <span
+            className={styles.progressFill}
+            style={{ width: `${((activeIndex + 1) / slides.length) * 100}%` }}
+          />
         </div>
       </header>
 
-      <main id="proposal-content">
-        <section className={styles.hero}>
-          <div className={styles.heroGrid}>
-            <div className={styles.heroCopy}>
-              <p className={styles.eyebrow}>Website proposal</p>
-              <h1>
-                Built to turn trust into <span>enquiries.</span>
-              </h1>
-              <p className={styles.heroLead}>
-                A professional, high-converting website for Decode Tax
-                Accountants - designed to make your expertise clear and help
-                more potential clients get in touch.
-              </p>
-
-              <div className={styles.heroActions}>
-                <a className={styles.primaryButton} href="#scope">
-                  Explore the proposal <ArrowDown aria-hidden="true" size={19} />
-                </a>
-                <a className={styles.textLink} href="tel:0414134081">
-                  <Phone aria-hidden="true" size={18} /> 0414 134 081
-                </a>
-              </div>
-
-              <dl className={styles.heroFacts}>
-                <div>
-                  <dt>Timeline</dt>
-                  <dd>7 days</dd>
-                </div>
-                <div>
-                  <dt>Investment</dt>
-                  <dd>$1,499</dd>
-                </div>
-                <div>
-                  <dt>Ownership</dt>
-                  <dd>100% yours</dd>
-                </div>
-              </dl>
-            </div>
-
-            <div className={styles.heroVisual} aria-label="Moonlane Media team">
-              <div className={styles.heroImageFrame}>
-                <Image
-                  alt="Moonlane Media website team discussing a client project"
-                  className={styles.heroImage}
-                  fill
-                  priority
-                  sizes="(max-width: 900px) 92vw, 46vw"
-                  src="/wp-content/uploads/2018/11/home-intro-2019.png"
+      <main
+        aria-label="Website proposal for Decode Tax Accountants"
+        className={`${styles.deck} sub-page case-study-page`}
+        id="proposal-deck"
+        ref={deckRef}
+        tabIndex={-1}
+      >
+        <div className="modules">
+          <section
+            aria-labelledby="proposal-cover-title"
+            className={`${styles.slide} ${styles.coverSlide}`}
+            data-proposal-slide
+            id="proposal"
+            tabIndex={-1}
+          >
+            <div className={`home-banner ${styles.homeBanner}`}>
+              <video
+                aria-hidden="true"
+                autoPlay
+                className="home-banner-video"
+                loop
+                muted
+                playsInline
+                preload="metadata"
+              >
+                <source
+                  src="/wp-content/uploads/2021/05/cut-flower-open-451.mp4"
+                  type="video/mp4"
                 />
+              </video>
+              <div aria-hidden="true" className="layers-part">
+                <div className="layer layer-1" />
+                <div className="layer layer-2" />
+                <div className="layer layer-3" />
+                <div className="layer layer-4" />
+                <div className="layer layer-5" />
+                <div className="layer layer-6" />
               </div>
-              <div className={styles.heroNote}>
-                <Sparkles aria-hidden="true" size={19} />
-                <span>
-                  Prepared for <strong>Decode Tax Accountants</strong>
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.introSection}>
-          <div className={styles.container}>
-            <div className={styles.introGrid}>
-              <article className={styles.introPanel}>
-                <p className={styles.sectionKicker}>About us</p>
-                <h2>A focused website development team.</h2>
-                <p>
-                  We&apos;re Moonlane Media, a focused website development team
-                  dedicated to helping businesses like yours get online with a
-                  professional, high-converting website that actually brings in
-                  leads and sales.
-                </p>
-              </article>
-
-              <article className={`${styles.introPanel} ${styles.clientPanel}`}>
-                <p className={styles.sectionKicker}>Understanding your business</p>
-                <h2>Trust matters when clients choose an accountant.</h2>
-                <p>
-                  Decode Tax Accountants helps individuals and businesses
-                  navigate tax, compliance, and financial planning. Your
-                  potential clients want to see credibility, expertise, and know
-                  they can trust you with their finances.
-                </p>
-                <p>
-                  A professional website will position you as the go-to firm,
-                  making it easy for clients to understand your services and get
-                  in touch.
-                </p>
-              </article>
-            </div>
-
-            <div className={styles.reviewStrip} aria-label="Client ratings">
-              <div className={styles.reviewCard}>
-                <span className={styles.reviewName}>Clutch</span>
-                <Stars />
-                <p>5/5 star for quality, reliability, skills and other factors</p>
-              </div>
-              <div className={styles.reviewDivider} aria-hidden="true" />
-              <div className={styles.reviewCard}>
-                <span className={styles.googleName}>Google</span>
-                <Stars />
-                <p>Innovative, reliable, and client-focused</p>
+              <div aria-hidden="true" className={styles.coverFlower} />
+              <div className="chr-content-container">
+                <div className={`home-banner-content ${styles.coverContent}`}>
+                  <p className="small-title">Website proposal</p>
+                  <h1 className="title" id="proposal-cover-title">
+                    <span className={styles.coverLine}>Built for</span>
+                    <span className={styles.coverLine}>Decode Tax</span>
+                    <span className={`highlight ${styles.coverLine}`}>Accountants</span>
+                  </h1>
+                  <p className={styles.coverLead}>
+                    A professional website designed to turn trust into enquiries.
+                  </p>
+                  <a
+                    className="button"
+                    href="#opportunity"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      goToSlide(1);
+                    }}
+                  >
+                    View the proposal
+                  </a>
+                  <div className={styles.coverFacts}>
+                    <span><strong>7 days</strong> target delivery</span>
+                    <span><strong>$1,499</strong> one-off</span>
+                    <span><strong>100%</strong> ownership</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className={styles.scopeSection} id="scope">
-          <div className={styles.container}>
-            <div className={styles.sectionHeading}>
-              <div>
-                <p className={styles.sectionKicker}>What&apos;s included</p>
-                <h2>Everything needed to launch with confidence.</h2>
+          <section
+            aria-labelledby="opportunity-title"
+            className={`${styles.slide} ${styles.opportunitySlide}`}
+            data-proposal-slide
+            id="opportunity"
+            tabIndex={-1}
+          >
+            <div className="chr-content-container section-three-heading-part">
+              <div className="left-part">
+                <p className="small-title">The opportunity</p>
+                <h2 className="sub-title" id="opportunity-title">
+                  Make trust the
+                  <br />
+                  <span className="highlight">obvious first impression</span>
+                </h2>
               </div>
+              <div className={`right-part wysiwyg-wrapper ${styles.opportunityCopy}`}>
+                <p>
+                  Decode Tax Accountants helps individuals and businesses navigate
+                  tax, compliance and financial planning. Potential clients need to
+                  see credibility, understand your expertise and feel safe placing
+                  their finances in your hands.
+                </p>
+                <p>
+                  The new website will position Decode as the go-to firm and make it
+                  easy for the right clients to understand your services and get in
+                  touch.
+                </p>
+              </div>
+              <div className={styles.outcomeStrip}>
+                <span><CheckCircle2 /> Build credibility</span>
+                <span><CheckCircle2 /> Explain services clearly</span>
+                <span><CheckCircle2 /> Generate enquiries</span>
+              </div>
+            </div>
+          </section>
+
+          <section
+            aria-labelledby="moonlane-title"
+            className={`${styles.slide} ${styles.yellowSlide}`}
+            data-proposal-slide
+            id="moonlane"
+            tabIndex={-1}
+          >
+            <div className={`chr-section-two ${styles.sectionTwo}`}>
+              <div className="chr-content-container">
+                <div className="image-wrapper">
+                  <Image
+                    alt="Moonlane Media web design team"
+                    className="section-two-image"
+                    height={730}
+                    sizes="(max-width: 766px) 270px, (max-width: 1239px) 600px, 730px"
+                    src="/wp-content/uploads/2018/11/home-intro-2019.png"
+                    width={730}
+                  />
+                </div>
+                <div className="section-two-content wysiwyg-wrapper">
+                  <p className="small-title">Why Moonlane Media</p>
+                  <h2 className="sub-title" id="moonlane-title">
+                    A focused team built around
+                    <br />
+                    <span className="highlight">your growth</span>
+                  </h2>
+                  <p>
+                    We build professional, high-converting websites that help
+                    businesses get online, earn trust and bring in leads and sales.
+                    Your project is handled directly by an experienced senior web
+                    designer.
+                  </p>
+                  <div className={`section-two-icon-list ${styles.proofList}`}>
+                    <div className="single-item"><Sparkles /><span>No AI-generated content</span></div>
+                    <div className="single-item"><CopyX /><span>No cookie-cutter templates</span></div>
+                    <div className="single-item"><UsersRound /><span>No outsourcing</span></div>
+                    <div className="single-item"><ShieldCheck /><span>Senior, experienced designer</span></div>
+                  </div>
+                  <div className={styles.ratingRow}>
+                    <span><strong>Clutch</strong> ★★★★★ 5/5</span>
+                    <span><strong>Google</strong> ★★★★★</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <ServiceSlide
+            eyebrow="What is included — 01"
+            id="scope-convert"
+            items={convertItems}
+            title={<>A website designed to <span className="highlight">convert</span></>}
+          />
+
+          <ServiceSlide
+            eyebrow="What is included — 02"
+            id="scope-search"
+            items={searchItems}
+            title={<>Built to be found. <span className="highlight">Owned by you.</span></>}
+          />
+
+          <section
+            aria-labelledby="delivery-title"
+            className={`${styles.slide} ${styles.deliverySlide}`}
+            data-proposal-slide
+            id="delivery"
+            tabIndex={-1}
+          >
+            <div className={`chr-content-container ${styles.deliveryIntro}`}>
+              <p className="small-title">Delivery promise</p>
+              <h2 className="sub-title" id="delivery-title">
+                Ready for customers in
+                <br />
+                <span className="highlight">7 days</span>
+              </h2>
               <p>
-                Strategy, design, development and local search foundations -
-                shaped around how potential clients choose an accounting firm.
+                The 7-day target begins once the deposit, required content and
+                access are received, with timely feedback during the build.
               </p>
             </div>
-
-            <div className={styles.inclusionGrid}>
-              {inclusions.map((item, index) => (
-                <article className={styles.inclusionCard} key={item.title}>
-                  <span className={styles.inclusionNumber}>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className={styles.checkIcon} aria-hidden="true">
-                    <Check size={19} strokeWidth={3} />
-                  </span>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </article>
-              ))}
+            <div className={`confidence-bar ${styles.compactBar}`}>
+              <div className="chr-content-container">
+                <div className="item-list">
+                  <ProgressItem icon={Clock3} title="7-day target" description="From project-ready handover" />
+                  <ProgressItem icon={MessageSquareText} title="Revisions included" description="Throughout the active build" />
+                  <ProgressItem icon={ShieldCheck} title="Fully functional" description="Prepared and tested for customers" />
+                  <ProgressItem icon={Check} title="Clear handover" description="Review, connect and go live" />
+                </div>
+              </div>
             </div>
+          </section>
 
-            <div className={styles.timelineBanner}>
-              <div className={styles.timelineIcon}>
-                <Clock3 aria-hidden="true" size={30} />
+          <section
+            aria-labelledby="work-title"
+            className={`${styles.slide} ${styles.workSlide} our-work-part`}
+            data-proposal-slide
+            id="selected-work"
+            tabIndex={-1}
+          >
+            <div className="chr-content-container">
+              <div className="our-work-heading-part">
+                <p className="small-title">Selected website work</p>
+                <h2 className="sub-title" id="work-title">
+                  Designed to look good.
+                  <br />
+                  Built to <span className="highlight">work hard.</span>
+                </h2>
+                <p className={styles.swipeHint}>Swipe the projects on mobile.</p>
               </div>
-              <div>
-                <p>Timeline</p>
-                <h3>Fully functional and ready for customers within 7 days.</h3>
-                <span>Timing begins when the deposit is received.</span>
-              </div>
-              <strong>7 days</strong>
-            </div>
-
-            <div className={styles.differenceBlock}>
-              <div>
-                <p className={styles.sectionKicker}>What makes us different</p>
-                <h2>Senior thinking, without the agency runaround.</h2>
-              </div>
-              <ul>
-                {differences.map((difference) => (
-                  <li key={difference}>
-                    <CheckCircle2 aria-hidden="true" size={23} />
-                    <span>{difference}</span>
-                  </li>
+              <div className={`highlight-case-studies ${styles.workRail}`}>
+                {selectedWork.map((project) => (
+                  <article className="single-case-study show-on-responsive" key={project.name}>
+                    <Link className="project-link" href={project.href} target="_blank">
+                      <Image
+                        alt={`${project.name} website project`}
+                        className="featured-image v1"
+                        height={290}
+                        sizes="(max-width: 766px) 86vw, 380px"
+                        src={project.mobile}
+                        width={380}
+                      />
+                      <Image
+                        alt=""
+                        aria-hidden="true"
+                        className="featured-image v2"
+                        height={250}
+                        sizes="(min-width: 767px) 33vw, 1px"
+                        src={project.desktop}
+                        width={590}
+                      />
+                      <span className={styles.workCaption}>
+                        <strong>{project.name}</strong>
+                        <small>{project.type}</small>
+                      </span>
+                    </Link>
+                  </article>
                 ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.showcaseSection}>
-          <div className={styles.container}>
-            <div className={styles.showcaseHeading}>
-              <div>
-                <p className={styles.sectionKicker}>Selected website work</p>
-                <h2>Designed to make businesses impossible to overlook.</h2>
               </div>
-              <p>
-                A glimpse at the visual craft and responsive thinking behind
-                recent Moonlane Media projects.
-              </p>
             </div>
+          </section>
 
-            <div className={styles.showcaseGrid}>
-              {selectedWork.map((project) => (
-                <Link className={styles.showcaseCard} href={project.href} key={project.name}>
-                  <div className={styles.showcaseImage}>
-                    <Image
-                      alt={project.alt}
-                      fill
-                      sizes="(max-width: 760px) 92vw, 33vw"
-                      src={project.image}
-                    />
-                  </div>
-                  <span>
-                    {project.name}
-                    <ArrowRight aria-hidden="true" size={19} />
+          <section
+            aria-labelledby="accounting-title"
+            className={`${styles.slide} ${styles.accountingSlide}`}
+            data-proposal-slide
+            id="accounting-work"
+            tabIndex={-1}
+          >
+            <div className={`chr-content-container ${styles.accountingHeading}`}>
+              <p className="small-title">Relevant experience</p>
+              <h2 className="sub-title" id="accounting-title">
+                Accounting websites
+                <br />
+                <span className="highlight">you can explore</span>
+              </h2>
+            </div>
+            <div className={styles.accountingList}>
+              {accountingWork.map((project, index) => (
+                <a href={project.href} key={project.name} rel="noreferrer" target="_blank">
+                  <span className={styles.listNumber}>{String(index + 1).padStart(2, "0")}</span>
+                  <span className={styles.accountingName}>
+                    <strong>{project.name}</strong>
+                    <small>{project.note}</small>
                   </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.investmentSection} id="investment">
-          <div className={styles.container}>
-            <div className={styles.investmentGrid}>
-              <div className={styles.investmentIntro}>
-                <p className={styles.sectionKicker}>Your investment</p>
-                <h2>One clear price. No ongoing maintenance costs.</h2>
-                <p>
-                  One complete, conversion-focused website with the design,
-                  pages, SEO foundations and handover included in this proposal.
-                </p>
-
-                <div className={styles.priceCard}>
-                  <span>Total cost</span>
-                  <strong>$1,499</strong>
-                  <p>One-off fee</p>
-                  <div>50% deposit ($750) gets us started</div>
-                </div>
-
-                <div className={styles.guarantee}>
-                  <ShieldCheck aria-hidden="true" size={30} />
-                  <strong>100% Money Back Guarantee If You&apos;re Not Happy</strong>
-                </div>
-              </div>
-
-              <div className={styles.investmentDetails}>
-                <article>
-                  <Globe2 aria-hidden="true" size={27} />
-                  <div>
-                    <h3>Free Hosting (Vercel)</h3>
-                    <p>
-                      Your site will be hosted on Vercel, a top-tier platform
-                      used by companies like Netflix and Uber. It provides
-                      lightning-fast, secure hosting completely free. Your
-                      domain stays registered with GoDaddy (you keep full
-                      ownership) and simply points to Vercel. Your Outlook email
-                      connected to GoDaddy remains completely unaffected.
-                      You&apos;ll receive full Vercel login credentials.
-                    </p>
-                  </div>
-                </article>
-
-                <article>
-                  <MessageSquareText aria-hidden="true" size={27} />
-                  <div>
-                    <h3>Future Updates</h3>
-                    <p>
-                      All revisions during the build are included. Once the
-                      website is deployed and feedback is complete, any future
-                      updates or changes are charged at a flat rate of $50/hour.
-                    </p>
-                  </div>
-                </article>
-
-                <article>
-                  <MapPinned aria-hidden="true" size={27} />
-                  <div>
-                    <h3>Easy Editing</h3>
-                    <p>
-                      Your website will include a simple editing system similar
-                      to GoDaddy&apos;s website builder. You can log in and make
-                      basic text and image changes yourself. All login
-                      credentials will be provided to you.
-                    </p>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.workSection} id="work">
-          <div className={styles.container}>
-            <div className={styles.workHeading}>
-              <div>
-                <p className={styles.sectionKicker}>Our work</p>
-                <h2>Accounting websites we&apos;ve built.</h2>
-              </div>
-              <p>
-                Explore live examples of modern accounting and advisory websites.
-              </p>
-            </div>
-
-            <div className={styles.accountingGrid}>
-              {accountingWork.map((project) => (
-                <a
-                  className={styles.accountingCard}
-                  href={project.href}
-                  key={project.name}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <div className={styles.browserBar} aria-hidden="true">
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <div className={styles.accountingCardBody}>
-                    <SearchCheck aria-hidden="true" size={28} />
-                    <div>
-                      <h3>{project.name}</h3>
-                      <p>{project.description}</p>
-                      <span>{project.domain}</span>
-                    </div>
-                    <ExternalLink aria-hidden="true" size={21} />
-                  </div>
+                  <ExternalLink aria-hidden="true" />
                 </a>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className={styles.stepsSection} id="next-steps">
-          <div className={styles.container}>
-            <div className={styles.stepsHeading}>
-              <p className={styles.sectionKicker}>Next steps</p>
-              <h2>From discovery call to go-live.</h2>
-            </div>
-
-            <ol className={styles.stepsGrid}>
-              {nextSteps.map((step) => (
-                <li key={step.number}>
-                  <span>{step.number}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                </li>
-              ))}
-            </ol>
-
-            <div className={styles.finalCta}>
-              <div>
-                <p className={styles.sectionKicker}>Ready to get more clients?</p>
-                <h2>Let&apos;s build something great together.</h2>
-                <p>
-                  Reply to this proposal or give us a call to schedule your
-                  discovery call.
-                </p>
+          <section
+            aria-labelledby="investment-title"
+            className={`${styles.slide} ${styles.yellowSlide} ${styles.investmentSlide}`}
+            data-proposal-slide
+            id="investment"
+            tabIndex={-1}
+          >
+            <div className={`chr-section-two ${styles.sectionTwo} ${styles.investmentSection}`}>
+              <div className="chr-content-container">
+                <div className={`image-wrapper ${styles.priceVisual}`}>
+                  <span className={styles.priceLabel}>Total investment</span>
+                  <strong>$1,499</strong>
+                  <span>one-off fee</span>
+                </div>
+                <div className="section-two-content wysiwyg-wrapper">
+                  <p className="small-title">Clear investment</p>
+                  <h2 className="sub-title" id="investment-title">
+                    One price.
+                    <br />
+                    <span className="highlight">Everything above.</span>
+                  </h2>
+                  <p>
+                    A <strong>$750 deposit</strong> gets the project started. There
+                    is no mandatory ongoing maintenance plan.
+                  </p>
+                  <div className={`section-two-icon-list ${styles.investmentFacts}`}>
+                    <div className="single-item"><ShieldCheck /><span>100% money-back guarantee if you are not happy</span></div>
+                    <div className="single-item"><MessageSquareText /><span>All revisions during the build included</span></div>
+                    <div className="single-item"><KeyRound /><span>Full account and website ownership</span></div>
+                  </div>
+                </div>
               </div>
-              <a href="tel:0414134081">
-                <Phone aria-hidden="true" size={20} /> Call 0414 134 081
-              </a>
             </div>
-          </div>
-        </section>
+          </section>
+
+          <section
+            aria-labelledby="hosting-title"
+            className={`${styles.slide} ${styles.textImageSlide} single-part text-and-image-part`}
+            data-proposal-slide
+            id="hosting"
+            tabIndex={-1}
+          >
+            <div className="chr-content-container chr-text-and-image-container left-image">
+              <div className={`image-part ${styles.hostingImage}`}>
+                <div className={styles.hostingGraphic}>
+                  <Globe2 aria-hidden="true" />
+                  <span>GoDaddy domain</span>
+                  <ServerCog aria-hidden="true" />
+                  <span>Vercel hosting</span>
+                  <MailCheck aria-hidden="true" />
+                  <span>Outlook unaffected</span>
+                </div>
+              </div>
+              <div className="text-part wysiwyg-wrapper">
+                <p className="small-title">Hosting and handover</p>
+                <h2 className="sub-title" id="hosting-title">
+                  Fast hosting.
+                  <br />
+                  <span className="highlight">Complete control.</span>
+                </h2>
+                <p>
+                  Your site will be hosted on Vercel, the platform used by companies
+                  including Netflix and Uber. Its free tier provides fast, secure
+                  hosting for this project.
+                </p>
+                <ul>
+                  <li>Your domain remains registered in your GoDaddy account.</li>
+                  <li>Your existing Outlook email remains unaffected.</li>
+                  <li>All Vercel and website login credentials are handed over.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <ServiceSlide
+            eyebrow="Editing and support"
+            id="editing"
+            items={supportItems}
+            title={<>Easy to manage. <span className="highlight">Help when needed.</span></>}
+          />
+
+          <section
+            aria-labelledby="process-title"
+            className={`${styles.slide} ${styles.yellowSlide} ${styles.processSlide}`}
+            data-proposal-slide
+            id="process"
+            tabIndex={-1}
+          >
+            <div className={`chr-section-two ${styles.sectionTwo} ${styles.processSection}`}>
+              <div className="chr-content-container">
+                <div className="section-two-content wysiwyg-wrapper">
+                  <p className="small-title">How it works</p>
+                  <h2 className="sub-title" id="process-title">
+                    Four clear steps from
+                    <br />
+                    <span className="highlight">idea to live website</span>
+                  </h2>
+                  <p>We keep the process simple, focused and easy to follow.</p>
+                </div>
+                <ol className={`section-two-icon-list ${styles.processList}`}>
+                  <li className="single-item"><span className={styles.stepNumber}>01</span><span><strong>Discovery call</strong><small>We understand your vision and plan the site together.</small></span></li>
+                  <li className="single-item"><span className={styles.stepNumber}>02</span><span><strong>Pay the $750 deposit</strong><small>The deposit kicks off the build.</small></span></li>
+                  <li className="single-item"><span className={styles.stepNumber}>03</span><span><strong>We build your website</strong><small>The 7-day target starts from project-ready handover.</small></span></li>
+                  <li className="single-item"><span className={styles.stepNumber}>04</span><span><strong>Review and go live</strong><small>A 20-minute call connects the domain and launches it.</small></span></li>
+                </ol>
+              </div>
+            </div>
+          </section>
+
+          <section
+            aria-labelledby="next-step-title"
+            className={`${styles.slide} ${styles.finalSlide}`}
+            data-proposal-slide
+            id="next-step"
+            tabIndex={-1}
+          >
+            <div className="chr-content-container section-three-heading-part">
+              <div className="left-part">
+                <p className="small-title">Next step</p>
+                <h2 className="sub-title" id="next-step-title">
+                  Ready to get
+                  <br />
+                  <span className="highlight">more clients?</span>
+                </h2>
+              </div>
+              <div className={`right-part wysiwyg-wrapper ${styles.finalCopy}`}>
+                <p>
+                  Reply to this proposal or call Moonlane Media to schedule the
+                  discovery call. Let&apos;s build something great together.
+                </p>
+                <a className="button" href="tel:0414134081">
+                  <Phone aria-hidden="true" /> Call 0414 134 081
+                </a>
+              </div>
+            </div>
+            <div className={`confidence-bar ${styles.finalBar}`}>
+              <div className="chr-content-container">
+                <div className="item-list">
+                  <ProgressItem icon={Clock3} title="7 days" description="Target delivery" />
+                  <ProgressItem icon={ShieldCheck} title="Guaranteed" description="100% satisfaction" />
+                  <ProgressItem icon={KeyRound} title="Yours" description="Full ownership" />
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
 
-      <footer className={styles.footer}>
-        <div>
-          <Image
-            alt="Moonlane Media"
-            height={51}
-            src="/images/moonlane-logo.png"
-            width={205}
-          />
-          <span>Website Development | Strategy</span>
+      <nav aria-label="Proposal slide controls" className={styles.deckControls}>
+        <button
+          aria-label="Previous section"
+          disabled={activeIndex === 0}
+          onClick={() => goToSlide(activeIndex - 1)}
+          type="button"
+        >
+          <ChevronUp aria-hidden="true" />
+        </button>
+        <div className={styles.dotNav}>
+          {slides.map((slide, index) => (
+            <button
+              aria-current={index === activeIndex ? "step" : undefined}
+              aria-label={`Go to section ${index + 1}: ${slide}`}
+              className={index === activeIndex ? styles.activeDot : undefined}
+              key={slide}
+              onClick={() => goToSlide(index)}
+              type="button"
+            />
+          ))}
         </div>
-        <p>
-          Connect <span>•</span> Convert <span>•</span> Grow
-        </p>
-        <small>Moonlane Media • Your Growth Partner</small>
-      </footer>
+        <button
+          aria-label="Next section"
+          disabled={activeIndex === slides.length - 1}
+          onClick={() => goToSlide(activeIndex + 1)}
+          type="button"
+        >
+          <ChevronDown aria-hidden="true" />
+        </button>
+      </nav>
     </div>
   );
 }
