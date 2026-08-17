@@ -3,6 +3,9 @@ import { DecodeTaxProposal } from "@/components/proposal/DecodeTaxProposal";
 
 const PROPOSAL_PATH = "/proposal/decode-tax-accountants";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: {
     absolute: "Website Proposal for Decode Tax Accountants | Moonlane Media",
