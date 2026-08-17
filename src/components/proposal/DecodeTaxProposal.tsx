@@ -27,23 +27,22 @@ import {
   Sparkles,
   UsersRound,
 } from "lucide-react";
+import type { FormEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./DecodeTaxProposal.module.css";
 
 const slides = [
   "Proposal",
-  "The opportunity",
+  "Understanding your business",
   "Why Moonlane",
-  "Convert visitors",
-  "Be found and own it",
+  "What is included",
   "Delivery promise",
-  "Selected work",
   "Accounting experience",
   "Investment",
   "Hosting and handover",
   "Editing and support",
   "How it works",
-  "Next step",
+  "Accept proposal",
 ] as const;
 
 type ServiceItem = {
@@ -52,29 +51,10 @@ type ServiceItem = {
   title: string;
 };
 
-const selectedWork = [
-  {
-    desktop: "/wp-content/uploads/2026/05/CYC-590x250-2.png",
-    href: "/case-study/cyc",
-    mobile: "/wp-content/uploads/2026/05/CYC-380x290-2.png",
-    name: "CYC",
-    type: "Strategy, UI/UX and development",
-  },
-  {
-    desktop: "/wp-content/uploads/2026/05/BOA-590x250-4.png",
-    href: "/case-study/boa",
-    mobile: "/wp-content/uploads/2026/05/BOA-380x290-2.png",
-    name: "Builders of Architecture",
-    type: "Brand-led website design",
-  },
-  {
-    desktop: "/wp-content/uploads/2026/05/PowerPlus-590x250-2.png",
-    href: "/case-study/powerplus-energy",
-    mobile: "/wp-content/uploads/2026/05/PowerPlus-380x290-2.png",
-    name: "PowerPlus Energy",
-    type: "Conversion-focused digital platform",
-  },
-] as const;
+type AcceptanceState = {
+  message: string;
+  status: "idle" | "sending" | "success" | "error";
+};
 
 const accountingWork = [
   {
@@ -99,43 +79,34 @@ const accountingWork = [
   },
 ] as const;
 
-const convertItems: ServiceItem[] = [
+const includedItems: ServiceItem[] = [
   {
-    description:
-      "A professional, modern website built from a conversion blueprint to create trust and turn visitors into enquiries.",
+    description: "Professional, modern and built for trust.",
     icon: Palette,
     title: "Custom, high-conversion design",
   },
   {
-    description:
-      "Dedicated pages make each accounting, tax and advisory service easy to find and understand.",
+    description: "Clear pages for every accounting service.",
     icon: FileText,
     title: "Service pages",
   },
   {
-    description:
-      "Contact-form enquiries go straight to your preferred phone, email or notification destination.",
+    description: "Enquiries sent straight to your preferred destination.",
     icon: BellRing,
     title: "Lead notifications",
   },
-];
-
-const searchItems: ServiceItem[] = [
   {
-    description:
-      "Location-specific pages support local search visibility across the suburbs and areas you choose to target.",
+    description: "Target the suburbs and locations that matter.",
     icon: MapPinned,
     title: "Suburb targeting pages",
   },
   {
-    description:
-      "The site is structured from the ground up around your agreed target keywords and on-page SEO foundations.",
+    description: "Built around agreed keywords and SEO foundations.",
     icon: SearchCheck,
     title: "SEO optimisation",
   },
   {
-    description:
-      "Once the site is live, every login is handed over. The website and its accounts are yours, 100%.",
+    description: "Every login handed over. The website is 100% yours.",
     icon: KeyRound,
     title: "Full ownership",
   },
@@ -144,9 +115,9 @@ const searchItems: ServiceItem[] = [
 const supportItems: ServiceItem[] = [
   {
     description:
-      "All reasonable revisions during the build are included, so the final site feels right before launch.",
+      "Unlimited revisions throughout the active build, so the final site feels right before launch.",
     icon: MessageSquareText,
-    title: "Revisions included during the build",
+    title: "Unlimited revisions during the build",
   },
   {
     description:
@@ -226,6 +197,70 @@ export function DecodeTaxProposal() {
   const deckRef = useRef<HTMLDivElement>(null);
   const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [acceptanceState, setAcceptanceState] = useState<AcceptanceState>({
+    message: "",
+    status: "idle",
+  });
+  const acceptanceRequestIdRef = useRef<string | null>(null);
+
+  const handleProposalAcceptance = async (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    setAcceptanceState({ message: "", status: "sending" });
+
+    try {
+      if (!acceptanceRequestIdRef.current) {
+        acceptanceRequestIdRef.current = crypto.randomUUID();
+      }
+
+      const response = await fetch(
+        "/api/proposals/decode-tax-accountants/accept",
+        {
+          body: JSON.stringify({
+            authorityConfirmed: formData.get("authorityConfirmed") === "on",
+            clientRequestId: acceptanceRequestIdRef.current,
+            email: String(formData.get("email") ?? ""),
+            name: String(formData.get("name") ?? ""),
+            scopeConfirmed: formData.get("scopeConfirmed") === "on",
+            website: String(formData.get("website") ?? ""),
+          }),
+          headers: { "Content-Type": "application/json" },
+          method: "POST",
+        },
+      );
+      let result: { error?: string; ok?: boolean } = {};
+      try {
+        result = (await response.json()) as typeof result;
+      } catch {
+        // A controlled message below is more useful than exposing a JSON parse
+        // error if the hosting layer returns an unexpected response.
+      }
+
+      if (!response.ok || !result.ok) {
+        if (response.status >= 400 && response.status < 500) {
+          acceptanceRequestIdRef.current = null;
+        }
+        throw new Error(result.error || "The acceptance could not be sent.");
+      }
+
+      setAcceptanceState({
+        message: "Proposal accepted. Moonlane Media has been notified.",
+        status: "success",
+      });
+    } catch (error) {
+      setAcceptanceState({
+        message:
+          error instanceof Error
+            ? error.message
+            : "The acceptance could not be sent. Please try again.",
+        status: "error",
+      });
+    }
+  };
 
   const goToSlide = useCallback((index: number) => {
     const deck = deckRef.current;
@@ -434,7 +469,7 @@ export function DecodeTaxProposal() {
           >
             <div className="chr-content-container section-three-heading-part">
               <div className="left-part">
-                <p className="small-title">The opportunity</p>
+                <p className="small-title">Understanding your business</p>
                 <h2 className="sub-title" id="opportunity-title">
                   Make trust the
                   <br />
@@ -473,7 +508,7 @@ export function DecodeTaxProposal() {
               <div className="chr-content-container">
                 <div className="image-wrapper">
                   <Image
-                    alt="Moonlane Media web design team"
+                    alt="Moonlane Media web design studio"
                     className="section-two-image"
                     height={730}
                     sizes="(max-width: 766px) 270px, (max-width: 1239px) 600px, 730px"
@@ -484,43 +519,33 @@ export function DecodeTaxProposal() {
                 <div className="section-two-content wysiwyg-wrapper">
                   <p className="small-title">Why Moonlane Media</p>
                   <h2 className="sub-title" id="moonlane-title">
-                    A focused team built around
+                    Websites built around
                     <br />
                     <span className="highlight">your growth</span>
                   </h2>
-                  <p>
-                    We build professional, high-converting websites that help
-                    businesses get online, earn trust and bring in leads and sales.
-                    Your project is handled directly by an experienced senior web
-                    designer.
-                  </p>
                   <div className={`section-two-icon-list ${styles.proofList}`}>
                     <div className="single-item"><Sparkles /><span>No AI-generated content</span></div>
                     <div className="single-item"><CopyX /><span>No cookie-cutter templates</span></div>
                     <div className="single-item"><UsersRound /><span>No outsourcing</span></div>
-                    <div className="single-item"><ShieldCheck /><span>Senior, experienced designer</span></div>
+                    <div className="single-item"><ShieldCheck /><span>Senior-level design and development</span></div>
                   </div>
-                  <div className={styles.ratingRow}>
-                    <span><strong>Clutch</strong> ★★★★★ 5/5</span>
-                    <span><strong>Google</strong> ★★★★★</span>
-                  </div>
+                  <Image
+                    alt="Google Rating 5.0, based on 151 plus reviews"
+                    className={styles.googleBadge}
+                    height={161}
+                    src="/wp-content/uploads/2025/10/Google-Review-Badge1.png"
+                    width={328}
+                  />
                 </div>
               </div>
             </div>
           </section>
 
           <ServiceSlide
-            eyebrow="What is included — 01"
-            id="scope-convert"
-            items={convertItems}
-            title={<>A website designed to <span className="highlight">convert</span></>}
-          />
-
-          <ServiceSlide
-            eyebrow="What is included — 02"
-            id="scope-search"
-            items={searchItems}
-            title={<>Built to be found. <span className="highlight">Owned by you.</span></>}
+            eyebrow="What is included"
+            id="scope-included"
+            items={includedItems}
+            title={<>Everything included. Built to <span className="highlight">perform.</span></>}
           />
 
           <section
@@ -537,68 +562,15 @@ export function DecodeTaxProposal() {
                 <br />
                 <span className="highlight">7 days</span>
               </h2>
-              <p>
-                The 7-day target begins once the deposit, required content and
-                access are received, with timely feedback during the build.
-              </p>
             </div>
             <div className={`confidence-bar ${styles.compactBar}`}>
               <div className="chr-content-container">
                 <div className="item-list">
                   <ProgressItem icon={Clock3} title="7-day target" description="From project-ready handover" />
-                  <ProgressItem icon={MessageSquareText} title="Revisions included" description="Throughout the active build" />
+                  <ProgressItem icon={MessageSquareText} title="Unlimited revisions" description="Throughout the active build" />
                   <ProgressItem icon={ShieldCheck} title="Fully functional" description="Prepared and tested for customers" />
                   <ProgressItem icon={Check} title="Clear handover" description="Review, connect and go live" />
                 </div>
-              </div>
-            </div>
-          </section>
-
-          <section
-            aria-labelledby="work-title"
-            className={`${styles.slide} ${styles.workSlide} our-work-part`}
-            data-proposal-slide
-            id="selected-work"
-            tabIndex={-1}
-          >
-            <div className="chr-content-container">
-              <div className="our-work-heading-part">
-                <p className="small-title">Selected website work</p>
-                <h2 className="sub-title" id="work-title">
-                  Designed to look good.
-                  <br />
-                  Built to <span className="highlight">work hard.</span>
-                </h2>
-                <p className={styles.swipeHint}>Swipe the projects on mobile.</p>
-              </div>
-              <div className={`highlight-case-studies ${styles.workRail}`}>
-                {selectedWork.map((project) => (
-                  <article className="single-case-study show-on-responsive" key={project.name}>
-                    <Link className="project-link" href={project.href} target="_blank">
-                      <Image
-                        alt={`${project.name} website project`}
-                        className="featured-image v1"
-                        height={290}
-                        sizes="(max-width: 766px) 86vw, 380px"
-                        src={project.mobile}
-                        width={380}
-                      />
-                      <Image
-                        alt=""
-                        aria-hidden="true"
-                        className="featured-image v2"
-                        height={250}
-                        sizes="(min-width: 767px) 33vw, 1px"
-                        src={project.desktop}
-                        width={590}
-                      />
-                      <span className={styles.workCaption}>
-                        <strong>{project.name}</strong>
-                        <small>{project.type}</small>
-                      </span>
-                    </Link>
-                  </article>
-                ))}
               </div>
             </div>
           </section>
@@ -653,14 +625,17 @@ export function DecodeTaxProposal() {
                     <br />
                     <span className="highlight">Everything above.</span>
                   </h2>
-                  <p>
-                    A <strong>$750 deposit</strong> gets the project started. There
-                    is no mandatory ongoing maintenance plan.
+                  <p className={styles.depositCallout}>
+                    <strong>A $750 deposit</strong>
+                    <small>gets the project started</small>
+                  </p>
+                  <p className={styles.noMaintenance}>
+                    No mandatory ongoing maintenance plan.
                   </p>
                   <div className={`section-two-icon-list ${styles.investmentFacts}`}>
                     <div className="single-item"><ShieldCheck /><span>100% money-back guarantee if you are not happy</span></div>
-                    <div className="single-item"><MessageSquareText /><span>All revisions during the build included</span></div>
-                    <div className="single-item"><KeyRound /><span>Full account and website ownership</span></div>
+                    <div className="single-item"><MessageSquareText /><span>Unlimited revisions</span></div>
+                    <div className="single-item"><KeyRound /><span>Full website and account ownership</span></div>
                   </div>
                 </div>
               </div>
@@ -750,30 +725,61 @@ export function DecodeTaxProposal() {
           >
             <div className="chr-content-container section-three-heading-part">
               <div className="left-part">
-                <p className="small-title">Next step</p>
+                <p className="small-title">Accept proposal</p>
                 <h2 className="sub-title" id="next-step-title">
-                  Ready to get
+                  Ready to move
                   <br />
-                  <span className="highlight">more clients?</span>
+                  <span className="highlight">forward?</span>
                 </h2>
               </div>
               <div className={`right-part wysiwyg-wrapper ${styles.finalCopy}`}>
-                <p>
-                  Reply to this proposal or call Moonlane Media to schedule the
-                  discovery call. Let&apos;s build something great together.
-                </p>
-                <a className="button" href="tel:0414134081">
-                  <Phone aria-hidden="true" /> Call 0414 134 081
-                </a>
-              </div>
-            </div>
-            <div className={`confidence-bar ${styles.finalBar}`}>
-              <div className="chr-content-container">
-                <div className="item-list">
-                  <ProgressItem icon={Clock3} title="7 days" description="Target delivery" />
-                  <ProgressItem icon={ShieldCheck} title="Guaranteed" description="100% satisfaction" />
-                  <ProgressItem icon={KeyRound} title="Yours" description="Full ownership" />
-                </div>
+                {acceptanceState.status === "success" ? (
+                  <div className={styles.acceptanceSuccess} role="status">
+                    <CheckCircle2 aria-hidden="true" />
+                    <div>
+                      <strong>Proposal accepted</strong>
+                      <p>{acceptanceState.message}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <form className={styles.acceptanceForm} onSubmit={handleProposalAcceptance}>
+                    <label>
+                      <span>Your name</span>
+                      <input autoComplete="name" name="name" required type="text" />
+                    </label>
+                    <label>
+                      <span>Your email</span>
+                      <input autoComplete="email" name="email" required type="email" />
+                    </label>
+                    <label className={styles.honeypot} aria-hidden="true">
+                      <span>Website</span>
+                      <input autoComplete="off" name="website" tabIndex={-1} type="text" />
+                    </label>
+                    <label className={styles.acceptanceConsent}>
+                      <input name="authorityConfirmed" required type="checkbox" />
+                      <span>I confirm I am authorised to accept this proposal for Decode Tax Accountants.</span>
+                    </label>
+                    <label className={styles.acceptanceConsent}>
+                      <input name="scopeConfirmed" required type="checkbox" />
+                      <span>I accept the proposed scope, $1,499 total investment and $750 deposit.</span>
+                    </label>
+                    <button
+                      className="button"
+                      disabled={acceptanceState.status === "sending"}
+                      type="submit"
+                    >
+                      {acceptanceState.status === "sending" ? "Sending acceptance…" : "Accept proposal"}
+                    </button>
+                    {acceptanceState.status === "error" ? (
+                      <p className={styles.acceptanceMessage} role="alert">
+                        {acceptanceState.message}
+                      </p>
+                    ) : null}
+                    <a className={styles.phoneLink} href="tel:0414134081">
+                      <Phone aria-hidden="true" /> Call 0414 134 081
+                    </a>
+                  </form>
+                )}
               </div>
             </div>
           </section>

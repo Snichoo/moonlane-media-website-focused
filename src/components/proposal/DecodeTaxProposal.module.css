@@ -121,15 +121,6 @@
   width: 100%;
 }
 
-.slide:focus-visible::after {
-  border: 3px solid #fdce08;
-  content: "";
-  inset: calc(var(--deck-header) + 8px) 8px 8px;
-  pointer-events: none;
-  position: absolute;
-  z-index: 30;
-}
-
 .slide :global(.single-item) {
   opacity: 1 !important;
   transform: none !important;
@@ -363,7 +354,7 @@
 .investmentFacts :global(.single-item) {
   align-items: center;
   display: flex !important;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 800;
   gap: 10px;
   min-height: 0 !important;
@@ -378,20 +369,19 @@
   width: 24px !important;
 }
 
-.ratingRow {
-  border-top: 1px solid rgb(25 25 25 / 22%);
-  display: flex;
-  font-family: Montserrat, sans-serif;
-  font-size: 12px;
-  gap: 28px;
-  letter-spacing: 0.4px;
-  margin-top: 25px;
-  padding-top: 16px;
+.googleBadge {
+  display: block;
+  height: auto;
+  margin-top: 28px;
+  max-width: 250px;
+  width: 100%;
 }
 
 .serviceSlide {
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 70px !important;
+  padding-top: calc(var(--deck-header) + 12px) !important;
 }
 
 .servicesPart {
@@ -401,7 +391,7 @@
 .serviceSlide :global(.services-items-container) {
   align-items: stretch;
   display: grid;
-  gap: clamp(24px, 4vw, 64px);
+  gap: 22px clamp(30px, 4vw, 64px);
   grid-template-columns: repeat(3, 1fr);
 }
 
@@ -411,8 +401,8 @@
   flex: none;
   margin: 0;
   max-width: none;
-  min-height: 250px;
-  padding: 72px 8px 0;
+  min-height: 142px;
+  padding: 54px 8px 0;
   position: relative;
   width: auto;
 }
@@ -421,20 +411,20 @@
   background: #fdce08;
   border-radius: 50%;
   content: "";
-  height: 58px;
+  height: 48px;
   left: 0;
   position: absolute;
   top: 0;
-  width: 58px;
+  width: 48px;
 }
 
 .serviceSlide :global(.services-items-container > .single-item > svg) {
-  height: 42px;
-  left: 22px;
+  height: 35px;
+  left: 18px;
   margin: 0;
   position: absolute;
-  top: 16px;
-  width: 42px;
+  top: 13px;
+  width: 35px;
   z-index: 1;
 }
 
@@ -445,6 +435,8 @@
 }
 
 .serviceSlide :global(.item-content p) {
+  font-size: 15px;
+  line-height: 1.55;
   margin-bottom: 0;
 }
 
@@ -514,7 +506,7 @@
 
 .compactBar :global(.title),
 .finalBar :global(.title) {
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 0;
   line-height: 1.2;
   margin-bottom: 8px;
@@ -523,7 +515,7 @@
 .compactBar :global(.item-content span),
 .finalBar :global(.item-content span) {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -657,11 +649,11 @@
 }
 
 .accountingName strong {
-  font-size: 17px;
+  font-size: 20px;
 }
 
 .accountingName small {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   margin-top: 2px;
   opacity: 0.6;
@@ -679,16 +671,16 @@
 .priceVisual {
   align-content: center;
   background: #191919;
-  border-radius: 50%;
+  border-radius: 0 150px 0 0;
   color: #fff;
   display: grid !important;
-  height: min(38vw, 490px);
+  height: min(36vw, 460px);
   justify-items: center;
-  max-width: none !important;
+  max-width: 46% !important;
   min-height: 340px;
   padding: 50px;
   text-align: center;
-  width: min(38vw, 490px);
+  width: 46%;
 }
 
 .priceVisual strong {
@@ -701,7 +693,7 @@
 
 .priceVisual span {
   font-family: Montserrat, sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -709,6 +701,52 @@
 
 .priceLabel {
   align-self: end;
+}
+
+.depositCallout {
+  align-items: baseline;
+  border-bottom: 1px solid rgb(25 25 25 / 28%);
+  border-top: 1px solid rgb(25 25 25 / 28%);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 10px;
+  margin: 24px 0 0 !important;
+  padding: 16px 0;
+}
+
+.depositCallout small {
+  font-family: Montserrat, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.depositCallout strong {
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1;
+}
+
+.depositCallout small {
+  width: 100%;
+}
+
+.noMaintenance {
+  font-size: 15px;
+  margin: 12px 0 0 !important;
+}
+
+.investmentFacts {
+  gap: 16px !important;
+  grid-template-columns: 1fr !important;
+}
+
+.investmentFacts :global(.single-item) {
+  font-size: 17px;
+}
+
+.investmentFacts svg {
+  height: 30px !important;
+  width: 30px !important;
 }
 
 .textImageSlide {
@@ -799,12 +837,12 @@
 }
 
 .processList strong {
-  font-size: 15px;
+  font-size: 17px;
   margin-bottom: 4px;
 }
 
 .processList small {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.45;
 }
 
@@ -816,23 +854,135 @@
 .finalSlide > :global(.section-three-heading-part) {
   align-items: center;
   display: grid;
-  gap: 8%;
-  grid-template-columns: 1fr 0.82fr;
-  margin-bottom: clamp(50px, 8vh, 100px);
+  gap: 7%;
+  grid-template-columns: 0.82fr 1.18fr;
+  margin-bottom: 0;
   width: 100%;
 }
 
-.finalCopy :global(.button) {
-  gap: 10px;
+.acceptanceForm {
+  display: grid;
+  gap: 14px 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
 }
 
-.finalCopy :global(.button svg) {
+.acceptanceForm > label:not(.acceptanceConsent, .honeypot) {
+  display: grid;
+  font-family: Montserrat, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  gap: 7px;
+}
+
+.acceptanceForm input[type="text"],
+.acceptanceForm input[type="email"] {
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  border-radius: 0;
+  box-sizing: border-box;
+  color: #191919;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  height: 54px;
+  padding: 0 14px;
+  width: 100%;
+}
+
+.acceptanceForm input:focus-visible,
+.acceptanceForm button:focus-visible,
+.phoneLink:focus-visible {
+  outline: 3px solid #fdce08;
+  outline-offset: 3px;
+}
+
+.acceptanceConsent {
+  align-items: flex-start;
+  cursor: pointer;
+  display: grid;
+  font-size: 14px;
+  gap: 10px;
+  grid-column: 1 / -1;
+  grid-template-columns: 20px 1fr;
+  line-height: 1.45;
+}
+
+.acceptanceConsent input {
+  height: 20px;
+  margin: 1px 0 0;
+  width: 20px;
+}
+
+.acceptanceForm :global(.button) {
+  border: 0;
+  cursor: pointer;
+  font-size: 13px;
+  grid-column: 1 / -1;
+  min-height: 54px;
+  width: 100%;
+}
+
+.acceptanceForm :global(.button:disabled) {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.acceptanceMessage {
+  color: #a60000;
+  font-size: 14px;
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.acceptanceSuccess {
+  align-items: flex-start;
+  background: #fdce08;
+  display: flex;
+  gap: 18px;
+  padding: 28px;
+}
+
+.acceptanceSuccess > svg {
+  flex: 0 0 auto;
+  height: 38px;
+  width: 38px;
+}
+
+.acceptanceSuccess strong {
+  display: block;
+  font-family: Montserrat, sans-serif;
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.acceptanceSuccess p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.phoneLink {
+  align-items: center;
+  display: inline-flex;
+  font-family: Montserrat, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  gap: 8px;
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: 2px;
+}
+
+.phoneLink svg {
   height: 18px;
   width: 18px;
 }
 
-.finalBar :global(.item-list) {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+.honeypot {
+  height: 1px;
+  left: -10000px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
 }
 
 .deckControls {
@@ -985,6 +1135,15 @@
     padding: calc(var(--deck-header) + 22px) 18px 82px;
   }
 
+  .slide :global(.small-title) {
+    font-size: 13px;
+  }
+
+  .slide :global(.sub-title) {
+    font-size: clamp(34px, 9.5vw, 40px);
+    line-height: 1.06;
+  }
+
   .coverSlide {
     padding: 0;
   }
@@ -1021,7 +1180,7 @@
   }
 
   .coverFacts {
-    font-size: 9px;
+    font-size: 11px;
     margin-top: 16px;
     max-width: 345px;
     padding-top: 11px;
@@ -1032,7 +1191,7 @@
   }
 
   .coverFacts strong {
-    font-size: 12px;
+    font-size: 15px;
   }
 
   .coverFlower {
@@ -1049,7 +1208,8 @@
   }
 
   .opportunityCopy {
-    font-size: 14px;
+    font-size: 16px;
+    line-height: 1.55;
   }
 
   .outcomeStrip {
@@ -1060,7 +1220,7 @@
   .outcomeStrip span {
     border-bottom: 1px solid #e5e5e5;
     border-right: 0;
-    font-size: 11px;
+    font-size: 13px;
     padding: 11px 0;
   }
 
@@ -1102,7 +1262,7 @@
   }
 
   .sectionTwo :global(.section-two-content > p) {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.55;
   }
 
@@ -1115,21 +1275,19 @@
 
   .proofList :global(.single-item),
   .investmentFacts :global(.single-item) {
-    font-size: 10px;
-    gap: 7px;
+    font-size: 13px;
+    gap: 8px;
   }
 
   .proofList svg,
   .investmentFacts svg {
-    height: 19px !important;
-    width: 19px !important;
+    height: 22px !important;
+    width: 22px !important;
   }
 
-  .ratingRow {
-    font-size: 10px;
-    gap: 14px;
-    margin-top: 14px;
-    padding-top: 11px;
+  .googleBadge {
+    margin-top: 15px;
+    max-width: 205px;
   }
 
   .serviceSlide {
@@ -1148,48 +1306,46 @@
 
   .serviceSlide :global(.services-items-container) {
     display: grid;
-    gap: 0;
-    grid-template-columns: 1fr;
+    gap: 8px 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 0 18px;
   }
 
   .serviceSlide :global(.services-items-container > .single-item) {
     border-top: 1px solid #e1e1e1;
-    display: grid;
-    gap: 16px;
-    grid-template-columns: 52px 1fr;
-    min-height: 0;
-    padding: 14px 0;
+    display: block;
+    min-height: 116px;
+    padding: 45px 0 7px;
   }
 
   .serviceSlide :global(.services-items-container > .single-item::before) {
-    height: 42px;
+    height: 34px;
     left: 0;
-    top: 13px;
-    width: 42px;
+    top: 7px;
+    width: 34px;
   }
 
   .serviceSlide :global(.services-items-container > .single-item > svg) {
-    height: 29px;
-    left: 15px;
-    top: 20px;
-    width: 29px;
+    height: 24px;
+    left: 12px;
+    top: 12px;
+    width: 24px;
   }
 
   .serviceSlide :global(.item-content h3) {
     font-size: 15px;
-    margin-bottom: 5px;
+    line-height: 1.2;
+    margin-bottom: 4px;
   }
 
   .serviceSlide :global(.item-content) {
-    grid-column: 2;
     margin-bottom: 0;
     width: auto;
   }
 
   .serviceSlide :global(.item-content p) {
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.4;
   }
 
   .deliverySlide {
@@ -1251,13 +1407,13 @@
 
   .compactBar :global(.title),
   .finalBar :global(.title) {
-    font-size: 13px;
+    font-size: 15px;
     margin-bottom: 2px;
   }
 
   .compactBar :global(.item-content span),
   .finalBar :global(.item-content span) {
-    font-size: 10px;
+    font-size: 13px;
   }
 
   .workSlide {
@@ -1341,11 +1497,11 @@
   }
 
   .accountingName strong {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .accountingName small {
-    font-size: 10px;
+    font-size: 13px;
   }
 
   .investmentSection > :global(.chr-content-container) {
@@ -1355,9 +1511,10 @@
   .priceVisual {
     align-content: center;
     border-radius: 0 80px 0 0;
-    height: 160px;
+    height: 140px;
     margin-bottom: 18px !important;
-    min-height: 160px;
+    max-width: 100% !important;
+    min-height: 140px;
     padding: 18px;
     width: 100% !important;
   }
@@ -1368,7 +1525,40 @@
   }
 
   .priceVisual span {
-    font-size: 9px;
+    font-size: 11px;
+  }
+
+  .depositCallout {
+    margin-top: 13px !important;
+    padding: 11px 0;
+  }
+
+  .depositCallout small {
+    font-size: 13px;
+  }
+
+  .depositCallout strong {
+    font-size: 28px;
+  }
+
+  .noMaintenance {
+    font-size: 13px !important;
+    margin-top: 7px !important;
+  }
+
+  .investmentFacts {
+    gap: 8px !important;
+    grid-template-columns: 1fr !important;
+    margin-top: 10px;
+  }
+
+  .investmentFacts :global(.single-item) {
+    font-size: 15px;
+  }
+
+  .investmentFacts svg {
+    height: 25px !important;
+    width: 25px !important;
   }
 
   .textImageSlide {
@@ -1411,13 +1601,13 @@
   }
 
   .hostingGraphic span {
-    font-size: 11px;
+    font-size: 14px;
   }
 
   .textImageSlide :global(.text-part p),
   .textImageSlide :global(.text-part li) {
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.55;
   }
 
   .processSection > :global(.chr-content-container) {
@@ -1449,11 +1639,11 @@
   }
 
   .processList strong {
-    font-size: 12px;
+    font-size: 15px;
   }
 
   .processList small {
-    font-size: 10px;
+    font-size: 13px;
   }
 
   .finalSlide {
@@ -1463,14 +1653,61 @@
 
   .finalSlide > :global(.section-three-heading-part) {
     display: block;
-    margin-bottom: 32px;
+    margin-bottom: 0;
     padding: 0 18px;
   }
 
-  .finalCopy :global(.button) {
-    font-size: 10px;
-    margin-top: 4px;
-    min-width: 220px;
+  .finalCopy {
+    margin-top: 20px;
+  }
+
+  .acceptanceForm {
+    gap: 10px;
+    grid-template-columns: 1fr;
+  }
+
+  .acceptanceForm > label:not(.acceptanceConsent, .honeypot) {
+    font-size: 13px;
+    gap: 4px;
+  }
+
+  .acceptanceForm input[type="text"],
+  .acceptanceForm input[type="email"] {
+    font-size: 16px;
+    height: 46px;
+  }
+
+  .acceptanceConsent {
+    font-size: 13px;
+    grid-column: 1;
+    line-height: 1.35;
+  }
+
+  .acceptanceForm :global(.button) {
+    font-size: 13px;
+    grid-column: 1;
+    min-height: 50px;
+  }
+
+  .acceptanceMessage,
+  .phoneLink {
+    grid-column: 1;
+  }
+
+  .phoneLink {
+    font-size: 13px;
+  }
+
+  .acceptanceSuccess {
+    padding: 22px;
+  }
+
+  .acceptanceSuccess strong {
+    font-size: 20px;
+  }
+
+  .acceptanceSuccess p {
+    font-size: 15px;
   }
 
   .deckControls {
@@ -1488,6 +1725,10 @@
 }
 
 @media screen and (max-width: 766px) and (max-height: 740px) {
+  .serviceSlide :global(.services-items-container) {
+    row-gap: 0;
+  }
+
   .sectionTwo :global(.image-wrapper) {
     margin-bottom: 8px;
   }
@@ -1509,9 +1750,36 @@
     margin-top: 8px;
   }
 
-  .ratingRow {
+  .googleBadge {
     margin-top: 8px;
-    padding-top: 7px;
+    max-width: 180px;
+  }
+
+  .serviceSlide :global(.services-items-container > .single-item) {
+    min-height: 104px;
+    padding-top: 42px;
+  }
+
+  .serviceSlide :global(.item-content p) {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .finalCopy {
+    margin-top: 12px;
+  }
+
+  .acceptanceForm {
+    gap: 7px;
+  }
+
+  .acceptanceForm input[type="text"],
+  .acceptanceForm input[type="email"] {
+    height: 42px;
+  }
+
+  .acceptanceConsent {
+    font-size: 13px;
   }
 }
 
