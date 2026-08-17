@@ -243,7 +243,7 @@
 
 .coverFlower {
   background: url("/wp-content/uploads/2018/03/flower-image-578x600.png") no-repeat center bottom / contain;
-  bottom: -6%;
+  bottom: 0;
   height: min(72vh, 700px);
   position: absolute;
   pointer-events: none;
@@ -369,12 +369,53 @@
   width: 24px !important;
 }
 
-.googleBadge {
-  display: block;
-  height: auto;
-  margin-top: 28px;
-  max-width: 250px;
-  width: 100%;
+.googleRating {
+  align-items: center;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 8px 22px rgb(25 25 25 / 18%);
+  box-sizing: border-box;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin: 32px auto 0;
+  min-width: 350px;
+  padding: 17px 22px;
+  width: fit-content;
+}
+
+.googleRating > svg {
+  flex: 0 0 52px;
+  height: 52px;
+  width: 52px;
+}
+
+.googleRatingCopy,
+.googleRatingScore {
+  display: flex;
+}
+
+.googleRatingCopy {
+  align-items: flex-start;
+  flex-direction: column;
+  font-family: Montserrat, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  gap: 3px;
+}
+
+.googleRatingScore {
+  align-items: center;
+  color: #f9ab00;
+  font-size: 19px;
+  gap: 9px;
+  letter-spacing: 1px;
+}
+
+.googleRatingScore strong {
+  color: #191919;
+  font-size: 22px;
+  letter-spacing: 0;
 }
 
 .serviceSlide {
@@ -860,69 +901,30 @@
   width: 100%;
 }
 
-.acceptanceForm {
-  display: grid;
-  gap: 14px 16px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.acceptanceActions {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   width: 100%;
 }
 
-.acceptanceForm > label:not(.acceptanceConsent, .honeypot) {
-  display: grid;
-  font-family: Montserrat, sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  gap: 7px;
-}
-
-.acceptanceForm input[type="text"],
-.acceptanceForm input[type="email"] {
-  background: #fff;
-  border: 1px solid #cfcfcf;
-  border-radius: 0;
-  box-sizing: border-box;
-  color: #191919;
-  font-family: Montserrat, sans-serif;
-  font-size: 16px;
-  height: 54px;
-  padding: 0 14px;
-  width: 100%;
-}
-
-.acceptanceForm input:focus-visible,
-.acceptanceForm button:focus-visible,
+.acceptanceActions button:focus-visible,
 .phoneLink:focus-visible {
   outline: 3px solid #fdce08;
   outline-offset: 3px;
 }
 
-.acceptanceConsent {
-  align-items: flex-start;
-  cursor: pointer;
-  display: grid;
-  font-size: 14px;
-  gap: 10px;
-  grid-column: 1 / -1;
-  grid-template-columns: 20px 1fr;
-  line-height: 1.45;
-}
-
-.acceptanceConsent input {
-  height: 20px;
-  margin: 1px 0 0;
-  width: 20px;
-}
-
-.acceptanceForm :global(.button) {
+.acceptanceActions :global(.button) {
   border: 0;
   cursor: pointer;
-  font-size: 13px;
-  grid-column: 1 / -1;
-  min-height: 54px;
-  width: 100%;
+  font-size: 14px;
+  margin: 0;
+  min-height: 58px;
+  min-width: min(100%, 360px);
 }
 
-.acceptanceForm :global(.button:disabled) {
+.acceptanceActions :global(.button:disabled) {
   cursor: wait;
   opacity: 0.6;
 }
@@ -930,7 +932,6 @@
 .acceptanceMessage {
   color: #a60000;
   font-size: 14px;
-  grid-column: 1 / -1;
   margin: 0;
 }
 
@@ -967,9 +968,7 @@
   font-size: 13px;
   font-weight: 800;
   gap: 8px;
-  grid-column: 1 / -1;
-  justify-self: start;
-  margin-top: 2px;
+  white-space: nowrap;
 }
 
 .phoneLink svg {
@@ -977,12 +976,10 @@
   width: 18px;
 }
 
-.honeypot {
-  height: 1px;
-  left: -10000px;
-  overflow: hidden;
-  position: absolute;
-  width: 1px;
+.questionLine {
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0;
 }
 
 .deckControls {
@@ -1285,9 +1282,29 @@
     width: 22px !important;
   }
 
-  .googleBadge {
-    margin-top: 15px;
-    max-width: 205px;
+  .googleRating {
+    gap: 12px;
+    margin: 18px auto 0;
+    min-width: 260px;
+    padding: 13px 17px;
+  }
+
+  .googleRating > svg {
+    flex-basis: 42px;
+    height: 42px;
+    width: 42px;
+  }
+
+  .googleRatingCopy {
+    font-size: 13px;
+  }
+
+  .googleRatingScore {
+    font-size: 16px;
+  }
+
+  .googleRatingScore strong {
+    font-size: 19px;
   }
 
   .serviceSlide {
@@ -1661,41 +1678,22 @@
     margin-top: 20px;
   }
 
-  .acceptanceForm {
-    gap: 10px;
-    grid-template-columns: 1fr;
+  .acceptanceActions {
+    gap: 16px;
   }
 
-  .acceptanceForm > label:not(.acceptanceConsent, .honeypot) {
+  .acceptanceActions :global(.button) {
     font-size: 13px;
-    gap: 4px;
-  }
-
-  .acceptanceForm input[type="text"],
-  .acceptanceForm input[type="email"] {
-    font-size: 16px;
-    height: 46px;
-  }
-
-  .acceptanceConsent {
-    font-size: 13px;
-    grid-column: 1;
-    line-height: 1.35;
-  }
-
-  .acceptanceForm :global(.button) {
-    font-size: 13px;
-    grid-column: 1;
-    min-height: 50px;
-  }
-
-  .acceptanceMessage,
-  .phoneLink {
-    grid-column: 1;
+    min-height: 54px;
+    width: 100%;
   }
 
   .phoneLink {
-    font-size: 13px;
+    font-size: 15px;
+  }
+
+  .questionLine {
+    font-size: 15px;
   }
 
   .acceptanceSuccess {
@@ -1750,9 +1748,9 @@
     margin-top: 8px;
   }
 
-  .googleBadge {
+  .googleRating {
     margin-top: 8px;
-    max-width: 180px;
+    padding: 11px 15px;
   }
 
   .serviceSlide :global(.services-items-container > .single-item) {
@@ -1769,17 +1767,8 @@
     margin-top: 12px;
   }
 
-  .acceptanceForm {
-    gap: 7px;
-  }
-
-  .acceptanceForm input[type="text"],
-  .acceptanceForm input[type="email"] {
-    height: 42px;
-  }
-
-  .acceptanceConsent {
-    font-size: 13px;
+  .acceptanceActions {
+    gap: 12px;
   }
 }
 

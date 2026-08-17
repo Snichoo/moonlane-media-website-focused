@@ -12,23 +12,10 @@ const PROPOSAL_VERSION = "17 August 2026";
 const TOTAL_INVESTMENT = "$1,499";
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const ALLOWED_FIELDS = new Set([
-  "authorityConfirmed",
-  "clientRequestId",
-  "email",
-  "name",
-  "scopeConfirmed",
-  "website",
-]);
+const ALLOWED_FIELDS = new Set(["clientRequestId"]);
 
 type AcceptancePayload = {
-  authorityConfirmed?: unknown;
   clientRequestId?: unknown;
-  email?: unknown;
-  name?: unknown;
-  scopeConfirmed?: unknown;
-  website?: unknown;
 };
 
 const clean = (value: unknown, maxLength: number) =>
@@ -118,29 +105,10 @@ export async function POST(request: Request) {
   }
 
   const body = parsed as AcceptancePayload;
-  const honeypot = clean(body.website, 200);
-  if (honeypot) {
-    return json({ ok: true });
-  }
-
-  const name = clean(body.name, 120);
-  const email = clean(body.email, 254).toLowerCase();
   const clientRequestId = clean(body.clientRequestId, 36);
 
-  if (name.length < 2) {
-    return json({ error: "Please enter your name." }, 400);
-  }
-  if (!EMAIL_RE.test(email)) {
-    return json({ error: "Please enter a valid email address." }, 400);
-  }
   if (!UUID_RE.test(clientRequestId)) {
     return json({ error: "Please refresh the page and try again." }, 400);
-  }
-  if (body.authorityConfirmed !== true || body.scopeConfirmed !== true) {
-    return json(
-      { error: "Please confirm both acceptance statements." },
-      400,
-    );
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -163,18 +131,14 @@ export async function POST(request: Request) {
   const from =
     process.env.CONTACT_FROM_EMAIL ||
     "Moonlane Media <contact@moonlanemedia.com.au>";
-  const subject = `Proposal acceptance received — ${CLIENT_NAME} — ${TOTAL_INVESTMENT}`;
+  const subject = `Proposal accepted — ${CLIENT_NAME} — ${TOTAL_INVESTMENT}`;
   const rows: Array<[string, string]> = [
     ["Status", "ACCEPTANCE NOTIFICATION"],
     ["Client", CLIENT_NAME],
-    ["Accepted by", name],
-    ["Email", email],
     ["Proposal", PROPOSAL_ID],
     ["Proposal version", PROPOSAL_VERSION],
     ["Total investment", TOTAL_INVESTMENT],
     ["Deposit", DEPOSIT],
-    ["Authority confirmed", "Yes"],
-    ["Scope and price confirmed", "Yes"],
     ["Acceptance ID", acceptanceId],
     ["Proposal URL", pageUrl],
   ];
@@ -182,7 +146,7 @@ export async function POST(request: Request) {
   const html = `
     <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#191919">
       <h2 style="margin:0 0 8px">${escapeHtml(subject)}</h2>
-      <p style="margin:0 0 18px;color:#555">This is an acceptance notification from the proposal page. Verify the acceptor directly if formal signature or identity proof is required.</p>
+      <p style="margin:0 0 18px;color:#555">The Accept proposal button was selected on the Decode Tax Accountants proposal page. This notification does not verify the visitor's identity.</p>
       <table style="border-collapse:collapse">
         ${rows
           .map(
@@ -197,7 +161,7 @@ export async function POST(request: Request) {
   const text = [
     subject,
     "",
-    "This is an acceptance notification from the proposal page. Verify the acceptor directly if formal signature or identity proof is required.",
+    "The Accept proposal button was selected on the Decode Tax Accountants proposal page. This notification does not verify the visitor's identity.",
     "",
     ...rows.map(([label, value]) => `${label}: ${value}`),
   ].join("\n");
@@ -209,7 +173,6 @@ export async function POST(request: Request) {
       {
         from,
         html,
-        replyTo: email,
         subject,
         text,
         to,

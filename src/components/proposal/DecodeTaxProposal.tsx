@@ -27,7 +27,6 @@ import {
   Sparkles,
   UsersRound,
 } from "lucide-react";
-import type { FormEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./DecodeTaxProposal.module.css";
 
@@ -193,6 +192,30 @@ function ProgressItem({
   );
 }
 
+function GoogleRatingBadge() {
+  return (
+    <div
+      aria-label="Google rating: 5 out of 5 stars"
+      className={styles.googleRating}
+      role="img"
+    >
+      <svg aria-hidden="true" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.654 32.657 29.223 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917Z" />
+        <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4c-7.682 0-14.344 4.337-17.694 10.691Z" />
+        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44Z" />
+        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.03 12.03 0 0 1-4.087 5.571l6.193 5.237C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917Z" />
+      </svg>
+      <span className={styles.googleRatingCopy}>
+        <span>Google Rating</span>
+        <span className={styles.googleRatingScore}>
+          <strong>5.0</strong>
+          <span aria-hidden="true">★★★★★</span>
+        </span>
+      </span>
+    </div>
+  );
+}
+
 export function DecodeTaxProposal() {
   const deckRef = useRef<HTMLDivElement>(null);
   const activeIndexRef = useRef(0);
@@ -203,13 +226,8 @@ export function DecodeTaxProposal() {
   });
   const acceptanceRequestIdRef = useRef<string | null>(null);
 
-  const handleProposalAcceptance = async (
-    event: FormEvent<HTMLFormElement>,
-  ) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
+  const handleProposalAcceptance = async () => {
+    if (acceptanceState.status === "sending") return;
     setAcceptanceState({ message: "", status: "sending" });
 
     try {
@@ -221,12 +239,7 @@ export function DecodeTaxProposal() {
         "/api/proposals/decode-tax-accountants/accept",
         {
           body: JSON.stringify({
-            authorityConfirmed: formData.get("authorityConfirmed") === "on",
             clientRequestId: acceptanceRequestIdRef.current,
-            email: String(formData.get("email") ?? ""),
-            name: String(formData.get("name") ?? ""),
-            scopeConfirmed: formData.get("scopeConfirmed") === "on",
-            website: String(formData.get("website") ?? ""),
           }),
           headers: { "Content-Type": "application/json" },
           method: "POST",
@@ -529,13 +542,7 @@ export function DecodeTaxProposal() {
                     <div className="single-item"><UsersRound /><span>No outsourcing</span></div>
                     <div className="single-item"><ShieldCheck /><span>Senior-level design and development</span></div>
                   </div>
-                  <Image
-                    alt="Google Rating 5.0, based on 151 plus reviews"
-                    className={styles.googleBadge}
-                    height={161}
-                    src="/wp-content/uploads/2025/10/Google-Review-Badge1.png"
-                    width={328}
-                  />
+                  <GoogleRatingBadge />
                 </div>
               </div>
             </div>
@@ -742,31 +749,12 @@ export function DecodeTaxProposal() {
                     </div>
                   </div>
                 ) : (
-                  <form className={styles.acceptanceForm} onSubmit={handleProposalAcceptance}>
-                    <label>
-                      <span>Your name</span>
-                      <input autoComplete="name" name="name" required type="text" />
-                    </label>
-                    <label>
-                      <span>Your email</span>
-                      <input autoComplete="email" name="email" required type="email" />
-                    </label>
-                    <label className={styles.honeypot} aria-hidden="true">
-                      <span>Website</span>
-                      <input autoComplete="off" name="website" tabIndex={-1} type="text" />
-                    </label>
-                    <label className={styles.acceptanceConsent}>
-                      <input name="authorityConfirmed" required type="checkbox" />
-                      <span>I confirm I am authorised to accept this proposal for Decode Tax Accountants.</span>
-                    </label>
-                    <label className={styles.acceptanceConsent}>
-                      <input name="scopeConfirmed" required type="checkbox" />
-                      <span>I accept the proposed scope, $1,499 total investment and $750 deposit.</span>
-                    </label>
+                  <div className={styles.acceptanceActions}>
                     <button
                       className="button"
                       disabled={acceptanceState.status === "sending"}
-                      type="submit"
+                      onClick={handleProposalAcceptance}
+                      type="button"
                     >
                       {acceptanceState.status === "sending" ? "Sending acceptance…" : "Accept proposal"}
                     </button>
@@ -775,10 +763,14 @@ export function DecodeTaxProposal() {
                         {acceptanceState.message}
                       </p>
                     ) : null}
-                    <a className={styles.phoneLink} href="tel:0414134081">
-                      <Phone aria-hidden="true" /> Call 0414 134 081
-                    </a>
-                  </form>
+                    <p className={styles.questionLine}>
+                      If you have any questions, call{" "}
+                      <a className={styles.phoneLink} href="tel:0414134081">
+                        <Phone aria-hidden="true" /> 0414 134 081
+                      </a>
+                      .
+                    </p>
+                  </div>
                 )}
               </div>
             </div>
