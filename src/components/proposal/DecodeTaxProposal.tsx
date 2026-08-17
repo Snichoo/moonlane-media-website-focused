@@ -512,7 +512,7 @@ export function DecodeTaxProposal() {
 
           <section
             aria-labelledby="moonlane-title"
-            className={`${styles.slide} ${styles.yellowSlide}`}
+            className={`${styles.slide} ${styles.yellowSlide} ${styles.whySlide}`}
             data-proposal-slide
             id="moonlane"
             tabIndex={-1}

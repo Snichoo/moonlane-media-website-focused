@@ -376,12 +376,11 @@
   box-shadow: 0 8px 22px rgb(25 25 25 / 18%);
   box-sizing: border-box;
   display: flex;
-  gap: 16px;
+  gap: 14px;
   justify-content: center;
-  margin: 32px auto 0;
-  min-width: 350px;
-  padding: 17px 22px;
-  width: fit-content;
+  margin: 24px 0 0;
+  padding: 14px 18px;
+  width: 300px;
 }
 
 .googleRating > svg {
@@ -416,6 +415,23 @@
   color: #191919;
   font-size: 22px;
   letter-spacing: 0;
+}
+
+@media screen and (min-width: 1240px) {
+  .whySlide .sectionTwo > :global(.chr-content-container) {
+    gap: clamp(60px, 6vw, 110px);
+    justify-content: center;
+  }
+
+  .whySlide .sectionTwo :global(.image-wrapper),
+  .whySlide .sectionTwo :global(.section-two-content) {
+    flex-basis: 46%;
+    max-width: 46%;
+  }
+
+  .whySlide .sectionTwo :global(.section-two-content) {
+    margin-left: 0;
+  }
 }
 
 .serviceSlide {
@@ -1285,8 +1301,8 @@
   .googleRating {
     gap: 12px;
     margin: 18px auto 0;
-    min-width: 260px;
     padding: 13px 17px;
+    width: 260px;
   }
 
   .googleRating > svg {
