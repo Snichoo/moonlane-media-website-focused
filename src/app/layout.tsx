@@ -17,9 +17,10 @@ const WEBSITE_CALL_LABEL =
   "U3omCIXD7eEcEO7-s7JE";
 const BUSINESS_PHONE_DISPLAY = "0414 134 081";
 const BUSINESS_PHONE_TEL = "0414134081";
+const PRODUCTION_ORIGIN = "https://moonlanemedia.com.au";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.moonlanemedia.com"),
+  metadataBase: new URL(PRODUCTION_ORIGIN),
   applicationName: "Moonlane Media",
   title: {
     default: "Moonlane Media | Results-Driven Website Design Agency",
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
     title: "Moonlane Media | Results-Driven Website Design",
     description:
       "We create high-converting websites and digital experiences that turn clicks into real clients.",
-    url: "https://www.moonlanemedia.com/",
+    url: PRODUCTION_ORIGIN,
     images: [
       {
         url: "/wp-content/uploads/2018/02/about-mainimage.png",

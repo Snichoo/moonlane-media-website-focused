@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import ContactPage from "@/components/ContactPage";
 import { contactTitle } from "@/sections/contact";
 
+const PRODUCTION_ORIGIN = "https://moonlanemedia.com.au";
+
 export const metadata: Metadata = {
   // extracted title already carries the "| Moonlane Media" suffix
   title: { absolute: contactTitle },
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
     title: contactTitle,
     description:
       "Get in touch with Moonlane Media to discuss your website project — no strings attached.",
-    url: "https://www.moonlanemedia.com/contact",
+    url: `${PRODUCTION_ORIGIN}/contact`,
     images: [
       {
         url: "/wp-content/uploads/2018/02/about-mainimage.png",

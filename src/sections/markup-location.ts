@@ -40,6 +40,10 @@ function replaceOnce(
 
 function scopeLinks(html: string, location: LocationConfig): string {
   return html
+    .replaceAll(
+      'href="/case-study/',
+      'href="/landing-page/case-study/',
+    )
     .replaceAll('href="/contact/"', `href="${location.contactPath}"`)
     .replaceAll('href="/contact"', `href="${location.contactPath}"`)
     .replaceAll('href="/#', `href="${location.basePath}#`)

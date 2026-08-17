@@ -193,3 +193,265 @@ form.form-sent > *:not(.form-success) {
   height: 100%;
   transition: fill 0.5s;
 }
+
+/* Root-only social proof. The paid landing and location pages never receive
+   `.site-variant-root`, so these rules cannot alter the Google Ads experience. */
+.site-variant-root .testimonial-video-slider-section {
+  background: #f6f6f6;
+  overflow: hidden;
+  padding: 110px 0;
+}
+
+.site-variant-root .root-reviews-heading,
+.site-variant-root .root-partners-heading {
+  margin-bottom: 48px;
+}
+
+.site-variant-root .root-reviews-intro {
+  margin: 0 auto;
+  max-width: 720px;
+}
+
+.site-variant-root .root-review-marquee,
+.site-variant-root .root-partner-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.site-variant-root .root-review-marquee {
+  padding: 10px 0 20px;
+}
+
+.site-variant-root .root-review-track,
+.site-variant-root .root-partner-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.site-variant-root .root-review-track {
+  animation: root-review-scroll 34s linear infinite;
+}
+
+.site-variant-root .root-review-set {
+  display: flex;
+  gap: 24px;
+  padding-right: 24px;
+}
+
+.site-variant-root .root-review-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgb(0 0 0 / 7%);
+  flex: 0 0 340px;
+  min-height: 286px;
+  padding: 26px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.site-variant-root .root-review-card:hover {
+  box-shadow: 0 14px 30px rgb(0 0 0 / 12%);
+  transform: translateY(-6px);
+}
+
+.site-variant-root .root-review-card-heading {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.site-variant-root .root-review-avatar {
+  align-items: center;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  flex: 0 0 42px;
+  font-size: 16px;
+  font-weight: 700;
+  height: 42px;
+  justify-content: center;
+}
+
+.site-variant-root .root-review-avatar--red {
+  background: #ef4444;
+}
+
+.site-variant-root .root-review-avatar--blue {
+  background: #3b82f6;
+}
+
+.site-variant-root .root-review-avatar--green {
+  background: #22c55e;
+}
+
+.site-variant-root .root-review-avatar--purple {
+  background: #a855f7;
+}
+
+.site-variant-root .root-review-identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.site-variant-root .root-review-identity h3 {
+  font-size: 15px;
+  line-height: 1.25;
+  margin: 0 0 3px;
+}
+
+.site-variant-root .root-review-identity time {
+  color: #6b6b6b;
+  font-size: 12px;
+}
+
+.site-variant-root .root-review-google {
+  flex: 0 0 26px;
+  height: 26px;
+  width: 26px;
+}
+
+.site-variant-root .root-review-rating {
+  align-items: center;
+  color: #fdce08;
+  display: flex;
+  font-size: 18px;
+  gap: 5px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.site-variant-root .root-review-verified {
+  fill: #1d9bf0;
+  height: 17px;
+  width: 17px;
+}
+
+.site-variant-root .root-review-card > p {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.site-variant-root .root-review-badge {
+  align-items: center;
+  background: #191919;
+  border-radius: 999px;
+  color: #fff;
+  display: flex;
+  font-size: 13px;
+  gap: 6px;
+  margin: 30px auto 0;
+  padding: 12px 20px;
+  width: fit-content;
+}
+
+.site-variant-root .root-review-badge span {
+  color: #fdce08;
+  letter-spacing: 1px;
+}
+
+.site-variant-root .our-partners-part {
+  overflow: hidden;
+  padding: 100px 0 92px;
+}
+
+.site-variant-root .root-partner-track {
+  animation: root-partner-scroll 32s linear infinite;
+}
+
+.site-variant-root .root-partner-set {
+  align-items: center;
+  display: flex;
+  gap: 56px;
+  padding-right: 56px;
+}
+
+.site-variant-root .root-partner-logo {
+  align-items: center;
+  display: flex;
+  flex: 0 0 150px;
+  height: 76px;
+  justify-content: center;
+}
+
+.site-variant-root .root-partner-logo img {
+  filter: grayscale(1);
+  height: auto;
+  max-height: 62px;
+  max-width: 150px;
+  opacity: 0.72;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.site-variant-root .root-partner-logo:hover img {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+.site-variant-root .root-review-marquee:hover .root-review-track,
+.site-variant-root .root-partner-marquee:hover .root-partner-track {
+  animation-play-state: paused;
+}
+
+@keyframes root-review-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes root-partner-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media screen and (max-width: 766px) {
+  .site-variant-root .testimonial-video-slider-section {
+    padding: 72px 0;
+  }
+
+  .site-variant-root .root-reviews-heading,
+  .site-variant-root .root-partners-heading {
+    margin-bottom: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .site-variant-root .root-review-card {
+    flex-basis: min(310px, calc(100vw - 48px));
+    min-height: 300px;
+    padding: 22px;
+  }
+
+  .site-variant-root .our-partners-part {
+    padding: 72px 0 64px;
+  }
+
+  .site-variant-root .root-partner-set {
+    gap: 38px;
+    padding-right: 38px;
+  }
+
+  .site-variant-root .root-partner-logo {
+    flex-basis: 125px;
+  }
+
+  .site-variant-root .root-partner-logo img {
+    max-width: 125px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-variant-root .root-review-track,
+  .site-variant-root .root-partner-track {
+    animation: none;
+  }
+
+  .site-variant-root .root-review-marquee,
+  .site-variant-root .root-partner-marquee {
+    overflow-x: auto;
+  }
+}
