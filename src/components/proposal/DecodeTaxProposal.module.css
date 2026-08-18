@@ -94,12 +94,21 @@
 
 .deck {
   height: 100svh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
+}
+
+.deck > :global(.modules) {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+  margin-top: 0;
+  min-width: 100%;
+  width: 100%;
 }
 
 .deck::-webkit-scrollbar {
@@ -110,15 +119,27 @@
   align-items: center;
   box-sizing: border-box;
   display: flex;
+  flex: 0 0 100%;
+  height: 100svh;
+  max-width: 100%;
+  min-width: 0;
   min-height: 100svh;
   opacity: 1 !important;
   outline: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
   padding: calc(var(--deck-header) + 38px) 0 88px;
   position: relative;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  scrollbar-width: none;
   transform: none !important;
   width: 100%;
+}
+
+.slide::-webkit-scrollbar {
+  display: none;
 }
 
 .slide :global(.single-item) {
@@ -1089,7 +1110,7 @@
   }
 
   .deck {
-    scroll-snap-type: y proximity;
+    scroll-snap-type: x mandatory;
   }
 
   .slide {

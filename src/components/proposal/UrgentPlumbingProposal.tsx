@@ -7,8 +7,8 @@ import {
   BellRing,
   Check,
   CheckCircle2,
-  ChevronDown,
-  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   CopyX,
   ExternalLink,
@@ -27,8 +27,9 @@ import {
   Sparkles,
   UsersRound,
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./DecodeTaxProposal.module.css";
+import { useProposalDeck } from "./useProposalDeck";
 
 const slides = [
   "Proposal",
@@ -217,9 +218,7 @@ function GoogleRatingBadge() {
 }
 
 export function UrgentPlumbingProposal() {
-  const deckRef = useRef<HTMLDivElement>(null);
-  const activeIndexRef = useRef(0);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const { activeIndex, deckRef, goToSlide } = useProposalDeck();
   const [acceptanceState, setAcceptanceState] = useState<AcceptanceState>({
     message: "",
     status: "idle",
@@ -274,103 +273,6 @@ export function UrgentPlumbingProposal() {
       });
     }
   };
-
-  const goToSlide = useCallback((index: number) => {
-    const deck = deckRef.current;
-    if (!deck) return;
-
-    const slideElements = Array.from(
-      deck.querySelectorAll<HTMLElement>("[data-proposal-slide]"),
-    );
-    const safeIndex = Math.max(0, Math.min(index, slideElements.length - 1));
-    const targetSlide = slideElements[safeIndex];
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    targetSlide?.scrollIntoView({
-      behavior: reduceMotion ? "auto" : "smooth",
-      block: "start",
-    });
-    targetSlide?.focus({ preventScroll: true });
-  }, []);
-
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
-
-  useEffect(() => {
-    const deck = deckRef.current;
-    if (!deck) return;
-
-    document.body.classList.add("proposal-deck-open");
-    const slideElements = Array.from(
-      deck.querySelectorAll<HTMLElement>("[data-proposal-slide]"),
-    );
-
-    const syncActiveSlide = () => {
-      const centre = deck.scrollTop + deck.clientHeight / 2;
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
-
-      slideElements.forEach((slide, index) => {
-        const slideCentre = slide.offsetTop + slide.offsetHeight / 2;
-        const distance = Math.abs(slideCentre - centre);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      setActiveIndex(closestIndex);
-    };
-
-    const handleKeyboard = (event: KeyboardEvent) => {
-      const eventTarget = event.target;
-      if (
-        eventTarget instanceof HTMLElement &&
-        eventTarget.closest(
-          "a, button, input, textarea, select, [role='button'], [contenteditable='true']",
-        )
-      ) {
-        return;
-      }
-
-      const current = activeIndexRef.current;
-      if (["ArrowDown", "PageDown", " "].includes(event.key)) {
-        event.preventDefault();
-        goToSlide(current + 1);
-      } else if (["ArrowUp", "PageUp"].includes(event.key)) {
-        event.preventDefault();
-        goToSlide(current - 1);
-      } else if (event.key === "Home") {
-        event.preventDefault();
-        goToSlide(0);
-      } else if (event.key === "End") {
-        event.preventDefault();
-        goToSlide(slideElements.length - 1);
-      }
-    };
-
-    deck.addEventListener("scroll", syncActiveSlide, { passive: true });
-    window.addEventListener("keydown", handleKeyboard);
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const syncVideoMotion = () => {
-      deck.querySelectorAll("video").forEach((video) => {
-        if (reduceMotion.matches) video.pause();
-        else void video.play().catch(() => undefined);
-      });
-    };
-    reduceMotion.addEventListener("change", syncVideoMotion);
-    syncVideoMotion();
-    syncActiveSlide();
-
-    return () => {
-      document.body.classList.remove("proposal-deck-open");
-      deck.removeEventListener("scroll", syncActiveSlide);
-      window.removeEventListener("keydown", handleKeyboard);
-      reduceMotion.removeEventListener("change", syncVideoMotion);
-    };
-  }, [goToSlide]);
 
   return (
     <div className={`chr-content ${styles.proposal} ${styles.urgentProposal}`}>
@@ -786,7 +688,7 @@ export function UrgentPlumbingProposal() {
           onClick={() => goToSlide(activeIndex - 1)}
           type="button"
         >
-          <ChevronUp aria-hidden="true" />
+          <ChevronLeft aria-hidden="true" />
         </button>
         <div className={styles.dotNav}>
           {slides.map((slide, index) => (
@@ -806,7 +708,7 @@ export function UrgentPlumbingProposal() {
           onClick={() => goToSlide(activeIndex + 1)}
           type="button"
         >
-          <ChevronDown aria-hidden="true" />
+          <ChevronRight aria-hidden="true" />
         </button>
       </nav>
     </div>
