@@ -1667,16 +1667,16 @@
   }
 
   .textImageSlide > :global(.chr-text-and-image-container.left-image) > .hostingImage {
-    margin-bottom: 18px;
+    margin-bottom: 12px;
   }
 
   .hostingGraphic {
-    background-size: 45% auto;
+    background-size: 38% auto;
     border-radius: 0 70px 0 0;
     gap: 5px 12px;
     grid-template-columns: 28px 1fr;
-    min-height: 150px;
-    padding: 22px 28px;
+    min-height: 132px;
+    padding: 16px 24px;
   }
 
   .hostingGraphic svg {
@@ -1692,6 +1692,27 @@
   .textImageSlide :global(.text-part li) {
     font-size: 14px;
     line-height: 1.55;
+  }
+
+  .textImageSlide :global(.text-part .small-title) {
+    margin-bottom: 8px;
+  }
+
+  .textImageSlide :global(.text-part .sub-title) {
+    margin-bottom: 12px;
+  }
+
+  .textImageSlide :global(.text-part > p:not(.small-title)) {
+    margin-bottom: 12px;
+  }
+
+  .textImageSlide :global(.text-part ul) {
+    margin-bottom: 0;
+  }
+
+  .textImageSlide :global(.text-part li) {
+    margin-bottom: 2px;
+    margin-top: 6px;
   }
 
   .processSection > :global(.chr-content-container) {
