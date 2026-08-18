@@ -860,6 +860,7 @@
   align-items: center;
   background: #fdce08 url("/wp-content/uploads/2018/02/birds-of-paradise.png") no-repeat right bottom / 58% auto;
   border-radius: 0 120px 0 0;
+  box-sizing: border-box;
   display: grid;
   gap: 8px 18px;
   grid-template-columns: 42px 1fr;
@@ -1151,6 +1152,29 @@
 
   .accountingList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1239px) {
+  .textImageSlide > :global(.chr-text-and-image-container.left-image) {
+    align-items: center;
+    flex-direction: row;
+    gap: clamp(30px, 4vw, 52px);
+    padding: 0 32px;
+  }
+
+  .textImageSlide > :global(.chr-text-and-image-container.left-image) > :global(.image-part),
+  .textImageSlide > :global(.chr-text-and-image-container.left-image) > :global(.text-part) {
+    flex: 1 1 0;
+    margin-bottom: 0;
+    max-width: none;
+    padding: 0;
+    width: auto;
+  }
+
+  .hostingGraphic {
+    min-height: clamp(280px, 45svh, 360px);
+    padding: clamp(38px, 5vw, 56px);
   }
 }
 
@@ -1642,7 +1666,7 @@
     width: 100%;
   }
 
-  .hostingImage {
+  .textImageSlide > :global(.chr-text-and-image-container.left-image) > .hostingImage {
     margin-bottom: 18px;
   }
 
