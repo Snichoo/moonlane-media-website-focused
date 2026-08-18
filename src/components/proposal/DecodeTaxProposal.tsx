@@ -37,7 +37,7 @@ const slides = [
   "Why Moonlane",
   "What is included",
   "Delivery promise",
-  "Accounting experience",
+  "Selected work",
   "Investment",
   "Hosting and handover",
   "Editing and support",
@@ -60,22 +60,18 @@ const accountingWork = [
   {
     href: "https://www.sparkaccountants.com.au",
     name: "Spark Accountants",
-    note: "Modern accounting firm website",
   },
   {
     href: "https://www.linkadvisors.com.au",
     name: "Link Advisors",
-    note: "Professional advisory services",
   },
   {
     href: "https://inspire.accountant",
     name: "Inspire Accountant",
-    note: "Clean, conversion-focused design",
   },
   {
     href: "https://www.taggartandpartners.com.au",
     name: "Taggart & Partners",
-    note: "Established firm, modern presence",
   },
 ] as const;
 
@@ -492,11 +488,11 @@ export function DecodeTaxProposal() {
             tabIndex={-1}
           >
             <div className={`chr-content-container ${styles.accountingHeading}`}>
-              <p className="small-title">Relevant experience</p>
+              <p className="small-title">Selected work</p>
               <h2 className="sub-title" id="accounting-title">
-                Accounting websites
+                Explore some of
                 <br />
-                <span className="highlight">you can explore</span>
+                <span className="highlight">our previous work</span>
               </h2>
             </div>
             <div className={styles.accountingList}>
@@ -505,7 +501,6 @@ export function DecodeTaxProposal() {
                   <span className={styles.listNumber}>{String(index + 1).padStart(2, "0")}</span>
                   <span className={styles.accountingName}>
                     <strong>{project.name}</strong>
-                    <small>{project.note}</small>
                   </span>
                   <ExternalLink aria-hidden="true" />
                 </a>

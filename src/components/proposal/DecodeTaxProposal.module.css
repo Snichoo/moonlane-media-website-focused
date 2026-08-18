@@ -697,53 +697,58 @@
 }
 
 .accountingList {
-  border-top: 1px solid #d9d9d9;
+  background: #d9d9d9;
+  border: 1px solid #d9d9d9;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0 auto;
   max-width: 1500px;
   width: calc(100% - clamp(32px, 8vw, 160px));
 }
 
 .accountingList a {
-  align-items: center;
-  border-bottom: 1px solid #d9d9d9;
+  align-content: space-between;
+  background: #fff;
   display: grid;
-  gap: 22px;
-  grid-template-columns: 52px 1fr 24px;
-  min-height: 72px;
-  padding: 5px 18px;
-  transition: background 200ms ease, padding 200ms ease;
+  gap: 24px 12px;
+  grid-template-columns: 1fr 22px;
+  grid-template-rows: auto 1fr;
+  min-height: 160px;
+  padding: 24px;
+  transition: background 200ms ease;
 }
 
 .accountingList a:hover {
   background: #fdce08;
-  padding-left: 28px;
 }
 
 .listNumber {
   font-family: Montserrat, sans-serif;
   font-size: 11px;
   font-weight: 800;
+  grid-column: 1;
+  grid-row: 1;
   opacity: 0.45;
 }
 
-.accountingName strong,
-.accountingName small {
-  display: block;
+.accountingName {
+  align-self: end;
+  grid-column: 1 / -1;
+  grid-row: 2;
 }
 
 .accountingName strong {
-  font-size: 20px;
-}
-
-.accountingName small {
-  font-size: 14px;
-  font-weight: 500;
-  margin-top: 2px;
-  opacity: 0.6;
+  display: block;
+  font-size: 19px;
+  line-height: 1.25;
 }
 
 .accountingList svg {
+  grid-column: 2;
+  grid-row: 1;
   height: 20px;
+  justify-self: end;
   width: 20px;
 }
 
@@ -1142,6 +1147,10 @@
 
   .textImageSlide > :global(.chr-text-and-image-container) {
     min-height: calc(100svh - var(--deck-header) - 90px);
+  }
+
+  .accountingList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1545,22 +1554,14 @@
   }
 
   .accountingList a {
-    gap: 12px;
-    grid-template-columns: 34px 1fr 18px;
-    min-height: 64px;
-    padding: 5px 2px;
-  }
-
-  .accountingList a:hover {
-    padding-left: 2px;
+    gap: 18px 8px;
+    grid-template-columns: 1fr 18px;
+    min-height: 132px;
+    padding: 16px 14px;
   }
 
   .accountingName strong {
-    font-size: 16px;
-  }
-
-  .accountingName small {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .investmentSection > :global(.chr-content-container) {

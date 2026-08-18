@@ -37,7 +37,7 @@ const slides = [
   "Why Moonlane",
   "What is included",
   "Delivery promise",
-  "Plumbing results",
+  "Selected work",
   "Investment",
   "Hosting and handover",
   "Editing and support",
@@ -60,22 +60,18 @@ const plumbingWork = [
   {
     href: "https://oldmateplumbing.com.au/",
     name: "Old Mate Plumbing Co.",
-    note: "600% increase in lead quality and ROI in the first month",
   },
   {
     href: "https://solutionsplumbing.com.au/",
     name: "Solutions Plumbing",
-    note: "Over 150 leads per month",
   },
   {
     href: "https://www.friendlyplumbing.com.au/",
     name: "Friendly Plumbing",
-    note: "Built with Moonlane Media's conversion strategy",
   },
   {
     href: "https://asaptrades.com.au/",
     name: "ASAP Trades",
-    note: "More than 200 additional leads per month",
   },
 ] as const;
 
@@ -491,11 +487,11 @@ export function JHPlumbingProposal() {
             tabIndex={-1}
           >
             <div className={`chr-content-container ${styles.accountingHeading}`}>
-              <p className="small-title">Relevant experience</p>
+              <p className="small-title">Selected work</p>
               <h2 className="sub-title" id="plumbing-title">
-                Plumbing results
+                Explore some of
                 <br />
-                <span className="highlight">you can explore</span>
+                <span className="highlight">our previous work</span>
               </h2>
             </div>
             <div className={styles.accountingList}>
@@ -504,7 +500,6 @@ export function JHPlumbingProposal() {
                   <span className={styles.listNumber}>{String(index + 1).padStart(2, "0")}</span>
                   <span className={styles.accountingName}>
                     <strong>{project.name}</strong>
-                    <small>{project.note}</small>
                   </span>
                   <ExternalLink aria-hidden="true" />
                 </a>
