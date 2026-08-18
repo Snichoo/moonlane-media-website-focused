@@ -252,6 +252,10 @@
   z-index: 4;
 }
 
+.urgentProposal :global(.modules) {
+  margin-top: 0;
+}
+
 .opportunitySlide :global(.section-three-heading-part) {
   align-content: center;
   display: grid;

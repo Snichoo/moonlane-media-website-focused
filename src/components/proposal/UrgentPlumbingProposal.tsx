@@ -373,7 +373,7 @@ export function UrgentPlumbingProposal() {
   }, [goToSlide]);
 
   return (
-    <div className={`chr-content ${styles.proposal}`}>
+    <div className={`chr-content ${styles.proposal} ${styles.urgentProposal}`}>
       <a className={styles.skipLink} href="#proposal-deck">
         Skip to proposal
       </a>
