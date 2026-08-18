@@ -265,7 +265,7 @@
 
 .coverFlower {
   background: url("/wp-content/uploads/2018/03/flower-image-578x600.png") no-repeat center bottom / contain;
-  bottom: 0;
+  bottom: clamp(28px, 4vh, 48px);
   height: min(72vh, 700px);
   position: absolute;
   pointer-events: none;
@@ -1235,7 +1235,7 @@
 
   .coverFlower {
     background-image: url("/wp-content/uploads/2018/03/flower-image-270x280.png");
-    bottom: 4px;
+    bottom: 20px;
     height: 38vh;
     right: -24px;
     width: 67vw;
