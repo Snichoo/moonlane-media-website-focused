@@ -56,6 +56,13 @@ type AcceptanceState = {
   status: "idle" | "sending" | "success" | "error";
 };
 
+type PlumbingProposalProps = {
+  acceptanceEndpoint?: string;
+  clientName?: string;
+  coverHighlight?: string;
+  coverPrimary?: string;
+};
+
 const plumbingWork = [
   {
     href: "https://oldmateplumbing.com.au/",
@@ -212,7 +219,12 @@ function GoogleRatingBadge() {
   );
 }
 
-export function JHPlumbingProposal() {
+export function JHPlumbingProposal({
+  acceptanceEndpoint = "/api/proposals/jhplumbingco/accept",
+  clientName = "JHPLUMBINGCO",
+  coverHighlight = "CO",
+  coverPrimary = "JHPLUMBING",
+}: PlumbingProposalProps = {}) {
   const { activeIndex, deckRef, goToSlide } = useProposalDeck();
   const [acceptanceState, setAcceptanceState] = useState<AcceptanceState>({
     message: "",
@@ -230,7 +242,7 @@ export function JHPlumbingProposal() {
       }
 
       const response = await fetch(
-        "/api/proposals/jhplumbingco/accept",
+        acceptanceEndpoint,
         {
           body: JSON.stringify({
             clientRequestId: acceptanceRequestIdRef.current,
@@ -301,7 +313,7 @@ export function JHPlumbingProposal() {
       </header>
 
       <main
-        aria-label="Website proposal for JHPLUMBINGCO"
+        aria-label={`Website proposal for ${clientName}`}
         className={`${styles.deck} sub-page case-study-page`}
         id="proposal-deck"
         ref={deckRef}
@@ -344,8 +356,8 @@ export function JHPlumbingProposal() {
                   <p className="small-title">Website proposal</p>
                   <h1 className="title" id="proposal-cover-title">
                     <span className={styles.coverLine}>Built for</span>
-                    <span className={styles.coverLine}>JHPLUMBING</span>
-                    <span className={`highlight ${styles.coverLine}`}>CO</span>
+                    <span className={styles.coverLine}>{coverPrimary}</span>
+                    <span className={`highlight ${styles.coverLine}`}>{coverHighlight}</span>
                   </h1>
                   <p className={styles.coverLead}>
                     A fast, mobile-first website designed to turn local plumbing searches into phone calls.
@@ -388,12 +400,12 @@ export function JHPlumbingProposal() {
               </div>
               <div className={`right-part wysiwyg-wrapper ${styles.opportunityCopy}`}>
                 <p>
-                  JHPLUMBINGCO needs a clear, professional website that helps
+                  {clientName} needs a clear, professional website that helps
                   customers quickly understand its services, the areas it covers
                   and the fastest way to get in touch.
                 </p>
                 <p>
-                  The new website will give JHPLUMBINGCO a credible, mobile-first
+                  The new website will give {clientName} a credible, mobile-first
                   presence, clearly present its plumbing services and make calling
                   or requesting a quote immediate.
                 </p>
