@@ -147,9 +147,9 @@ const resultsGrid = resultColumns
   .join("");
 
 export const testimonials = `<section class="root-results" aria-labelledby="root-results-title">
-  <div class="chr-content-container root-results-heading wysiwyg-wrapper wysiwyg-wrapper--center">
-    <h2 class="sub-title" id="root-results-title">Delivering<br><span class="root-result-highlight">impactful results</span></h2>
-    <p>See how we&#8217;ve helped businesses across all kinds of industries turn strategy into serious growth. Real campaigns, real results.</p>
+  <div class="chr-content-container root-results-heading testimonial-slider-top-content wysiwyg-wrapper wysiwyg-wrapper--center">
+    <h2 class="small-title" id="root-results-title">CLIENT TESTIMONIALS &amp; website RESULTS</h2>
+    <p class="sub-title">With over 151+ 5 star Google reviews &amp; proven results <span class="highlight">since 2009</span></p>
   </div>
   <div class="chr-content-container root-results-grid">
     ${resultsGrid}
