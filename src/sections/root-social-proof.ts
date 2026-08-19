@@ -1,9 +1,12 @@
-type RootReview = Readonly<{
-  name: string;
-  initial: string;
-  tone: "red" | "blue" | "green" | "purple";
-  date: string;
-  text: string;
+type RootResult = Readonly<{
+  company: string;
+  image: string;
+  prefix?: string;
+  result: string;
+  resultSuffix?: string;
+  subtitle: string;
+  trailingResult?: string;
+  website: string;
 }>;
 
 type RootPartner = Readonly<{
@@ -11,37 +14,79 @@ type RootPartner = Readonly<{
   src: string;
 }>;
 
-// Review content and presentation are carried over from the 9 June 2026
-// Moonlane homepage snapshot (Snichoo/moonlanemediawebsite@7cb17fa).
-const reviews: readonly RootReview[] = [
-  {
-    name: "Dave Mitchell",
-    initial: "D",
-    tone: "red",
-    date: "04/10/2024",
-    text: "Since Moonlane Media took over our Google Ads, the phone hasn't stopped ringing for emergency plumbing jobs. We're booking out weeks in advance now.",
-  },
-  {
-    name: "Sam Peterson",
-    initial: "S",
-    tone: "blue",
-    date: "15/09/2024",
-    text: "I was skeptical about SEO for my electrical business, but these guys delivered. We're now ranking top for local electrical services and getting quality commercial leads.",
-  },
-  {
-    name: "James O'Connor",
-    initial: "J",
-    tone: "green",
-    date: "28/08/2024",
-    text: "As a 24/7 locksmith, I needed immediate visibility. Moonlane Media's ad strategy put us right in front of people locked out and needing help fast. Incredible ROI.",
-  },
-  {
-    name: "Mike Ross",
-    initial: "M",
-    tone: "purple",
-    date: "12/07/2024",
-    text: "Our HVAC seasonal rush is usually stressful, but Moonlane Media helped us smooth out the demand with targeted campaigns. We're seeing steady install jobs all year round.",
-  },
+// Client-result content, imagery and two-column order are carried over from
+// the 9 June 2026 Moonlane homepage snapshot
+// (Snichoo/moonlanemediawebsite@7cb17fa).
+const resultColumns: readonly (readonly RootResult[])[] = [
+  [
+    {
+      company: "Singh Roofing",
+      image: "/images/client-results/Roof-Replacement-Melbourne.webp",
+      result: "HALVED",
+      subtitle: "COST PER LEAD IN 2 MONTHS",
+      website: "https://singhroofing.com.au/",
+    },
+    {
+      company: "SPS Roofing",
+      image: "/images/client-results/reliability_at_its_best.webp",
+      prefix: "OVER",
+      result: "150",
+      resultSuffix: "K",
+      subtitle: "OF QUOTES IN 2 WEEKS",
+      website: "https://spsroofing.com.au/",
+    },
+    {
+      company: "Old Mate Plumbing Co.",
+      image: "/images/client-results/old-mate-plumbing.jpg",
+      result: "600",
+      resultSuffix: "%",
+      subtitle: "INCREASE IN LEAD QUALITY / ROI IN THE FIRST MONTH",
+      website: "https://oldmateplumbing.com.au/",
+    },
+    {
+      company: "Solutions Plumbing",
+      image: "/images/client-results/solutions-plumbing.jpg",
+      prefix: "OVER",
+      result: "150",
+      subtitle: "LEADS A MONTH",
+      website: "https://solutionsplumbing.com.au/",
+    },
+  ],
+  [
+    {
+      company: "You Are Appreciated Gifting Co.",
+      image: "/images/client-results/corporate-gifting.png",
+      result: "340",
+      resultSuffix: "%",
+      subtitle: "INCREASE IN ONLINE ORDERS WITHIN 3 MONTHS",
+      website: "https://happyboxstore.com/",
+    },
+    {
+      company: "EnviroEnergy",
+      image: "/images/client-results/enviro-energy.jpg",
+      result: "5X LOWER COST",
+      subtitle: "PER CONVERSION THAN INDUSTRY STANDARD ON FIRST MONTH",
+      website: "https://www.enviroenergy.net.au/",
+    },
+    {
+      company: "Asap Trades",
+      image: "/images/client-results/asap-trades.jpg",
+      prefix: "OVER 200 ADDITIONAL LEADS A MONTH /",
+      result: "200",
+      resultSuffix: "%",
+      subtitle: "INCREASE IN ROI",
+      trailingResult: "300% INCREASE IN LEAD QUALITY",
+      website: "https://asaptrades.com.au/",
+    },
+    {
+      company: "Elite Electrical",
+      image: "/images/client-results/elite-electrical.jpg",
+      prefix: "OVER",
+      result: "100",
+      subtitle: "LEADS A MONTH / HALVED COST PER LEAD IN 3 MONTHS",
+      website: "https://www.eliteema.com.au/",
+    },
+  ],
 ];
 
 // This deliberately excludes the government, university, multinational and
@@ -76,49 +121,39 @@ const partners: readonly RootPartner[] = [
   },
 ];
 
-const googleLogo = `<svg class="root-review-google" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-  <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303C33.654,32.657,29.223,36,24,36c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20c0-1.341-.138-2.65-.389-3.917Z"/>
-  <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4c-7.682 0-14.344 4.337-17.694 10.691Z"/>
-  <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44Z"/>
-  <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.03 12.03 0 0 1-4.087 5.571l6.193 5.237C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917Z"/>
-</svg>`;
+function renderResult(result: RootResult): string {
+  const prefix = result.prefix ? `${result.prefix} ` : "";
+  const trailing = result.trailingResult
+    ? ` <span class="root-result-highlight">${result.trailingResult}</span>`
+    : "";
 
-const verifiedBadge = `<svg class="root-review-verified" viewBox="0 0 24 24" aria-label="Verified review" role="img">
-  <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4C2.374 9.55 1.5 10.918 1.5 12.5c0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484Zm-6.616-3.334-4.334 6.5a.75.75 0 0 1-1.04.208l-.115-.094-2.415-2.415a.75.75 0 1 1 1.06-1.06l1.77 1.767 3.825-5.74a.75.75 0 0 1 1.249.834Z"/>
-</svg>`;
-
-function renderReview(review: RootReview): string {
-  return `<article class="root-review-card">
-    <div class="root-review-card-heading">
-      <div class="root-review-avatar root-review-avatar--${review.tone}" aria-hidden="true">${review.initial}</div>
-      <div class="root-review-identity">
-        <h3>${review.name}</h3>
-        <time datetime="${review.date.split("/").reverse().join("-")}">${review.date}</time>
-      </div>
-      ${googleLogo}
+  return `<article class="root-result-card">
+    <a class="root-result-image-link" href="${result.website}" target="_blank" rel="noopener noreferrer" aria-label="View ${result.company} website">
+      <img class="root-result-image" src="${result.image}" alt="${result.company} client result" loading="lazy">
+    </a>
+    <div class="root-result-copy">
+      <h3>${prefix}<span class="root-result-highlight">${result.result}${result.resultSuffix ?? ""}</span> ${result.subtitle}${trailing}</h3>
+      <p>${result.company}</p>
     </div>
-    <div class="root-review-rating" aria-label="5 out of 5 stars">
-      <span aria-hidden="true">★★★★★</span>${verifiedBadge}
-    </div>
-    <p>${review.text}</p>
   </article>`;
 }
 
-const reviewSet = reviews.map(renderReview).join("");
+const resultsGrid = resultColumns
+  .map(
+    (column, index) => `<div class="root-result-column${index === 1 ? " root-result-column--offset" : ""}">
+      ${column.map(renderResult).join("")}
+    </div>`,
+  )
+  .join("");
 
-export const testimonials = `<section class="root-reviews" aria-labelledby="root-reviews-title">
-  <div class="chr-content-container root-reviews-heading wysiwyg-wrapper wysiwyg-wrapper--center">
-    <h2 class="small-title">Client reviews</h2>
-    <p class="sub-title" id="root-reviews-title">Rave reviews from <span class="highlight">Australian businesses</span></p>
-    <p class="root-reviews-intro">We believe in getting the details right, keeping our promises and going the extra mile. It is how we work and why clients trust us.</p>
+export const testimonials = `<section class="root-results" aria-labelledby="root-results-title">
+  <div class="chr-content-container root-results-heading wysiwyg-wrapper wysiwyg-wrapper--center">
+    <h2 class="sub-title" id="root-results-title">Delivering<br><span class="root-result-highlight">impactful results</span></h2>
+    <p>See how we&#8217;ve helped businesses across all kinds of industries turn strategy into serious growth. Real campaigns, real results.</p>
   </div>
-  <div class="root-review-marquee">
-    <div class="root-review-track">
-      <div class="root-review-set">${reviewSet}</div>
-      <div class="root-review-set" aria-hidden="true">${reviewSet}</div>
-    </div>
+  <div class="chr-content-container root-results-grid">
+    ${resultsGrid}
   </div>
-  <div class="root-review-badge">Rated <strong>4.9</strong> on Google Reviews <span aria-hidden="true">★★★★★</span></div>
 </section>`;
 
 function renderPartners(hidden: boolean): string {

@@ -4,7 +4,7 @@
 //   - every "15+ / 16 / 20+ years" and "since 2009" becomes "5+ years" or drops
 //   - no awards counts or award logos
 //   - the oversized borrowed video-testimonial and three-row corporate-logo
-//     sections are replaced by the root-only 9 June review design and a
+//     sections are replaced by the root-only 9 June client-results design and a
 //     one-line selection of smaller/local client logos
 //   - quote cards beside the FAQ and on the contact page are removed
 //
