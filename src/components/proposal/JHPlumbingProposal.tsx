@@ -51,6 +51,11 @@ type ServiceItem = {
   title: string;
 };
 
+type WorkItem = {
+  href: string;
+  name: string;
+};
+
 type AcceptanceState = {
   message: string;
   status: "idle" | "sending" | "success" | "error";
@@ -60,7 +65,13 @@ type PlumbingProposalProps = {
   acceptanceEndpoint?: string;
   clientName?: string;
   coverHighlight?: string;
+  coverLead?: string;
   coverPrimary?: string;
+  opportunityLead?: string;
+  opportunitySupport?: string;
+  outcomeLabels?: readonly [string, string, string];
+  servicePagesDescription?: string;
+  workItems?: readonly WorkItem[];
 };
 
 const plumbingWork = [
@@ -223,7 +234,17 @@ export function JHPlumbingProposal({
   acceptanceEndpoint = "/api/proposals/jhplumbingco/accept",
   clientName = "JHPLUMBINGCO",
   coverHighlight = "CO",
+  coverLead = "A fast, mobile-first website designed to turn local plumbing searches into phone calls.",
   coverPrimary = "JHPLUMBING",
+  opportunityLead,
+  opportunitySupport,
+  outcomeLabels = [
+    "Make calling immediate",
+    "Explain plumbing services",
+    "Target service areas",
+  ],
+  servicePagesDescription = "Plumbing services, blocked drains, hot water and more.",
+  workItems = plumbingWork,
 }: PlumbingProposalProps = {}) {
   const { activeIndex, deckRef, goToSlide } = useProposalDeck();
   const [acceptanceState, setAcceptanceState] = useState<AcceptanceState>({
@@ -360,7 +381,7 @@ export function JHPlumbingProposal({
                     <span className={`highlight ${styles.coverLine}`}>{coverHighlight}</span>
                   </h1>
                   <p className={styles.coverLead}>
-                    A fast, mobile-first website designed to turn local plumbing searches into phone calls.
+                    {coverLead}
                   </p>
                   <a
                     className="button"
@@ -400,20 +421,18 @@ export function JHPlumbingProposal({
               </div>
               <div className={`right-part wysiwyg-wrapper ${styles.opportunityCopy}`}>
                 <p>
-                  {clientName} needs a clear, professional website that helps
-                  customers quickly understand its services, the areas it covers
-                  and the fastest way to get in touch.
+                  {opportunityLead ??
+                    `${clientName} needs a clear, professional website that helps customers quickly understand its services, the areas it covers and the fastest way to get in touch.`}
                 </p>
                 <p>
-                  The new website will give {clientName} a credible, mobile-first
-                  presence, clearly present its plumbing services and make calling
-                  or requesting a quote immediate.
+                  {opportunitySupport ??
+                    `The new website will give ${clientName} a credible, mobile-first presence, clearly present its plumbing services and make calling or requesting a quote immediate.`}
                 </p>
               </div>
               <div className={styles.outcomeStrip}>
-                <span><CheckCircle2 /> Make calling immediate</span>
-                <span><CheckCircle2 /> Explain plumbing services</span>
-                <span><CheckCircle2 /> Target service areas</span>
+                {outcomeLabels.map((label) => (
+                  <span key={label}><CheckCircle2 /> {label}</span>
+                ))}
               </div>
             </div>
           </section>
@@ -459,7 +478,11 @@ export function JHPlumbingProposal({
           <ServiceSlide
             eyebrow="What is included"
             id="scope-included"
-            items={includedItems}
+            items={includedItems.map((item) =>
+              item.title === "Service pages"
+                ? { ...item, description: servicePagesDescription }
+                : item,
+            )}
             title={<>Everything included. Built to <span className="highlight">perform.</span></>}
           />
 
@@ -491,22 +514,22 @@ export function JHPlumbingProposal({
           </section>
 
           <section
-            aria-labelledby="plumbing-title"
+            aria-labelledby="selected-work-title"
             className={`${styles.slide} ${styles.accountingSlide}`}
             data-proposal-slide
-            id="plumbing-work"
+            id="selected-work"
             tabIndex={-1}
           >
             <div className={`chr-content-container ${styles.accountingHeading}`}>
               <p className="small-title">Selected work</p>
-              <h2 className="sub-title" id="plumbing-title">
+              <h2 className="sub-title" id="selected-work-title">
                 Explore some of
                 <br />
                 <span className="highlight">our previous work</span>
               </h2>
             </div>
             <div className={styles.accountingList}>
-              {plumbingWork.map((project, index) => (
+              {workItems.map((project, index) => (
                 <a href={project.href} key={project.name} rel="noreferrer" target="_blank">
                   <span className={styles.listNumber}>{String(index + 1).padStart(2, "0")}</span>
                   <span className={styles.accountingName}>
