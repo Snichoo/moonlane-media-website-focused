@@ -1274,6 +1274,10 @@
     width: 67vw;
   }
 
+  .clearMobileCoverText .coverFlower {
+    display: none;
+  }
+
   .opportunitySlide :global(.section-three-heading-part) {
     display: block;
     padding: 0;

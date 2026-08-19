@@ -60,6 +60,7 @@ export default function ARKitchensAndBathroomsProposalPage() {
   return (
     <JHPlumbingProposal
       acceptanceEndpoint="/api/proposals/ar-kitchens-and-bathrooms/accept"
+      clearMobileCoverText
       clientName="A&R Kitchens and Bathrooms"
       coverHighlight="& Bathrooms"
       coverLead="A fast, mobile-first website designed to turn local kitchen and bathroom renovation searches into quote enquiries."

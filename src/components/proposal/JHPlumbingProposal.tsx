@@ -63,6 +63,7 @@ type AcceptanceState = {
 
 type PlumbingProposalProps = {
   acceptanceEndpoint?: string;
+  clearMobileCoverText?: boolean;
   clientName?: string;
   coverHighlight?: string;
   coverLead?: string;
@@ -232,6 +233,7 @@ function GoogleRatingBadge() {
 
 export function JHPlumbingProposal({
   acceptanceEndpoint = "/api/proposals/jhplumbingco/accept",
+  clearMobileCoverText = false,
   clientName = "JHPLUMBINGCO",
   coverHighlight = "CO",
   coverLead = "A fast, mobile-first website designed to turn local plumbing searches into phone calls.",
@@ -303,7 +305,9 @@ export function JHPlumbingProposal({
   };
 
   return (
-    <div className={`chr-content ${styles.proposal} ${styles.urgentProposal}`}>
+    <div
+      className={`chr-content ${styles.proposal} ${styles.urgentProposal} ${clearMobileCoverText ? styles.clearMobileCoverText : ""}`}
+    >
       <a className={styles.skipLink} href="#proposal-deck">
         Skip to proposal
       </a>
