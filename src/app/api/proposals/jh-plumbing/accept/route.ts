@@ -3,12 +3,12 @@ import { Resend } from "resend";
 
 export const dynamic = "force-dynamic";
 
-const ACCEPTANCE_PATH = "/proposal/jh-plumbing";
-const CLIENT_NAME = "JH Plumbing Co";
+const ACCEPTANCE_PATH = "/proposal/jhplumbingco";
+const CLIENT_NAME = "JHPLUMBINGCO";
 const DEPOSIT = "$750";
 const MAX_BODY_BYTES = 8_192;
-const PROPOSAL_ID = "jh-plumbing";
-const PROPOSAL_VERSION = "18 August 2026";
+const PROPOSAL_ID = "jhplumbingco";
+const PROPOSAL_VERSION = "19 August 2026";
 const TOTAL_INVESTMENT = "$1,499";
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

@@ -149,7 +149,7 @@ const resultsGrid = resultColumns
 export const testimonials = `<section class="root-results" aria-labelledby="root-results-title">
   <div class="chr-content-container root-results-heading testimonial-slider-top-content wysiwyg-wrapper wysiwyg-wrapper--center">
     <h2 class="small-title" id="root-results-title">CLIENT TESTIMONIALS &amp; website RESULTS</h2>
-    <p class="sub-title">With over 151+ 5 star Google reviews &amp; proven results <span class="highlight">since 2009</span></p>
+    <p class="sub-title">Real client outcomes from websites and digital campaigns <span class="highlight">built to perform</span></p>
   </div>
   <div class="chr-content-container root-results-grid">
     ${resultsGrid}

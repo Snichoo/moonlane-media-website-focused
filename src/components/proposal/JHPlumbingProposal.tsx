@@ -82,7 +82,7 @@ const includedItems: ServiceItem[] = [
     title: "Custom, high-conversion design",
   },
   {
-    description: "Plumbing, drainage, gas and LP gas service pages.",
+    description: "Plumbing services, blocked drains, hot water and more.",
     icon: FileText,
     title: "Service pages",
   },
@@ -230,7 +230,7 @@ export function JHPlumbingProposal() {
       }
 
       const response = await fetch(
-        "/api/proposals/jh-plumbing/accept",
+        "/api/proposals/jhplumbingco/accept",
         {
           body: JSON.stringify({
             clientRequestId: acceptanceRequestIdRef.current,
@@ -301,7 +301,7 @@ export function JHPlumbingProposal() {
       </header>
 
       <main
-        aria-label="Website proposal for JH Plumbing Co"
+        aria-label="Website proposal for JHPLUMBINGCO"
         className={`${styles.deck} sub-page case-study-page`}
         id="proposal-deck"
         ref={deckRef}
@@ -344,11 +344,11 @@ export function JHPlumbingProposal() {
                   <p className="small-title">Website proposal</p>
                   <h1 className="title" id="proposal-cover-title">
                     <span className={styles.coverLine}>Built for</span>
-                    <span className={styles.coverLine}>JH Plumbing</span>
-                    <span className={`highlight ${styles.coverLine}`}>Co</span>
+                    <span className={styles.coverLine}>JHPLUMBING</span>
+                    <span className={`highlight ${styles.coverLine}`}>CO</span>
                   </h1>
                   <p className={styles.coverLead}>
-                    A conversion-focused website designed to establish your online presence and turn local searches into quote enquiries.
+                    A fast, mobile-first website designed to turn local plumbing searches into phone calls.
                   </p>
                   <a
                     className="button"
@@ -388,21 +388,20 @@ export function JHPlumbingProposal() {
               </div>
               <div className={`right-part wysiwyg-wrapper ${styles.opportunityCopy}`}>
                 <p>
-                  JH Plumbing Co has a clear opportunity to establish a
-                  professional web presence around its Chifley base. The current
-                  NSW contractor licence covers plumbing, drainage, gas fitting
-                  and LP gas fitting.
+                  JHPLUMBINGCO needs a clear, professional website that helps
+                  customers quickly understand its services, the areas it covers
+                  and the fastest way to get in touch.
                 </p>
                 <p>
-                  The new website will give each licensed service a clear path,
-                  target agreed local areas, make requesting a quote easy, and
-                  bring licence 496621C forward as visible trust proof.
+                  The new website will give JHPLUMBINGCO a credible, mobile-first
+                  presence, clearly present its plumbing services and make calling
+                  or requesting a quote immediate.
                 </p>
               </div>
               <div className={styles.outcomeStrip}>
-                <span><CheckCircle2 /> Explain licensed services</span>
-                <span><CheckCircle2 /> Show licence and trust</span>
-                <span><CheckCircle2 /> Target agreed local areas</span>
+                <span><CheckCircle2 /> Make calling immediate</span>
+                <span><CheckCircle2 /> Explain plumbing services</span>
+                <span><CheckCircle2 /> Target service areas</span>
               </div>
             </div>
           </section>
