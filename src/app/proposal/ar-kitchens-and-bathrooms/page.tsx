@@ -72,24 +72,6 @@ export default function ARKitchensAndBathroomsProposalPage() {
         "Target service areas",
       ]}
       servicePagesDescription="Kitchens, bathrooms, laundries and renovation services."
-      workItems={[
-        {
-          href: "https://moonlanemedia.com.au/case-study/ydl-stone",
-          name: "YDL Stone",
-        },
-        {
-          href: "https://moonlanemedia.com.au/case-study/bowens",
-          name: "Bowens",
-        },
-        {
-          href: "https://moonlanemedia.com.au/case-study/boa",
-          name: "BOA",
-        },
-        {
-          href: "https://moonlanemedia.com.au/case-study/repurpose-it",
-          name: "Repurpose It",
-        },
-      ]}
     />
   );
 }
