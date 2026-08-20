@@ -54,6 +54,7 @@ type ServiceItem = {
 type WorkItem = {
   href: string;
   name: string;
+  result?: string;
 };
 
 type AcceptanceState = {
@@ -79,10 +80,12 @@ const plumbingWork = [
   {
     href: "https://oldmateplumbing.com.au/",
     name: "Old Mate Plumbing Co.",
+    result: "600% increase in lead quality and ROI in the first month",
   },
   {
     href: "https://solutionsplumbing.com.au/",
     name: "Solutions Plumbing",
+    result: "Over 150 leads a month",
   },
   {
     href: "https://www.friendlyplumbing.com.au/",
@@ -91,6 +94,7 @@ const plumbingWork = [
   {
     href: "https://asaptrades.com.au/",
     name: "ASAP Trades",
+    result: "Over 200 extra leads a month and a 200% increase in ROI",
   },
 ] as const;
 
@@ -538,6 +542,9 @@ export function JHPlumbingProposal({
                   <span className={styles.listNumber}>{String(index + 1).padStart(2, "0")}</span>
                   <span className={styles.accountingName}>
                     <strong>{project.name}</strong>
+                    {project.result ? (
+                      <small className={styles.accountingResult}>{project.result}</small>
+                    ) : null}
                   </span>
                   <ExternalLink aria-hidden="true" />
                 </a>
