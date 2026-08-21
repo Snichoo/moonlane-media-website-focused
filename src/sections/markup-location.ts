@@ -63,14 +63,54 @@ function lazyLoadImages(html: string): string {
   });
 }
 
+const TRANSPARENT_IMAGE =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+
+function deferImagesUntilNearViewport(html: string): string {
+  return lazyLoadImages(html).replace(/<img\b[^>]*>/g, (tag) => {
+    const source = tag.match(/\bsrc="([^"]+)"/)?.[1];
+    if (!source || source.startsWith("data:")) return tag;
+
+    return tag
+      .replace("<img", '<img data-deferred-image="true"')
+      .replace(/\bsrc="([^"]+)"/, `src="${TRANSPARENT_IMAGE}" data-src="$1"`)
+      .replace(/\bsrcset="([^"]+)"/, 'data-srcset="$1"');
+  });
+}
+
+function optimizeLocationHeader(html: string): string {
+  return html.replaceAll(
+    "/images/moonlane-logo.png",
+    "/images/paid-landing/moonlane-logo-330.webp",
+  );
+}
+
 function prioritizeHomeHero(html: string): string {
   return html
     .replace(/<video\b(?=[^>]*\bid="home-banner-video")[^>]*>/, (tag) =>
       tag.replace('preload="auto"', 'preload="metadata"'),
     )
+    // The desktop animation is hidden by CSS below 1240px. Giving its source
+    // the same media condition prevents mobile browsers from downloading and
+    // decoding an invisible 451 KB video while keeping desktop unchanged.
+    .replace(
+      '<source type="video/mp4" src="/wp-content/uploads/2021/05/cut-flower-open-451.mp4">',
+      '<source type="video/mp4" media="(min-width: 1240px)" src="/wp-content/uploads/2021/05/cut-flower-open-451.mp4">',
+    )
+    .replaceAll(
+      "/wp-content/uploads/2018/03/flower-image-270x280.png",
+      "/images/paid-landing/flower-270x280.webp",
+    )
+    .replaceAll(
+      "/wp-content/uploads/2018/03/flower-image-578x600.png",
+      "/images/paid-landing/flower-578x600.webp",
+    )
     .replace(/<img\b(?=[^>]*\bclass="home-banner-rp-flower")[^>]*>/, (tag) =>
       tag
-        .replace(/src="[^"]*"/, 'src="/wp-content/uploads/2018/03/flower-image-270x280.png"')
+        .replace(
+          /src="[^"]*"/,
+          'src="/images/paid-landing/flower-270x280.webp"',
+        )
         .replace('width="1"', 'width="270"')
         .replace('height="1"', 'height="280"')
         .replace(
@@ -78,6 +118,33 @@ function prioritizeHomeHero(html: string): string {
           '<img loading="eager" decoding="async" fetchpriority="high"',
         ),
     );
+}
+
+function optimizeSectionTwoImage(html: string): string {
+  const replacements = [
+    ["home-intro-2019-100x100.png", "team-100x100.webp"],
+    ["home-intro-2019-150x150.png", "team-150x150.webp"],
+    ["home-intro-2019-270x270.png", "team-270x270.webp"],
+    ["home-intro-2019-600x600.png", "team-600x600.webp"],
+    ["home-intro-2019.png", "team-730x730.webp"],
+  ] as const;
+
+  let optimized = html;
+  for (const [source, replacement] of replacements) {
+    optimized = optimized.replaceAll(
+      `/wp-content/uploads/2018/11/${source}`,
+      `/images/paid-landing/${replacement}`,
+    );
+  }
+
+  return optimized.replace(
+    /<img\b(?=[^>]*\bclass="section-two-image")[^>]*>/,
+    (tag) =>
+      tag.replace(
+        ">",
+        ' sizes="(max-width: 766px) 75vw, (max-width: 1239px) 50vw, 730px">',
+      ),
+  );
 }
 
 function deferBelowFoldVideo(html: string): string {
@@ -191,7 +258,7 @@ export function getLocationHomeSections(
   );
 
   return {
-    header: scopeLinks(base.header, location),
+    header: optimizeLocationHeader(scopeLinks(base.header, location)),
     sideForm: lazyLoadImages(scopeShellSection(
       base.sideForm,
       location,
@@ -199,8 +266,8 @@ export function getLocationHomeSections(
       pageTitle,
     )),
     homeBanner,
-    sectionTwo: lazyLoadImages(sectionTwo),
-    ourWork: lazyLoadImages(scopeLinks(base.ourWork, location)),
+    sectionTwo: lazyLoadImages(optimizeSectionTwoImage(sectionTwo)),
+    ourWork: deferImagesUntilNearViewport(scopeLinks(base.ourWork, location)),
     testimonials: lazyLoadImages(scopeLinks(base.testimonials, location)),
     sectionThree: deferBelowFoldVideo(scopeLinks(base.sectionThree, location)),
     partners: lazyLoadImages(scopeLinks(base.partners, location)),
@@ -234,7 +301,7 @@ export function getLocationContactSections(
   body = scopeForm(body, location, location.contactPath, pageTitle);
 
   return {
-    header: scopeLinks(base.header, location),
+    header: optimizeLocationHeader(scopeLinks(base.header, location)),
     sideForm: lazyLoadImages(scopeShellSection(
       base.sideForm,
       location,

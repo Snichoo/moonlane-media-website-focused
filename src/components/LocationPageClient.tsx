@@ -15,7 +15,37 @@ export default function LocationPageClient({
     let sliderCleanup: Cleanup | undefined;
     let sliderObserver: IntersectionObserver | undefined;
     let videoObserver: IntersectionObserver | undefined;
+    let imageObserver: IntersectionObserver | undefined;
     const behaviorCleanup = initBehaviors(document);
+
+    const deferredImages = Array.from(
+      document.querySelectorAll<HTMLImageElement>(
+        ".paid-location-page img[data-deferred-image]",
+      ),
+    );
+    const loadImage = (image: HTMLImageElement) => {
+      if (image.dataset.srcset) image.srcset = image.dataset.srcset;
+      if (image.dataset.src) image.src = image.dataset.src;
+      image.removeAttribute("data-srcset");
+      image.removeAttribute("data-src");
+      image.removeAttribute("data-deferred-image");
+    };
+
+    if (deferredImages.length && "IntersectionObserver" in window) {
+      imageObserver = new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            loadImage(entry.target as HTMLImageElement);
+            observer.unobserve(entry.target);
+          }
+        },
+        { rootMargin: "900px 0px" },
+      );
+      deferredImages.forEach((image) => imageObserver?.observe(image));
+    } else {
+      deferredImages.forEach(loadImage);
+    }
 
     const deferredVideos = Array.from(
       document.querySelectorAll<HTMLVideoElement>(
@@ -81,6 +111,7 @@ export default function LocationPageClient({
     return () => {
       cancelled = true;
       behaviorCleanup();
+      imageObserver?.disconnect();
       videoObserver?.disconnect();
       sliderObserver?.disconnect();
       sliderCleanup?.();
