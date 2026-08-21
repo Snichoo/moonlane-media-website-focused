@@ -5,11 +5,11 @@ export const dynamic = "force-dynamic";
 
 const ACCEPTANCE_PATH = "/proposal/my-plumb-tech";
 const CLIENT_NAME = "My Plumb Tech";
-const DEPOSIT = "$750";
+const DEPOSIT = "$475";
 const MAX_BODY_BYTES = 8_192;
 const PROPOSAL_ID = "my-plumb-tech";
 const PROPOSAL_VERSION = "20 August 2026";
-const TOTAL_INVESTMENT = "$1,499";
+const TOTAL_INVESTMENT = "$950";
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const ALLOWED_FIELDS = new Set(["clientRequestId"]);

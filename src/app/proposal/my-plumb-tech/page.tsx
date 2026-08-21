@@ -64,6 +64,8 @@ export default function MyPlumbTechProposalPage() {
       coverHighlight="Tech"
       coverLead="A fast, mobile-first website designed to turn local plumbing, hot water and emergency searches into phone calls."
       coverPrimary="My Plumb"
+      deposit="$475"
+      offerNote="Offer ends this Sunday"
       opportunityLead="My Plumb Tech needs a clear, professional website that shows the full range of its plumbing, gas and hot water work, the suburbs it covers and the fastest way to get a plumber on site."
       opportunitySupport="The new website will give My Plumb Tech a credible, mobile-first presence, present every service properly and make calling or requesting a quote immediate, day or night."
       outcomeLabels={[
@@ -72,6 +74,8 @@ export default function MyPlumbTechProposalPage() {
         "Target service suburbs",
       ]}
       servicePagesDescription="Blocked drains, hot water, gas fitting, leak detection and emergency callouts."
+      totalInvestment="$950"
+      usualInvestment="$2,000"
     />
   );
 }

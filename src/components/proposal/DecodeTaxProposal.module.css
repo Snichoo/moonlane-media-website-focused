@@ -799,6 +799,51 @@
   align-self: end;
 }
 
+.priceVisual .priceWas {
+  color: rgb(255 255 255 / 70%);
+  font-size: 13px;
+  letter-spacing: 0.8px;
+  margin-top: 10px;
+}
+
+.priceVisual .priceWas s {
+  text-decoration-thickness: 2px;
+}
+
+.offerNote {
+  align-items: center;
+  background: #191919;
+  color: #fff;
+  display: flex;
+  font-family: Montserrat, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  gap: 9px;
+  letter-spacing: 0.8px;
+  line-height: 1.2;
+  margin: 14px 0 0;
+  padding: 9px 15px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+/* Claw back the badge's row so the slide still fits one screen. */
+.investmentSectionOffer .depositCallout {
+  margin-top: 14px !important;
+  padding: 12px 0;
+}
+
+.investmentSectionOffer .noMaintenance {
+  margin-top: 8px !important;
+}
+
+.offerNote svg {
+  color: #fdce08;
+  flex: none;
+  height: 18px;
+  width: 18px;
+}
+
 .depositCallout {
   align-items: baseline;
   border-bottom: 1px solid rgb(25 25 25 / 28%);
@@ -885,6 +930,51 @@
   font-family: Montserrat, sans-serif;
   font-size: 16px;
   font-weight: 800;
+}
+
+.hostingFree {
+  align-items: baseline;
+  border-bottom: 2px solid rgb(25 25 25 / 25%);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 12px;
+  grid-column: 1 / -1;
+  margin: 0 0 26px !important;
+  padding-bottom: 20px;
+}
+
+.hostingFree span {
+  font-size: 15px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.hostingFree strong {
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(52px, 5.5vw, 84px);
+  letter-spacing: -3px;
+  line-height: 1;
+}
+
+.hostingFree small {
+  font-family: Montserrat, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.hostingFreeLine {
+  font-size: clamp(19px, 1.5vw, 23px) !important;
+  line-height: 1.35;
+  margin: 0 0 14px !important;
+}
+
+.hostingFreeLine strong {
+  background: #fdce08;
+  box-decoration-break: clone;
+  padding: 2px 8px;
 }
 
 .processSection > :global(.chr-content-container) {
@@ -1612,12 +1702,29 @@
   .priceVisual {
     align-content: center;
     border-radius: 0 80px 0 0;
-    height: 140px;
+    height: auto;
     margin-bottom: 18px !important;
     max-width: 100% !important;
     min-height: 140px;
     padding: 18px;
     width: 100% !important;
+  }
+
+  .priceVisual .priceWas {
+    font-size: 11px;
+    margin-top: 6px;
+  }
+
+  .offerNote {
+    font-size: 11px;
+    gap: 8px;
+    margin-top: 13px;
+    padding: 8px 12px;
+  }
+
+  .offerNote svg {
+    height: 14px;
+    width: 14px;
   }
 
   .priceVisual strong {
@@ -1703,6 +1810,29 @@
 
   .hostingGraphic span {
     font-size: 14px;
+  }
+
+  .hostingFree {
+    margin: 0 0 13px !important;
+    padding-bottom: 11px;
+  }
+
+  .hostingFree span {
+    font-size: 12px;
+  }
+
+  .hostingFree strong {
+    font-size: 46px;
+    letter-spacing: -2px;
+  }
+
+  .hostingFree small {
+    font-size: 12px;
+  }
+
+  .hostingFreeLine {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
   }
 
   .textImageSlide :global(.text-part p),
@@ -1874,6 +2004,58 @@
 
   .acceptanceActions {
     gap: 12px;
+  }
+
+  /* Short phones cannot afford the full-size hosting and offer callouts. */
+  .hostingFree {
+    border-bottom: 0;
+    gap: 0 8px;
+    margin: 0 0 9px !important;
+    padding-bottom: 0;
+  }
+
+  .hostingFree span {
+    font-size: 11px;
+    width: auto;
+  }
+
+  .hostingFree strong {
+    font-size: 32px;
+    letter-spacing: -1.5px;
+  }
+
+  .hostingFree small {
+    font-size: 11px;
+  }
+
+  .hostingFreeLine {
+    font-size: 15px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .priceVisual .priceWas {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+
+  .offerNote {
+    font-size: 10px;
+    margin-top: 10px;
+    padding: 7px 11px;
+  }
+
+  .offerNote svg {
+    height: 13px;
+    width: 13px;
+  }
+
+  .investmentSectionOffer .priceVisual {
+    min-height: 112px;
+    padding: 14px 16px;
+  }
+
+  .investmentSectionOffer .priceVisual strong {
+    font-size: 44px;
   }
 }
 

@@ -69,10 +69,14 @@ type PlumbingProposalProps = {
   coverHighlight?: string;
   coverLead?: string;
   coverPrimary?: string;
+  deposit?: string;
+  offerNote?: string;
   opportunityLead?: string;
   opportunitySupport?: string;
   outcomeLabels?: readonly [string, string, string];
   servicePagesDescription?: string;
+  totalInvestment?: string;
+  usualInvestment?: string;
   workItems?: readonly WorkItem[];
 };
 
@@ -242,6 +246,8 @@ export function JHPlumbingProposal({
   coverHighlight = "CO",
   coverLead = "A fast, mobile-first website designed to turn local plumbing searches into phone calls.",
   coverPrimary = "JHPLUMBING",
+  deposit = "$750",
+  offerNote,
   opportunityLead,
   opportunitySupport,
   outcomeLabels = [
@@ -250,6 +256,8 @@ export function JHPlumbingProposal({
     "Target service areas",
   ],
   servicePagesDescription = "Plumbing services, blocked drains, hot water and more.",
+  totalInvestment = "$1,499",
+  usualInvestment,
   workItems = plumbingWork,
 }: PlumbingProposalProps = {}) {
   const { activeIndex, deckRef, goToSlide } = useProposalDeck();
@@ -403,7 +411,7 @@ export function JHPlumbingProposal({
                   </a>
                   <div className={styles.coverFacts}>
                     <span><strong>7 days</strong> target delivery</span>
-                    <span><strong>$1,499</strong> one-off</span>
+                    <span><strong>{totalInvestment}</strong> one-off</span>
                     <span><strong>100%</strong> ownership</span>
                   </div>
                 </div>
@@ -559,11 +567,18 @@ export function JHPlumbingProposal({
             id="investment"
             tabIndex={-1}
           >
-            <div className={`chr-section-two ${styles.sectionTwo} ${styles.investmentSection}`}>
+            <div
+              className={`chr-section-two ${styles.sectionTwo} ${styles.investmentSection} ${offerNote ? styles.investmentSectionOffer : ""}`}
+            >
               <div className="chr-content-container">
                 <div className={`image-wrapper ${styles.priceVisual}`}>
                   <span className={styles.priceLabel}>Total investment</span>
-                  <strong>$1,499</strong>
+                  {usualInvestment ? (
+                    <span className={styles.priceWas}>
+                      Usually <s>{usualInvestment}</s>
+                    </span>
+                  ) : null}
+                  <strong>{totalInvestment}</strong>
                   <span>one-off fee</span>
                 </div>
                 <div className="section-two-content wysiwyg-wrapper">
@@ -573,8 +588,14 @@ export function JHPlumbingProposal({
                     <br />
                     <span className="highlight">Everything above.</span>
                   </h2>
+                  {offerNote ? (
+                    <div className={styles.offerNote}>
+                      <Clock3 aria-hidden="true" />
+                      <span>{offerNote}</span>
+                    </div>
+                  ) : null}
                   <p className={styles.depositCallout}>
-                    <strong>A $750 deposit</strong>
+                    <strong>A {deposit} deposit</strong>
                     <small>gets the project started</small>
                   </p>
                   <p className={styles.noMaintenance}>
@@ -600,6 +621,11 @@ export function JHPlumbingProposal({
             <div className="chr-content-container chr-text-and-image-container left-image">
               <div className={`image-part ${styles.hostingImage}`}>
                 <div className={styles.hostingGraphic}>
+                  <p className={styles.hostingFree}>
+                    <span>Hosting</span>
+                    <strong>$0</strong>
+                    <small>per month</small>
+                  </p>
                   <Globe2 aria-hidden="true" />
                   <span>Domain ownership</span>
                   <ServerCog aria-hidden="true" />
@@ -615,10 +641,13 @@ export function JHPlumbingProposal({
                   <br />
                   <span className="highlight">Complete control.</span>
                 </h2>
+                <p className={styles.hostingFreeLine}>
+                  Vercel hosting is <strong>completely free</strong>
+                  {" "}&mdash; no monthly hosting bill, ever.
+                </p>
                 <p>
                   If you already have a domain, it can stay with its current
-                  registrar while the new site is hosted on Vercel. Its free
-                  tier provides fast, secure hosting for this project.
+                  registrar while the new site is hosted on Vercel.
                 </p>
                 <ul>
                   <li>Any existing domain remains in your registrar account.</li>
@@ -656,7 +685,7 @@ export function JHPlumbingProposal({
                 </div>
                 <ol className={`section-two-icon-list ${styles.processList}`}>
                   <li className="single-item"><span className={styles.stepNumber}>01</span><span><strong>Discovery call</strong><small>We understand your vision and plan the site together.</small></span></li>
-                  <li className="single-item"><span className={styles.stepNumber}>02</span><span><strong>Pay the $750 deposit</strong><small>The deposit kicks off the build.</small></span></li>
+                  <li className="single-item"><span className={styles.stepNumber}>02</span><span><strong>Pay the {deposit} deposit</strong><small>The deposit kicks off the build.</small></span></li>
                   <li className="single-item"><span className={styles.stepNumber}>03</span><span><strong>We build your website</strong><small>The 7-day target starts from project-ready handover.</small></span></li>
                   <li className="single-item"><span className={styles.stepNumber}>04</span><span><strong>Review and go live</strong><small>A 20-minute call connects the domain and launches it.</small></span></li>
                 </ol>
