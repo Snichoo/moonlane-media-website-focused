@@ -1,18 +1,13 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { initBehaviors } from "@/lib/behaviors";
 import { getLocation } from "@/lib/locations";
 import type { LocationSlug } from "@/lib/locations";
-import { initSliders } from "@/lib/sliders";
 import { getLocationHomeSections } from "@/sections/markup-location";
+import LocationPageClient from "@/components/LocationPageClient";
 
 export default function LocationHomePage({
   locationSlug,
 }: {
   locationSlug: LocationSlug;
 }) {
-  const rootRef = useRef<HTMLDivElement>(null);
   const location = getLocation(locationSlug);
 
   if (!location) {
@@ -21,33 +16,10 @@ export default function LocationHomePage({
 
   const sections = getLocationHomeSections(location);
 
-  useEffect(() => {
-    let cancelled = false;
-    let sliderCleanup: (() => void) | undefined;
-    const behaviorCleanup = initBehaviors(document);
-
-    document.querySelectorAll("video").forEach((video) => {
-      video.muted = true;
-      if (video.id === "home-banner-video") video.currentTime = 0;
-      video.play().catch(() => {});
-    });
-
-    initSliders().then((cleanup) => {
-      if (cancelled) cleanup();
-      else sliderCleanup = cleanup;
-    });
-
-    return () => {
-      cancelled = true;
-      behaviorCleanup();
-      sliderCleanup?.();
-    };
-  }, []);
-
   const inject = (html: string) => ({ __html: html });
 
   return (
-    <div className="chr-content" ref={rootRef}>
+    <div className="chr-content paid-location-page">
       <header
         className="chr-header home"
         id="chr-header"
@@ -114,6 +86,7 @@ export default function LocationHomePage({
         className="mobile-bottom-button-wrapper"
         dangerouslySetInnerHTML={inject(sections.mobileButton)}
       />
+      <LocationPageClient sliders />
     </div>
   );
 }

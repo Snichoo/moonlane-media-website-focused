@@ -1,10 +1,7 @@
-"use client";
-
-import { useEffect } from "react";
-import { initBehaviors } from "@/lib/behaviors";
 import { getLocation } from "@/lib/locations";
 import type { LocationSlug } from "@/lib/locations";
 import { getLocationContactSections } from "@/sections/markup-location";
+import LocationPageClient from "@/components/LocationPageClient";
 
 export default function LocationContactPage({
   locationSlug,
@@ -19,15 +16,6 @@ export default function LocationContactPage({
 
   const sections = getLocationContactSections(location);
 
-  useEffect(() => {
-    const cleanup = initBehaviors(document);
-    document.querySelectorAll("video").forEach((video) => {
-      video.muted = true;
-      video.play().catch(() => {});
-    });
-    return cleanup;
-  }, []);
-
   const inject = (html: string) => ({ __html: html });
   const subHeader = sections.header
     .replace("chr-logo-container home", "chr-logo-container")
@@ -36,7 +24,7 @@ export default function LocationContactPage({
     .replace(/<a class="chr-header-phone(?:-in-menu)?"[\s\S]*?<\/a>/g, "");
 
   return (
-    <div className="chr-content">
+    <div className="chr-content paid-location-page">
       <header
         className="chr-header"
         id="chr-header"
@@ -65,6 +53,7 @@ export default function LocationContactPage({
         className="mobile-bottom-button-wrapper"
         dangerouslySetInnerHTML={inject(sections.mobileButton)}
       />
+      <LocationPageClient />
     </div>
   );
 }

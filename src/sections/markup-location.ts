@@ -50,6 +50,48 @@ function scopeLinks(html: string, location: LocationConfig): string {
     .replaceAll('href="/"', `href="${location.basePath}"`);
 }
 
+function lazyLoadImages(html: string): string {
+  return html.replace(/<img\b[^>]*>/g, (tag) => {
+    let optimized = tag;
+    if (!/\bloading=/.test(optimized)) {
+      optimized = optimized.replace("<img", '<img loading="lazy"');
+    }
+    if (!/\bdecoding=/.test(optimized)) {
+      optimized = optimized.replace("<img", '<img decoding="async"');
+    }
+    return optimized;
+  });
+}
+
+function prioritizeHomeHero(html: string): string {
+  return html
+    .replace(/<video\b(?=[^>]*\bid="home-banner-video")[^>]*>/, (tag) =>
+      tag.replace('preload="auto"', 'preload="metadata"'),
+    )
+    .replace(/<img\b(?=[^>]*\bclass="home-banner-rp-flower")[^>]*>/, (tag) =>
+      tag
+        .replace(/src="[^"]*"/, 'src="/wp-content/uploads/2018/03/flower-image-270x280.png"')
+        .replace('width="1"', 'width="270"')
+        .replace('height="1"', 'height="280"')
+        .replace(
+          "<img",
+          '<img loading="eager" decoding="async" fetchpriority="high"',
+        ),
+    );
+}
+
+function deferBelowFoldVideo(html: string): string {
+  return html.replace(
+    /<video\b(?=[^>]*\bclass="butterfly-video lazy")[\s\S]*?<\/video>/,
+    (video) =>
+      video
+        .replace(/\sautoplay\b/, "")
+        .replace('preload="auto"', 'preload="none"')
+        .replace("<video", '<video data-deferred-video="true"')
+        .replace(/\bsrc="([^"]+)"/, 'data-src="$1"'),
+  );
+}
+
 function setHiddenValue(html: string, name: string, value: string): string {
   const input = new RegExp(
     `(<input\\b(?=[^>]*\\bname="${name}")[^>]*\\bvalue=")[^"]*(")`,
@@ -89,12 +131,12 @@ export function getLocationHomeSections(
   location: LocationConfig,
 ): LocationHomeSections {
   const pageTitle = `Web Design ${location.city}`;
-  const homeBanner = replaceOnce(
+  const homeBanner = prioritizeHomeHero(replaceOnce(
     scopeLinks(base.homeBanner, location),
     "Australian Web Design &amp; Conversion Agency",
     `${location.city} Web Design &amp; Conversion Agency`,
     "homepage location heading",
-  );
+  ));
 
   let sectionTwo = replaceOnce(
     scopeLinks(base.sectionTwo, location),
@@ -150,26 +192,26 @@ export function getLocationHomeSections(
 
   return {
     header: scopeLinks(base.header, location),
-    sideForm: scopeShellSection(
+    sideForm: lazyLoadImages(scopeShellSection(
       base.sideForm,
       location,
       location.basePath,
       pageTitle,
-    ),
+    )),
     homeBanner,
-    sectionTwo,
-    ourWork: scopeLinks(base.ourWork, location),
-    testimonials: scopeLinks(base.testimonials, location),
-    sectionThree: scopeLinks(base.sectionThree, location),
-    partners: scopeLinks(base.partners, location),
-    faq,
-    confidenceBar: scopeLinks(base.confidenceBar, location),
-    footer: scopeShellSection(
+    sectionTwo: lazyLoadImages(sectionTwo),
+    ourWork: lazyLoadImages(scopeLinks(base.ourWork, location)),
+    testimonials: lazyLoadImages(scopeLinks(base.testimonials, location)),
+    sectionThree: deferBelowFoldVideo(scopeLinks(base.sectionThree, location)),
+    partners: lazyLoadImages(scopeLinks(base.partners, location)),
+    faq: lazyLoadImages(faq),
+    confidenceBar: lazyLoadImages(scopeLinks(base.confidenceBar, location)),
+    footer: lazyLoadImages(scopeShellSection(
       base.footer,
       location,
       location.basePath,
       pageTitle,
-    ),
+    )),
     mobileButton: scopeLinks(base.mobileButton, location),
   };
 }
@@ -193,19 +235,19 @@ export function getLocationContactSections(
 
   return {
     header: scopeLinks(base.header, location),
-    sideForm: scopeShellSection(
+    sideForm: lazyLoadImages(scopeShellSection(
       base.sideForm,
       location,
       location.contactPath,
       pageTitle,
-    ),
-    body,
-    footer: scopeShellSection(
+    )),
+    body: lazyLoadImages(body),
+    footer: lazyLoadImages(scopeShellSection(
       base.footer,
       location,
       location.contactPath,
       pageTitle,
-    ),
+    )),
     mobileButton: scopeLinks(base.mobileButton, location),
   };
 }
