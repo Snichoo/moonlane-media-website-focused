@@ -12,7 +12,7 @@
 // which throw on a missed anchor, so re-running the extractor surfaces any
 // reworded copy as a build failure rather than a silent regression.
 
-import { removeBlock, replaceOnce } from "@/lib/html-edit";
+import { removeBlock, removeParagraph, replaceOnce } from "@/lib/html-edit";
 import type { HomeSections, ShellSections } from "@/types/sections";
 import { contactHtml } from "./contact";
 import * as base from "./markup";
@@ -56,8 +56,26 @@ export const confidenceBar = replaceOnce(
   "<span>Every project handled by our in-house Australian team</span>",
 );
 
-/** The footer's row of award logos. */
-export const footer = removeBlock(base.footer, '<div class="bottom-logo-list-part">');
+// The business trades from one Brisbane office. The extraction still carries
+// the theme's two-office Melbourne/Sydney list, so both the footer and the
+// contact page are collapsed to the real address. The ad tree
+// (`markup-landing`) and the location pages (`markup-location`) derive from
+// `./markup` directly and are deliberately left alone.
+const OLD_OFFICE =
+  '<a href="https://www.google.com.au/maps/place/101%20Collins%20Street%2C%20Melbourne%20VIC%203000/" rel="noopener" target="_blank">Level 27, 101 Collins Street, Melbourne VIC 3000</a>';
+const NEW_OFFICE =
+  '<a href="https://www.google.com.au/maps/place/77%20Hudson%20Road%2C%20Albion%20QLD%204010/" rel="noopener" target="_blank">77 Hudson Road, Albion QLD 4010</a>';
+const SYDNEY_OFFICE = "264 George Street, Sydney NSW 2000";
+
+/** The footer's row of award logos, then the two-office list collapsed to one. */
+export const footer = removeParagraph(
+  replaceOnce(
+    removeBlock(base.footer, '<div class="bottom-logo-list-part">'),
+    OLD_OFFICE,
+    NEW_OFFICE,
+  ),
+  SYDNEY_OFFICE,
+);
 
 const faqEdits: ReadonlyArray<readonly [string, string]> = [
   [
@@ -110,7 +128,19 @@ export const faq = faqEdits.reduce(
 );
 
 /** The contact page carried one more client quote card beside the office list. */
-export const contactBody = removeBlock(contactHtml, '<div class="testimonial-content">');
+export const contactBody = replaceOnce(
+  removeBlock(
+    replaceOnce(
+      removeBlock(contactHtml, '<div class="testimonial-content">'),
+      OLD_OFFICE,
+      NEW_OFFICE,
+    ),
+    '<div class="contact location">',
+    SYDNEY_OFFICE,
+  ),
+  '<p class="sub-title">Melbourne &amp; Sydney</p>',
+  '<p class="sub-title">Brisbane</p>',
+);
 
 export const shell: ShellSections = { header, sideForm, footer, mobileButton };
 

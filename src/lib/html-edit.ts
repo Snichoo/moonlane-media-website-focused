@@ -55,6 +55,24 @@ export function removeBlock(html: string, openTag: string, marker?: string): str
 }
 
 /**
+ * Drops the `<p>` containing `marker`, icon markup and all. The office rows in
+ * the footer are paragraphs rather than divs, so `removeBlock` cannot reach them.
+ */
+export function removeParagraph(html: string, marker: string): string {
+  const at = html.indexOf(marker);
+  if (at === -1) throw new Error(`removeParagraph: no match for ${preview(marker)}`);
+  if (html.indexOf(marker, at + marker.length) !== -1) {
+    throw new Error(`removeParagraph: more than one match for ${preview(marker)}`);
+  }
+  const start = html.lastIndexOf("<p ", at);
+  const end = html.indexOf("</p>", at);
+  if (start === -1 || end === -1) {
+    throw new Error(`removeParagraph: unbalanced markup around ${preview(marker)}`);
+  }
+  return html.slice(0, start) + html.slice(end + "</p>".length);
+}
+
+/**
  * Moves the extraction's own internal links under `base` (e.g. `/landing-page`)
  * so a duplicated route tree stays self-contained. Only the paths that resolve
  * to real routes are rewritten; the theme's many links to pages that were never
