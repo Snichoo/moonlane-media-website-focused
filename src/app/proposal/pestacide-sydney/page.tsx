@@ -79,6 +79,10 @@ export default function PestacideSydneyProposalPage() {
           result: "Over 200 extra leads a month and a 200% increase in ROI",
         },
         {
+          href: "https://www.protechpestcontrol.com.au/",
+          name: "Protech Pest Control",
+        },
+        {
           href: "https://oldmateplumbing.com.au/",
           name: "Old Mate Plumbing Co.",
           result: "600% increase in lead quality and ROI in the first month",
@@ -87,11 +91,6 @@ export default function PestacideSydneyProposalPage() {
           href: "https://www.eliteema.com.au/",
           name: "Elite Electrical",
           result: "Over 100 leads a month, halved cost per lead in 3 months",
-        },
-        {
-          href: "https://solutionsplumbing.com.au/",
-          name: "Solutions Plumbing",
-          result: "Over 150 leads a month",
         },
       ]}
     />

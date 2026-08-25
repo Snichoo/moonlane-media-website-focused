@@ -81,15 +81,14 @@ export default function PrestigeCommunityHomeCareProposalPage() {
           result: "Over 100 leads a month, halved cost per lead in 3 months",
         },
         {
+          href: "https://abletothrive.com.au/",
+          name: "Able to Thrive",
+        },
+        {
           href: "https://www.enviroenergy.net.au/",
           name: "EnviroEnergy",
           result:
             "5x lower cost per conversion than industry standard in the first month",
-        },
-        {
-          href: "https://singhroofing.com.au/",
-          name: "Singh Roofing",
-          result: "Halved cost per lead in 2 months",
         },
         {
           href: "https://happyboxstore.com/",
