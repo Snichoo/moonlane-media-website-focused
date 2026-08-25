@@ -94,6 +94,7 @@ const plumbingWork = [
   {
     href: "https://www.friendlyplumbing.com.au/",
     name: "Friendly Plumbing",
+    result: "Eight service pages and suburb pages across Greater Sydney",
   },
   {
     href: "https://asaptrades.com.au/",
