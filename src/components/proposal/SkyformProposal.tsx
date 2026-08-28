@@ -14,18 +14,16 @@ import {
   CopyX,
   ExternalLink,
   Gauge,
-  Globe2,
   Images,
   Layers,
-  MailCheck,
   MessageSquareText,
   MonitorPlay,
   Palette,
+  PenTool,
   PanelsTopLeft,
   Phone,
   Quote,
   SearchCheck,
-  ServerCog,
   ShieldCheck,
   Sparkles,
   Target,
@@ -43,7 +41,7 @@ const slides = [
   "Delivery promise",
   "Selected work",
   "Investment",
-  "Hosting, handover and support",
+  "Editing and support",
   "How it works",
   "Accept proposal",
 ] as const;
@@ -477,8 +475,7 @@ export function SkyformProposal({
                 <span className="highlight">and why each one matters</span>
               </h2>
               <p className={styles.needsIntro}>
-                Taken from reviewing the construction sites winning work today,
-                against what most competitors are still getting wrong.
+                Taken from the construction sites winning work today.
               </p>
             </div>
             <div className={`chr-content-container ${styles.needsLayout}`}>
@@ -510,16 +507,13 @@ export function SkyformProposal({
                 </figure>
               </div>
               <div className={styles.needsList}>
-                {headlineNeeds.map(({ icon: Icon, note, title }, index) => (
+                {headlineNeeds.map(({ icon: Icon, note, title }) => (
                   <article key={title}>
-                    <span className={styles.needsNumber}>
-                      {String(index + 1).padStart(2, "0")}
+                    <span className={styles.needsIcon}>
+                      <Icon aria-hidden="true" />
                     </span>
                     <div>
-                      <h3>
-                        <Icon aria-hidden="true" />
-                        {title}
-                      </h3>
+                      <h3>{title}</h3>
                       <p>{note}</p>
                     </div>
                   </article>
@@ -644,56 +638,39 @@ export function SkyformProposal({
           </section>
 
           <section
-            aria-labelledby="hosting-title"
-            className={`${styles.slide} ${styles.textImageSlide} single-part text-and-image-part`}
+            aria-labelledby="support-title"
+            className={`${styles.slide} ${styles.supportSlide}`}
             data-proposal-slide
-            id="hosting"
+            id="support"
             tabIndex={-1}
           >
-            <div className="chr-content-container chr-text-and-image-container left-image">
-              <div className={`image-part ${styles.hostingImage}`}>
-                <div className={styles.hostingGraphic}>
-                  <p className={styles.hostingFree}>
-                    <span>Hosting</span>
-                    <strong>$0</strong>
-                    <small>per month</small>
-                  </p>
-                  <Globe2 aria-hidden="true" />
-                  <span>Domain ownership</span>
-                  <ServerCog aria-hidden="true" />
-                  <span>Vercel hosting</span>
-                  <MailCheck aria-hidden="true" />
-                  <span>Email stays connected</span>
-                </div>
-              </div>
-              <div className="text-part wysiwyg-wrapper">
-                <p className="small-title">Hosting, handover and support</p>
-                <h2 className="sub-title" id="hosting-title">
-                  Fast hosting.
-                  <br />
-                  <span className="highlight">Complete control.</span>
-                </h2>
-                <p className={styles.hostingFreeLine}>
-                  Vercel hosting is <strong>completely free</strong>
-                  {" "}&mdash; no monthly hosting bill, ever.
-                </p>
-                <p>
-                  If you already have a domain, it can stay with its current
-                  registrar while the new site is hosted on Vercel.
-                </p>
-                <ul>
-                  <li>Any existing domain remains in your registrar account.</li>
-                  <li>Any existing business email configuration remains unchanged.</li>
-                  <li>All Vercel and website login credentials are handed over.</li>
-                  <li>Unlimited revisions throughout the active build.</li>
-                  <li>
+            <div className="chr-content-container">
+              <p className="small-title">Editing and support</p>
+              <h2 className="sub-title" id="support-title">
+                Easy to manage.
+                <br />
+                <span className="highlight">Help when needed.</span>
+              </h2>
+              <div className={styles.supportPoints}>
+                <article>
+                  <span className={styles.needsIcon}>
+                    <PenTool aria-hidden="true" />
+                  </span>
+                  <h3>Easy editing</h3>
+                  <p>
                     A simple editing system for text and images, with every login
                     supplied.
-                  </li>
-                  <li>
+                  </p>
+                </article>
+                <article>
+                  <span className={styles.needsIcon}>
+                    <Clock3 aria-hidden="true" />
+                  </span>
+                  <h3>No lock-in</h3>
+                  <p>
                     No mandatory maintenance plan. Later updates are $50 per hour.
-                  </li>
-                </ul>
+                  </p>
+                </article>
               </div>
             </div>
           </section>

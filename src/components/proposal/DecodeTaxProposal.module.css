@@ -2084,10 +2084,13 @@
 .needsSlide {
   flex-direction: column;
   justify-content: center;
+  justify-content: safe center;
+  padding-bottom: 72px;
+  padding-top: calc(var(--deck-header) + 20px);
 }
 
 .needsHeading {
-  margin-bottom: clamp(12px, 2vh, 24px);
+  margin-bottom: clamp(10px, 1.6vh, 18px);
   width: 100%;
 }
 
@@ -2141,18 +2144,18 @@
 /* Cropped hard: these are references, and at full aspect the two stacked
    cards alone are taller than the slide has to give. */
 .mediaVideo {
-  aspect-ratio: 2.5 / 1;
+  aspect-ratio: 2.9 / 1;
   background: #000;
 }
 
 .mediaImage {
-  aspect-ratio: 2.3 / 1;
+  aspect-ratio: 2.6 / 1;
   object-position: center top;
 }
 
 .needsList {
   display: grid;
-  gap: clamp(12px, 1.8vh, 22px) clamp(18px, 2.2vw, 38px);
+  gap: clamp(9px, 1.1vh, 13px) clamp(18px, 2.2vw, 38px);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
   min-width: 0;
@@ -2162,30 +2165,30 @@
 .needsList > article {
   display: grid;
   gap: 2px 12px;
-  grid-template-columns: 26px minmax(0, 1fr);
+  grid-template-columns: 34px minmax(0, 1fr);
 }
 
-.needsNumber {
-  font-family: Montserrat, sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  opacity: 0.4;
-  padding-top: 4px;
+.needsIcon {
+  align-items: center;
+  background: #fdce08;
+  border-radius: 50%;
+  display: flex;
+  flex: none;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.needsIcon svg {
+  height: 18px;
+  width: 18px;
 }
 
 .needsList h3 {
-  align-items: center;
-  display: flex;
-  font-size: clamp(15px, 1.3vw, 19px);
-  gap: 9px;
+  font-size: clamp(15px, 1.25vw, 18px);
   line-height: 1.25;
   margin: 0 0 4px;
-}
-
-.needsList h3 svg {
-  flex: none;
-  height: 19px;
-  width: 19px;
+  padding-top: 7px;
 }
 
 .needsList p {
@@ -2250,18 +2253,24 @@
     padding: 7px 10px;
   }
 
-  .needsList > li {
+  .needsList > article {
     gap: 2px 10px;
-    grid-template-columns: 24px minmax(0, 1fr);
+    grid-template-columns: 28px minmax(0, 1fr);
   }
 
   .needsList h3 {
     font-size: 14px;
+    padding-top: 5px;
   }
 
-  .needsList h3 svg {
-    height: 16px;
-    width: 16px;
+  .needsIcon {
+    height: 28px;
+    width: 28px;
+  }
+
+  .needsIcon svg {
+    height: 15px;
+    width: 15px;
   }
 
   .needsList p {
@@ -2289,5 +2298,69 @@
 
   .coverLogoTitle img {
     width: min(238px, 74vw);
+  }
+}
+
+/* Two points only, set large: this slide replaced a dense hosting rundown. */
+.supportSlide {
+  flex-direction: column;
+  justify-content: center;
+  justify-content: safe center;
+}
+
+.supportPoints {
+  display: grid;
+  gap: clamp(30px, 5vw, 84px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: clamp(30px, 5vh, 64px);
+}
+
+.supportPoints .needsIcon {
+  height: 58px;
+  width: 58px;
+}
+
+.supportPoints .needsIcon svg {
+  height: 29px;
+  width: 29px;
+}
+
+.supportPoints h3 {
+  font-size: clamp(23px, 2.5vw, 36px);
+  line-height: 1.15;
+  margin: clamp(16px, 2.4vh, 26px) 0 clamp(8px, 1.4vh, 14px);
+}
+
+.supportPoints p {
+  font-size: clamp(15px, 1.35vw, 21px);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 34ch;
+}
+
+@media screen and (max-width: 766px) {
+  .supportPoints {
+    gap: 26px;
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 22px;
+  }
+
+  .supportPoints .needsIcon {
+    height: 44px;
+    width: 44px;
+  }
+
+  .supportPoints .needsIcon svg {
+    height: 22px;
+    width: 22px;
+  }
+
+  .supportPoints h3 {
+    font-size: 20px;
+    margin: 12px 0 6px;
+  }
+
+  .supportPoints p {
+    font-size: 14.5px;
   }
 }
