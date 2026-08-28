@@ -2093,11 +2093,19 @@
 }
 
 .needsLayout {
-  align-items: center;
+  align-items: start;
   display: grid;
-  gap: clamp(24px, 3vw, 52px);
-  grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
+  gap: clamp(20px, 2.4vw, 40px);
+  grid-template-columns: minmax(0, 27%) minmax(0, 1fr);
   width: 100%;
+}
+
+.needsIntro {
+  font-size: clamp(13px, 1.05vw, 16px);
+  line-height: 1.5;
+  margin: 10px 0 0;
+  max-width: 62ch;
+  opacity: 0.72;
 }
 
 .needsMedia {
@@ -2131,32 +2139,31 @@
   width: 100%;
 }
 
-/* Cropped to a band: at full aspect the two stacked cards push the slide past
-   one screen on a laptop. */
+/* Cropped hard: these are references, and at full aspect the two stacked
+   cards alone are taller than the slide has to give. */
 .mediaVideo {
-  aspect-ratio: 2.4 / 1;
+  aspect-ratio: 2.5 / 1;
   background: #000;
 }
 
 .mediaImage {
-  aspect-ratio: 2.7 / 1;
+  aspect-ratio: 2.3 / 1;
   object-position: center top;
 }
 
 .needsList {
-  counter-reset: none;
   display: grid;
-  gap: clamp(12px, 2vh, 22px);
-  list-style: none;
+  gap: clamp(12px, 1.8vh, 22px) clamp(18px, 2.2vw, 38px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 0;
   min-width: 0;
   padding: 0;
 }
 
-.needsList > li {
+.needsList > article {
   display: grid;
-  gap: 4px 14px;
-  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 2px 12px;
+  grid-template-columns: 26px minmax(0, 1fr);
 }
 
 .needsNumber {
@@ -2183,9 +2190,10 @@
 }
 
 .needsList p {
-  font-size: clamp(12.5px, 1vw, 15px);
-  line-height: 1.45;
+  font-size: clamp(12px, 0.92vw, 14px);
+  line-height: 1.42;
   margin: 0;
+  opacity: 0.78;
 }
 
 .needsWhy {
@@ -2199,6 +2207,10 @@
   gap: clamp(14px, 2vw, 26px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
   width: 100%;
+}
+
+.supportingSlide .needsHeading {
+  margin-bottom: clamp(20px, 4vh, 44px);
 }
 
 .supportingItem {
@@ -2260,6 +2272,12 @@
 
   .needsList {
     gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .needsIntro {
+    font-size: 12.5px;
+    margin-top: 7px;
   }
 
   .mediaCard figcaption {
@@ -2302,5 +2320,31 @@
 
   .supportingItem p {
     font-size: 11.5px;
+  }
+}
+
+/* The cover video is light, so the client's black-and-cyan mark sits on it
+   directly. No plate: one would just be a white box on a white background. */
+.coverLogo {
+  display: block;
+  margin-bottom: clamp(12px, 2vh, 22px);
+  width: fit-content;
+}
+
+/* Sized so the thin CONSTRUCTIONS wordmark under the logo stays readable;
+   below roughly 200px it collapses into a grey smudge. */
+.coverLogo img {
+  display: block;
+  height: auto;
+  width: clamp(196px, 19vw, 258px);
+}
+
+@media screen and (max-width: 766px) {
+  .coverLogo {
+    margin-bottom: 10px;
+  }
+
+  .coverLogo img {
+    width: 168px;
   }
 }

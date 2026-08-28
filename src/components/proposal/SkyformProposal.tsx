@@ -40,7 +40,6 @@ import { useProposalDeck } from "./useProposalDeck";
 
 const slides = [
   "Proposal",
-  "Understanding your business",
   "What your website needs",
   "The rest of the page",
   "Built properly",
@@ -80,10 +79,8 @@ type SkyformProposalProps = {
   coverLead?: string;
   coverPrimary?: string;
   deposit?: string;
+  logoSrc?: string;
   offerNote?: string;
-  opportunityLead?: string;
-  opportunitySupport?: string;
-  outcomeLabels?: readonly [string, string, string];
   servicePagesDescription?: string;
   totalInvestment?: string;
   usualInvestment?: string;
@@ -112,95 +109,79 @@ const constructionWork = [
 ] as const;
 
 /**
- * Slide 3. Drawn from looking at what the better construction sites do, so
- * each row pairs the recommendation with the reason it earns its place.
+ * The competitor-analysis slides. Each entry is a single note rather than a
+ * detail plus a rationale, so the headline set fits one screen alongside the
+ * reference media.
  */
 type NeedItem = {
-  detail: string;
   icon: LucideIcon;
+  note: string;
   title: string;
-  why: string;
 };
 
 const headlineNeeds: NeedItem[] = [
   {
-    detail:
-      "Minimal layouts, generous space and smooth motion. Nothing cluttered, nothing loud.",
     icon: Palette,
+    note: "Minimal, spacious and smooth. It is the first read on build quality, before a word is read.",
     title: "Clean, modern, professional design",
-    why: "It is the first read on build quality, before a word is read.",
   },
   {
-    detail:
-      "The logo resolves on screen as the page opens, then hands over to the hero.",
     icon: Sparkles,
+    note: "The logo resolves as the page opens. A two-second detail that separates a premium builder from a template.",
     title: "Logo intro animation",
-    why: "A two-second detail that separates a premium builder from a template.",
   },
   {
-    detail:
-      "Full-width footage of completed work playing behind the headline.",
     icon: MonitorPlay,
+    note: "Footage of completed work behind the headline. Stills cannot carry the scale of a build.",
     title: "Video in the hero",
-    why: "Shows the standard of finish immediately. Stills cannot carry scale.",
   },
   {
-    detail:
-      "Projects delivered, combined value, years operating, team size, accreditations.",
     icon: Trophy,
+    note: "Projects delivered, combined value, years operating. Turns experience into numbers a client can weigh.",
     title: "Achievements stated plainly",
-    why: "Turns experience into numbers a client can weigh against a competitor.",
+  },
+  {
+    icon: Images,
+    note: "Full-width photography, a page per project. The work is the strongest thing you have to sell.",
+    title: "Projects, shown large",
+  },
+  {
+    icon: Quote,
+    note: "Named clients on real projects. Third-party proof beats any claim you make about yourself.",
+    title: "Testimonials",
+  },
+  {
+    icon: PanelsTopLeft,
+    note: "Your top three as clear cards, so what you do lands in one glance.",
+    title: "Service cards",
+  },
+  {
+    icon: BadgeCheck,
+    note: "Licences and accreditations in the footer. Quietly removes the last doubt before an enquiry.",
+    title: "Certifications",
   },
 ];
 
 const supportingNeeds: NeedItem[] = [
   {
-    detail: "Your top three, each as a clear card.",
-    icon: PanelsTopLeft,
-    title: "Service cards",
-    why: "Answers what you do in one glance.",
-  },
-  {
-    detail: "Big, full-width photography per project.",
-    icon: Images,
-    title: "Projects, shown large",
-    why: "The work is the strongest sales asset.",
-  },
-  {
-    detail: "Who you are and how you build.",
     icon: UsersRound,
+    note: "Who you are and how you build. Construction buyers are picking people.",
     title: "About us",
-    why: "Construction buyers are picking people.",
   },
   {
-    detail: "Clients, partners and suppliers you work with.",
     icon: Layers,
+    note: "Clients, partners and suppliers. Borrowed credibility, instantly.",
     title: "Brand carousel",
-    why: "Borrowed credibility, instantly.",
   },
   {
-    detail: "A live feed pulling your latest posts in.",
     icon: Images,
+    note: "A live feed of your latest posts, so visitors can see more of the work.",
     title: "Instagram feed",
-    why: "Proves the work is current, and sends people to follow.",
   },
   {
-    detail: "Named clients on real projects.",
-    icon: Quote,
-    title: "Testimonials",
-    why: "Third-party proof beats any claim you make.",
-  },
-  {
-    detail: "Phone, email and enquiry form, always reachable.",
     icon: Phone,
+    note: "Phone, email and an enquiry form on every page.",
     title: "Contact in the footer",
-    why: "Every page ends with a way to start a conversation.",
-  },
-  {
-    detail: "Licences, memberships and accreditations.",
-    icon: BadgeCheck,
-    title: "Certifications in the footer",
-    why: "Quietly removes the last doubt before an enquiry.",
   },
 ];
 
@@ -376,14 +357,8 @@ export function SkyformProposal({
   coverLead = "A premium, photography-led website built to show the standard of the work and win better projects.",
   coverPrimary = "Skyform",
   deposit = "$4,000",
+  logoSrc = "/images/skyform/skyform-logo.png",
   offerNote,
-  opportunityLead,
-  opportunitySupport,
-  outcomeLabels = [
-    "Show the standard of the build",
-    "Give every project its own page",
-    "Make enquiring effortless",
-  ],
   servicePagesDescription = "Your core construction services, each properly explained.",
   totalInvestment = "$8,000",
   usualInvestment,
@@ -519,6 +494,17 @@ export function SkyformProposal({
               <div aria-hidden="true" className={styles.coverFlower} />
               <div className="chr-content-container">
                 <div className={`home-banner-content ${styles.coverContent}`}>
+                  {logoSrc ? (
+                    <span className={styles.coverLogo}>
+                      <Image
+                        alt={`${clientName} logo`}
+                        height={434}
+                        priority
+                        src={logoSrc}
+                        width={640}
+                      />
+                    </span>
+                  ) : null}
                   <p className="small-title">Website proposal</p>
                   <h1 className="title" id="proposal-cover-title">
                     <span className={styles.coverLine}>Built for</span>
@@ -549,40 +535,6 @@ export function SkyformProposal({
           </section>
 
           <section
-            aria-labelledby="opportunity-title"
-            className={`${styles.slide} ${styles.opportunitySlide}`}
-            data-proposal-slide
-            id="opportunity"
-            tabIndex={-1}
-          >
-            <div className="chr-content-container section-three-heading-part">
-              <div className="left-part">
-                <p className="small-title">Understanding your business</p>
-                <h2 className="sub-title" id="opportunity-title">
-                  Make trust the
-                  <br />
-                  <span className="highlight">obvious first impression</span>
-                </h2>
-              </div>
-              <div className={`right-part wysiwyg-wrapper ${styles.opportunityCopy}`}>
-                <p>
-                  {opportunityLead ??
-                    `${clientName} needs a website that matches the standard of what it builds: a premium, photography-led presence that shows completed projects properly and makes the quality obvious on first look.`}
-                </p>
-                <p>
-                  {opportunitySupport ??
-                    `The recommendations that follow come from looking at what the strongest construction sites do well, and what most competitors are still getting wrong.`}
-                </p>
-              </div>
-              <div className={styles.outcomeStrip}>
-                {outcomeLabels.map((label) => (
-                  <span key={label}><CheckCircle2 /> {label}</span>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section
             aria-labelledby="needs-title"
             className={`${styles.slide} ${styles.needsSlide}`}
             data-proposal-slide
@@ -590,12 +542,16 @@ export function SkyformProposal({
             tabIndex={-1}
           >
             <div className={`chr-content-container ${styles.needsHeading}`}>
-              <p className="small-title">What your website needs</p>
+              <p className="small-title">Based on competitor analysis</p>
               <h2 className="sub-title" id="needs-title">
-                What the best builders do,
+                What your website needs,
                 <br />
-                <span className="highlight">and why it works</span>
+                <span className="highlight">and why each one matters</span>
               </h2>
+              <p className={styles.needsIntro}>
+                Taken from reviewing the construction sites winning work today,
+                against what most competitors are still getting wrong.
+              </p>
             </div>
             <div className={`chr-content-container ${styles.needsLayout}`}>
               <div className={styles.needsMedia}>
@@ -610,9 +566,7 @@ export function SkyformProposal({
                     preload="metadata"
                     src="/images/skyform/reference-logo-intro.mp4"
                   />
-                  <figcaption>
-                    The logo intro and hero video, working together
-                  </figcaption>
+                  <figcaption>Logo intro into hero video</figcaption>
                 </figure>
                 <figure className={styles.mediaCard}>
                   <Image
@@ -627,9 +581,9 @@ export function SkyformProposal({
                   <figcaption>Achievements, stated as numbers</figcaption>
                 </figure>
               </div>
-              <ol className={styles.needsList}>
-                {headlineNeeds.map(({ detail, icon: Icon, title, why }, index) => (
-                  <li key={title}>
+              <div className={styles.needsList}>
+                {headlineNeeds.map(({ icon: Icon, note, title }, index) => (
+                  <article key={title}>
                     <span className={styles.needsNumber}>
                       {String(index + 1).padStart(2, "0")}
                     </span>
@@ -638,12 +592,11 @@ export function SkyformProposal({
                         <Icon aria-hidden="true" />
                         {title}
                       </h3>
-                      <p>{detail}</p>
-                      <p className={styles.needsWhy}>{why}</p>
+                      <p>{note}</p>
                     </div>
-                  </li>
+                  </article>
                 ))}
-              </ol>
+              </div>
             </div>
           </section>
 
@@ -655,7 +608,7 @@ export function SkyformProposal({
             tabIndex={-1}
           >
             <div className={`chr-content-container ${styles.needsHeading}`}>
-              <p className="small-title">The rest of the page</p>
+              <p className="small-title">Also from the competitor analysis</p>
               <h2 className="sub-title" id="supporting-title">
                 Everything else that
                 <br />
@@ -663,12 +616,11 @@ export function SkyformProposal({
               </h2>
             </div>
             <div className={`chr-content-container ${styles.supportingGrid}`}>
-              {supportingNeeds.map(({ detail, icon: Icon, title, why }) => (
+              {supportingNeeds.map(({ icon: Icon, note, title }) => (
                 <article className={styles.supportingItem} key={title}>
                   <Icon aria-hidden="true" />
                   <h3>{title}</h3>
-                  <p>{detail}</p>
-                  <p className={styles.needsWhy}>{why}</p>
+                  <p>{note}</p>
                 </article>
               ))}
             </div>
