@@ -71,7 +71,9 @@ export default function RobertsonPlumbingDrainageProposalPage() {
         "Explain plumbing and drainage",
         "Target service areas",
       ]}
+      deposit="$475"
       servicePagesDescription="Drainage, blocked drains, hot water, renovations and maintenance."
+      totalInvestment="$950"
     />
   );
 }
