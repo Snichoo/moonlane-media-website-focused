@@ -14,9 +14,11 @@ import {
   CopyX,
   ExternalLink,
   Gauge,
+  Globe2,
   Images,
   Layers,
   MessageSquareText,
+  MailCheck,
   MonitorPlay,
   Palette,
   PenTool,
@@ -24,6 +26,7 @@ import {
   Phone,
   Quote,
   SearchCheck,
+  ServerCog,
   ShieldCheck,
   Sparkles,
   Target,
@@ -639,38 +642,56 @@ export function SkyformProposal({
 
           <section
             aria-labelledby="support-title"
-            className={`${styles.slide} ${styles.supportSlide}`}
+            className={`${styles.slide} ${styles.textImageSlide} single-part text-and-image-part`}
             data-proposal-slide
             id="support"
             tabIndex={-1}
           >
-            <div className="chr-content-container">
-              <p className="small-title">Editing and support</p>
-              <h2 className="sub-title" id="support-title">
-                Easy to manage.
-                <br />
-                <span className="highlight">Help when needed.</span>
-              </h2>
-              <div className={styles.supportPoints}>
-                <article>
-                  <span className={styles.needsIcon}>
-                    <PenTool aria-hidden="true" />
-                  </span>
-                  <h3>Easy editing</h3>
-                  <p>
-                    A simple editing system for text and images, with every login
-                    supplied.
+            <div className="chr-content-container chr-text-and-image-container left-image">
+              <div className={`image-part ${styles.hostingImage}`}>
+                <div className={styles.hostingGraphic}>
+                  <p className={styles.hostingFree}>
+                    <span>Hosting</span>
+                    <strong>$0</strong>
+                    <small>per month</small>
                   </p>
-                </article>
-                <article>
-                  <span className={styles.needsIcon}>
-                    <Clock3 aria-hidden="true" />
-                  </span>
-                  <h3>No lock-in</h3>
-                  <p>
-                    No mandatory maintenance plan. Later updates are $50 per hour.
-                  </p>
-                </article>
+                  <Globe2 aria-hidden="true" />
+                  <span>Domain ownership</span>
+                  <ServerCog aria-hidden="true" />
+                  <span>Vercel hosting</span>
+                  <MailCheck aria-hidden="true" />
+                  <span>Email stays connected</span>
+                </div>
+              </div>
+              <div className="text-part wysiwyg-wrapper">
+                <p className="small-title">Editing and support</p>
+                <h2 className="sub-title" id="support-title">
+                  Easy to manage.
+                  <br />
+                  <span className="highlight">Help when needed.</span>
+                </h2>
+                <div className={styles.supportPoints}>
+                  <article>
+                    <span className={styles.needsIcon}>
+                      <PenTool aria-hidden="true" />
+                    </span>
+                    <h3>Easy editing</h3>
+                    <p>
+                      A simple editing system for text and images, with every
+                      login supplied.
+                    </p>
+                  </article>
+                  <article>
+                    <span className={styles.needsIcon}>
+                      <Clock3 aria-hidden="true" />
+                    </span>
+                    <h3>No lock-in</h3>
+                    <p>
+                      No mandatory maintenance plan. Later updates are $50 per
+                      hour.
+                    </p>
+                  </article>
+                </div>
               </div>
             </div>
           </section>
