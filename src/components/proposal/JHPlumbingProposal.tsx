@@ -31,9 +31,9 @@ import { useRef, useState } from "react";
 import styles from "./DecodeTaxProposal.module.css";
 import { useProposalDeck } from "./useProposalDeck";
 
-const slides = [
+const buildSlides = (showOpportunity: boolean) => [
   "Proposal",
-  "Understanding your business",
+  ...(showOpportunity ? ["Understanding your business"] : []),
   "Why Moonlane",
   "What is included",
   "Delivery promise",
@@ -43,7 +43,7 @@ const slides = [
   "Editing and support",
   "How it works",
   "Accept proposal",
-] as const;
+];
 
 type ServiceItem = {
   description: string;
@@ -75,6 +75,7 @@ type PlumbingProposalProps = {
   opportunitySupport?: string;
   outcomeLabels?: readonly [string, string, string];
   servicePagesDescription?: string;
+  showOpportunity?: boolean;
   totalInvestment?: string;
   usualInvestment?: string;
   workItems?: readonly WorkItem[];
@@ -257,10 +258,12 @@ export function JHPlumbingProposal({
     "Target service areas",
   ],
   servicePagesDescription = "Plumbing services, blocked drains, hot water and more.",
+  showOpportunity = true,
   totalInvestment = "$1,499",
   usualInvestment,
   workItems = plumbingWork,
 }: PlumbingProposalProps = {}) {
+  const slides = buildSlides(showOpportunity);
   const { activeIndex, deckRef, goToSlide } = useProposalDeck();
   const [acceptanceState, setAcceptanceState] = useState<AcceptanceState>({
     message: "",
@@ -420,39 +423,41 @@ export function JHPlumbingProposal({
             </div>
           </section>
 
-          <section
-            aria-labelledby="opportunity-title"
-            className={`${styles.slide} ${styles.opportunitySlide}`}
-            data-proposal-slide
-            id="opportunity"
-            tabIndex={-1}
-          >
-            <div className="chr-content-container section-three-heading-part">
-              <div className="left-part">
-                <p className="small-title">Understanding your business</p>
-                <h2 className="sub-title" id="opportunity-title">
-                  Make trust the
-                  <br />
-                  <span className="highlight">obvious first impression</span>
-                </h2>
+          {showOpportunity ? (
+            <section
+              aria-labelledby="opportunity-title"
+              className={`${styles.slide} ${styles.opportunitySlide}`}
+              data-proposal-slide
+              id="opportunity"
+              tabIndex={-1}
+            >
+              <div className="chr-content-container section-three-heading-part">
+                <div className="left-part">
+                  <p className="small-title">Understanding your business</p>
+                  <h2 className="sub-title" id="opportunity-title">
+                    Make trust the
+                    <br />
+                    <span className="highlight">obvious first impression</span>
+                  </h2>
+                </div>
+                <div className={`right-part wysiwyg-wrapper ${styles.opportunityCopy}`}>
+                  <p>
+                    {opportunityLead ??
+                      `${clientName} needs a clear, professional website that helps customers quickly understand its services, the areas it covers and the fastest way to get in touch.`}
+                  </p>
+                  <p>
+                    {opportunitySupport ??
+                      `The new website will give ${clientName} a credible, mobile-first presence, clearly present its plumbing services and make calling or requesting a quote immediate.`}
+                  </p>
+                </div>
+                <div className={styles.outcomeStrip}>
+                  {outcomeLabels.map((label) => (
+                    <span key={label}><CheckCircle2 /> {label}</span>
+                  ))}
+                </div>
               </div>
-              <div className={`right-part wysiwyg-wrapper ${styles.opportunityCopy}`}>
-                <p>
-                  {opportunityLead ??
-                    `${clientName} needs a clear, professional website that helps customers quickly understand its services, the areas it covers and the fastest way to get in touch.`}
-                </p>
-                <p>
-                  {opportunitySupport ??
-                    `The new website will give ${clientName} a credible, mobile-first presence, clearly present its plumbing services and make calling or requesting a quote immediate.`}
-                </p>
-              </div>
-              <div className={styles.outcomeStrip}>
-                {outcomeLabels.map((label) => (
-                  <span key={label}><CheckCircle2 /> {label}</span>
-                ))}
-              </div>
-            </div>
-          </section>
+            </section>
+          ) : null}
 
           <section
             aria-labelledby="moonlane-title"

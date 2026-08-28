@@ -73,6 +73,7 @@ export default function RobertsonPlumbingDrainageProposalPage() {
       ]}
       deposit="$475"
       servicePagesDescription="Drainage, blocked drains, hot water, renovations and maintenance."
+      showOpportunity={false}
       totalInvestment="$950"
     />
   );
