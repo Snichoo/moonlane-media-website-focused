@@ -31,6 +31,7 @@ import {
   ServerCog,
   ShieldCheck,
   Sparkles,
+  Target,
   Trophy,
   UsersRound,
 } from "lucide-react";
@@ -41,7 +42,6 @@ import { useProposalDeck } from "./useProposalDeck";
 const slides = [
   "Proposal",
   "What your website needs",
-  "The rest of the page",
   "Built properly",
   "Why Moonlane",
   "What is included",
@@ -97,9 +97,8 @@ const constructionWork = [
     name: "YDL Stone",
   },
   {
-    href: "https://singhroofing.com.au/",
-    name: "Singh Roofing",
-    result: "Halved cost per lead in 2 months",
+    href: "https://moonlanemedia.com.au/case-study/bowens",
+    name: "Bowens",
   },
   {
     href: "https://asaptrades.com.au/",
@@ -160,22 +159,24 @@ const headlineNeeds: NeedItem[] = [
     note: "Licences and accreditations in the footer. Quietly removes the last doubt before an enquiry.",
     title: "Certifications",
   },
-];
-
-const supportingNeeds: NeedItem[] = [
+  {
+    icon: Layers,
+    note: "Its own page for the detail, the scope and a full gallery of photos and video.",
+    title: "A page per project",
+  },
   {
     icon: UsersRound,
     note: "Who you are and how you build. Construction buyers are picking people.",
     title: "About us",
   },
   {
-    icon: Layers,
-    note: "Clients, partners and suppliers. Borrowed credibility, instantly.",
+    icon: PanelsTopLeft,
+    note: "Clients, partners and suppliers you work with. Borrowed credibility, instantly.",
     title: "Brand carousel",
   },
   {
     icon: Images,
-    note: "A live feed of your latest posts, so visitors can see more of the work.",
+    note: "A live feed of your latest posts, so visitors can go and see more of the work.",
     title: "Instagram feed",
   },
   {
@@ -188,6 +189,30 @@ const supportingNeeds: NeedItem[] = [
 const foundationItems: ServiceItem[] = [
   {
     description:
+      "Designed and written from scratch for Skyform. Nothing is generated and then tidied up.",
+    icon: Sparkles,
+    title: "No AI-generated content",
+  },
+  {
+    description:
+      "No theme and no page builder. Your site will not share its layout with a hundred others.",
+    icon: CopyX,
+    title: "No cookie-cutter templates",
+  },
+  {
+    description:
+      "Custom designed and custom coded, so nothing is fighting the design or slowing it down.",
+    icon: Code2,
+    title: "Built from scratch",
+  },
+  {
+    description:
+      "Laid out to turn visitors into enquiries, so you can put Google Ads behind it later and have the traffic convert.",
+    icon: Target,
+    title: "High-conversion focused",
+  },
+  {
+    description:
       "Built around agreed keywords so the site can be found for the work you want.",
     icon: SearchCheck,
     title: "SEO optimised",
@@ -197,18 +222,6 @@ const foundationItems: ServiceItem[] = [
       "Compressed media and lean code, so heavy project photography still loads fast.",
     icon: Gauge,
     title: "Speed optimised",
-  },
-  {
-    description:
-      "No page builder and no theme. Written from scratch, so nothing is fighting the design.",
-    icon: Code2,
-    title: "Custom coded",
-  },
-  {
-    description:
-      "Every project gets its own page: the detail, the scope and a full gallery of photos and video.",
-    icon: Layers,
-    title: "A page per project",
   },
 ];
 
@@ -492,19 +505,19 @@ export function SkyformProposal({
                 <div className="layer layer-6" />
               </div>
               <div aria-hidden="true" className={styles.coverFlower} />
+              {logoSrc ? (
+                <span className={styles.coverLogo}>
+                  <Image
+                    alt={`${clientName} logo`}
+                    height={434}
+                    priority
+                    src={logoSrc}
+                    width={640}
+                  />
+                </span>
+              ) : null}
               <div className="chr-content-container">
                 <div className={`home-banner-content ${styles.coverContent}`}>
-                  {logoSrc ? (
-                    <span className={styles.coverLogo}>
-                      <Image
-                        alt={`${clientName} logo`}
-                        height={434}
-                        priority
-                        src={logoSrc}
-                        width={640}
-                      />
-                    </span>
-                  ) : null}
                   <p className="small-title">Website proposal</p>
                   <h1 className="title" id="proposal-cover-title">
                     <span className={styles.coverLine}>Built for</span>
@@ -527,7 +540,6 @@ export function SkyformProposal({
                   <div className={styles.coverFacts}>
                     <span><strong>2&ndash;3 weeks</strong> target delivery</span>
                     <span><strong>{totalInvestment}</strong> one-off</span>
-                    <span><strong>Custom</strong> coded</span>
                   </div>
                 </div>
               </div>
@@ -600,32 +612,6 @@ export function SkyformProposal({
             </div>
           </section>
 
-          <section
-            aria-labelledby="supporting-title"
-            className={`${styles.slide} ${styles.yellowSlide} ${styles.supportingSlide}`}
-            data-proposal-slide
-            id="supporting"
-            tabIndex={-1}
-          >
-            <div className={`chr-content-container ${styles.needsHeading}`}>
-              <p className="small-title">Also from the competitor analysis</p>
-              <h2 className="sub-title" id="supporting-title">
-                Everything else that
-                <br />
-                <span className="highlight">earns its place</span>
-              </h2>
-            </div>
-            <div className={`chr-content-container ${styles.supportingGrid}`}>
-              {supportingNeeds.map(({ icon: Icon, note, title }) => (
-                <article className={styles.supportingItem} key={title}>
-                  <Icon aria-hidden="true" />
-                  <h3>{title}</h3>
-                  <p>{note}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
           <ServiceSlide
             eyebrow="Built properly"
             id="foundations"
@@ -692,7 +678,7 @@ export function SkyformProposal({
             <div className={`chr-content-container ${styles.deliveryIntro}`}>
               <p className="small-title">Delivery promise</p>
               <h2 className="sub-title" id="delivery-title">
-                Ready for clients in
+                Your website, live in
                 <br />
                 <span className="highlight">2&ndash;3 weeks</span>
               </h2>
@@ -784,7 +770,6 @@ export function SkyformProposal({
                   <div className={`section-two-icon-list ${styles.investmentFacts}`}>
                     <div className="single-item"><ShieldCheck /><span>100% money-back guarantee if you are not happy</span></div>
                     <div className="single-item"><MessageSquareText /><span>Unlimited revisions</span></div>
-                    <div className="single-item"><Code2 /><span>Custom coded, no page builder</span></div>
                   </div>
                 </div>
               </div>

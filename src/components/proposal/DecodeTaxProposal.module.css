@@ -2081,8 +2081,7 @@
    can see what is being described rather than infer it from a label.
    --------------------------------------------------------------------------- */
 
-.needsSlide,
-.supportingSlide {
+.needsSlide {
   flex-direction: column;
   justify-content: center;
 }
@@ -2096,7 +2095,7 @@
   align-items: start;
   display: grid;
   gap: clamp(20px, 2.4vw, 40px);
-  grid-template-columns: minmax(0, 27%) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 22%) minmax(0, 1fr);
   width: 100%;
 }
 
@@ -2154,7 +2153,7 @@
 .needsList {
   display: grid;
   gap: clamp(12px, 1.8vh, 22px) clamp(18px, 2.2vw, 38px);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
   min-width: 0;
   padding: 0;
@@ -2202,40 +2201,6 @@
   opacity: 0.62;
 }
 
-.supportingGrid {
-  display: grid;
-  gap: clamp(14px, 2vw, 26px);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  width: 100%;
-}
-
-.supportingSlide .needsHeading {
-  margin-bottom: clamp(20px, 4vh, 44px);
-}
-
-.supportingItem {
-  border-top: 2px solid #191919;
-  padding-top: 12px;
-}
-
-.supportingItem svg {
-  height: 24px;
-  margin-bottom: 8px;
-  width: 24px;
-}
-
-.supportingItem h3 {
-  font-size: clamp(14px, 1.1vw, 17px);
-  line-height: 1.25;
-  margin: 0 0 5px;
-}
-
-.supportingItem p {
-  font-size: clamp(12px, 0.95vw, 14px);
-  line-height: 1.4;
-  margin: 0;
-}
-
 @media screen and (max-width: 1239px) {
   .needsLayout {
     grid-template-columns: minmax(0, 1fr);
@@ -2245,8 +2210,8 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .supportingGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .needsList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2303,32 +2268,16 @@
     font-size: 12.5px;
   }
 
-  .supportingGrid {
-    gap: 12px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .supportingItem svg {
-    height: 19px;
-    margin-bottom: 5px;
-    width: 19px;
-  }
-
-  .supportingItem h3 {
-    font-size: 13px;
-  }
-
-  .supportingItem p {
-    font-size: 11.5px;
-  }
 }
 
 /* The cover video is light, so the client's black-and-cyan mark sits on it
-   directly. No plate: one would just be a white box on a white background. */
+   directly. No plate: one would just be a white box on a white background.
+   Offset below the deck header, which overlaps the banner. */
 .coverLogo {
-  display: block;
-  margin-bottom: clamp(12px, 2vh, 22px);
-  width: fit-content;
+  position: absolute;
+  right: clamp(22px, 4vw, 72px);
+  top: calc(var(--deck-header) + clamp(8px, 1.4vh, 18px));
+  z-index: 5;
 }
 
 /* Sized so the thin CONSTRUCTIONS wordmark under the logo stays readable;
@@ -2336,15 +2285,16 @@
 .coverLogo img {
   display: block;
   height: auto;
-  width: clamp(196px, 19vw, 258px);
+  width: clamp(144px, 13vw, 186px);
 }
 
 @media screen and (max-width: 766px) {
   .coverLogo {
-    margin-bottom: 10px;
+    right: 18px;
+    top: calc(var(--deck-header) + 14px);
   }
 
   .coverLogo img {
-    width: 168px;
+    width: 118px;
   }
 }
