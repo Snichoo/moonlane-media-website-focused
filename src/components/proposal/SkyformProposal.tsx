@@ -5,7 +5,6 @@ import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
   BadgeCheck,
-  BellRing,
   Check,
   CheckCircle2,
   ChevronLeft,
@@ -14,7 +13,6 @@ import {
   Code2,
   CopyX,
   ExternalLink,
-  FileText,
   Gauge,
   Globe2,
   Images,
@@ -24,7 +22,6 @@ import {
   MonitorPlay,
   Palette,
   PanelsTopLeft,
-  PenTool,
   Phone,
   Quote,
   SearchCheck,
@@ -43,13 +40,10 @@ const slides = [
   "Proposal",
   "What your website needs",
   "Built properly",
-  "Why Moonlane",
-  "What is included",
   "Delivery promise",
   "Selected work",
   "Investment",
-  "Hosting and handover",
-  "Editing and support",
+  "Hosting, handover and support",
   "How it works",
   "Accept proposal",
 ] as const;
@@ -81,7 +75,6 @@ type SkyformProposalProps = {
   deposit?: string;
   logoSrc?: string;
   offerNote?: string;
-  servicePagesDescription?: string;
   totalInvestment?: string;
   usualInvestment?: string;
   workItems?: readonly WorkItem[];
@@ -97,8 +90,9 @@ const constructionWork = [
     name: "YDL Stone",
   },
   {
-    href: "https://moonlanemedia.com.au/case-study/bowens",
-    name: "Bowens",
+    href: "https://www.friendlyplumbing.com.au/",
+    name: "Friendly Plumbing",
+    result: "Eight service pages and suburb pages across Greater Sydney",
   },
   {
     href: "https://asaptrades.com.au/",
@@ -225,60 +219,6 @@ const foundationItems: ServiceItem[] = [
   },
 ];
 
-const includedItems: ServiceItem[] = [
-  {
-    description: "Clean, minimal and built to read as premium.",
-    icon: Palette,
-    title: "Custom, high-conversion design",
-  },
-  {
-    description: "Your core services, each properly explained.",
-    icon: FileText,
-    title: "Service pages",
-  },
-  {
-    description: "Every project with its own page, photos and video.",
-    icon: Layers,
-    title: "Project pages",
-  },
-  {
-    description: "Enquiries sent straight to your preferred destination.",
-    icon: BellRing,
-    title: "Lead notifications",
-  },
-  {
-    description: "A live feed so visitors can see more of your work.",
-    icon: Images,
-    title: "Instagram feed",
-  },
-  {
-    description: "Licences and accreditations shown where they build trust.",
-    icon: BadgeCheck,
-    title: "Certifications",
-  },
-];
-
-const supportItems: ServiceItem[] = [
-  {
-    description:
-      "Unlimited revisions throughout the active build, so the final site feels right before launch.",
-    icon: MessageSquareText,
-    title: "Unlimited revisions during the build",
-  },
-  {
-    description:
-      "A simple editing system lets you update basic text and images yourself, with all login details supplied.",
-    icon: PenTool,
-    title: "Easy editing",
-  },
-  {
-    description:
-      "There is no mandatory maintenance plan. Future updates are available when needed at a flat $50 per hour.",
-    icon: Clock3,
-    title: "Flexible future support",
-  },
-];
-
 function ServiceSlide({
   eyebrow,
   id,
@@ -338,30 +278,6 @@ function ProgressItem({
   );
 }
 
-function GoogleRatingBadge() {
-  return (
-    <div
-      aria-label="Google rating: 5 out of 5 stars"
-      className={styles.googleRating}
-      role="img"
-    >
-      <svg aria-hidden="true" viewBox="0 0 48 48">
-        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.654 32.657 29.223 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917Z" />
-        <path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4c-7.682 0-14.344 4.337-17.694 10.691Z" />
-        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44Z" />
-        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.03 12.03 0 0 1-4.087 5.571l6.193 5.237C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917Z" />
-      </svg>
-      <span className={styles.googleRatingCopy}>
-        <span>Google Rating</span>
-        <span className={styles.googleRatingScore}>
-          <strong>5.0</strong>
-          <span aria-hidden="true">★★★★★</span>
-        </span>
-      </span>
-    </div>
-  );
-}
-
 export function SkyformProposal({
   acceptanceEndpoint = "/api/proposals/skyform-constructions/accept",
   clearMobileCoverText = false,
@@ -372,7 +288,6 @@ export function SkyformProposal({
   deposit = "$4,000",
   logoSrc = "/images/skyform/skyform-logo.png",
   offerNote,
-  servicePagesDescription = "Your core construction services, each properly explained.",
   totalInvestment = "$8,000",
   usualInvestment,
   workItems = constructionWork,
@@ -505,25 +420,26 @@ export function SkyformProposal({
                 <div className="layer layer-6" />
               </div>
               <div aria-hidden="true" className={styles.coverFlower} />
-              {logoSrc ? (
-                <span className={styles.coverLogo}>
-                  <Image
-                    alt={`${clientName} logo`}
-                    height={434}
-                    priority
-                    src={logoSrc}
-                    width={640}
-                  />
-                </span>
-              ) : null}
               <div className="chr-content-container">
                 <div className={`home-banner-content ${styles.coverContent}`}>
-                  <p className="small-title">Website proposal</p>
-                  <h1 className="title" id="proposal-cover-title">
-                    <span className={styles.coverLine}>Built for</span>
-                    <span className={styles.coverLine}>{coverPrimary}</span>
-                    <span className={`highlight ${styles.coverLine}`}>{coverHighlight}</span>
-                  </h1>
+                  <p className="small-title">Website proposal for</p>
+                  {logoSrc ? (
+                    <h1 className={styles.coverLogoTitle} id="proposal-cover-title">
+                      <Image
+                        alt={clientName}
+                        height={434}
+                        priority
+                        src={logoSrc}
+                        width={640}
+                      />
+                    </h1>
+                  ) : (
+                    <h1 className="title" id="proposal-cover-title">
+                      <span className={styles.coverLine}>Built for</span>
+                      <span className={styles.coverLine}>{coverPrimary}</span>
+                      <span className={`highlight ${styles.coverLine}`}>{coverHighlight}</span>
+                    </h1>
+                  )}
                   <p className={styles.coverLead}>
                     {coverLead}
                   </p>
@@ -617,55 +533,6 @@ export function SkyformProposal({
             id="foundations"
             items={foundationItems}
             title={<>Fast, findable and <span className="highlight">built to last.</span></>}
-          />
-
-          <section
-            aria-labelledby="moonlane-title"
-            className={`${styles.slide} ${styles.yellowSlide} ${styles.whySlide}`}
-            data-proposal-slide
-            id="moonlane"
-            tabIndex={-1}
-          >
-            <div className={`chr-section-two ${styles.sectionTwo}`}>
-              <div className="chr-content-container">
-                <div className="image-wrapper">
-                  <Image
-                    alt="Moonlane Media web design studio"
-                    className="section-two-image"
-                    height={730}
-                    sizes="(max-width: 766px) 270px, (max-width: 1239px) 600px, 730px"
-                    src="/wp-content/uploads/2018/11/home-intro-2019.png"
-                    width={730}
-                  />
-                </div>
-                <div className="section-two-content wysiwyg-wrapper">
-                  <p className="small-title">Why Moonlane Media</p>
-                  <h2 className="sub-title" id="moonlane-title">
-                    Websites built around
-                    <br />
-                    <span className="highlight">your growth</span>
-                  </h2>
-                  <div className={`section-two-icon-list ${styles.proofList}`}>
-                    <div className="single-item"><Sparkles /><span>No AI-generated content</span></div>
-                    <div className="single-item"><CopyX /><span>No cookie-cutter templates</span></div>
-                    <div className="single-item"><UsersRound /><span>No outsourcing</span></div>
-                    <div className="single-item"><ShieldCheck /><span>Senior-level design and development</span></div>
-                  </div>
-                  <GoogleRatingBadge />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <ServiceSlide
-            eyebrow="What is included"
-            id="scope-included"
-            items={includedItems.map((item) =>
-              item.title === "Service pages"
-                ? { ...item, description: servicePagesDescription }
-                : item,
-            )}
-            title={<>Everything included. Built to <span className="highlight">perform.</span></>}
           />
 
           <section
@@ -800,7 +667,7 @@ export function SkyformProposal({
                 </div>
               </div>
               <div className="text-part wysiwyg-wrapper">
-                <p className="small-title">Hosting and handover</p>
+                <p className="small-title">Hosting, handover and support</p>
                 <h2 className="sub-title" id="hosting-title">
                   Fast hosting.
                   <br />
@@ -818,18 +685,18 @@ export function SkyformProposal({
                   <li>Any existing domain remains in your registrar account.</li>
                   <li>Any existing business email configuration remains unchanged.</li>
                   <li>All Vercel and website login credentials are handed over.</li>
-                  <li>Hosting is free on Vercel&rsquo;s tier, with no monthly bill.</li>
+                  <li>Unlimited revisions throughout the active build.</li>
+                  <li>
+                    A simple editing system for text and images, with every login
+                    supplied.
+                  </li>
+                  <li>
+                    No mandatory maintenance plan. Later updates are $50 per hour.
+                  </li>
                 </ul>
               </div>
             </div>
           </section>
-
-          <ServiceSlide
-            eyebrow="Editing and support"
-            id="editing"
-            items={supportItems}
-            title={<>Easy to manage. <span className="highlight">Help when needed.</span></>}
-          />
 
           <section
             aria-labelledby="process-title"
