@@ -114,37 +114,37 @@ const tradesWork = [
 const essentials: ServiceItem[] = [
   {
     description:
-      "A breakdown is a phone call, not a form fill. The number stays fixed to the screen on mobile, so it is never more than a thumb away.",
+      "A breakdown is a call, not a form.",
     icon: Phone,
     title: "Calling you, always one tap",
   },
   {
     description:
-      "Air conditioning, refrigeration, electrical, solar and security. Five trades, five proper pages, each able to rank and sell on its own.",
+      "Five trades, five pages that rank on their own.",
     icon: Layers,
     title: "A page for every trade",
   },
   {
     description:
-      "QBCC, your electrical licence and Fujitsu warranty agent status, stated up front instead of buried in the footer. It is the quickest way to remove doubt.",
+      "QBCC, electrical and Fujitsu, up front.",
     icon: BadgeCheck,
     title: "Licences shown plainly",
   },
   {
     description:
-      "One for each town you cover across Gympie and the Sunshine Coast. Someone searching for their own suburb lands on a page about their suburb, not a Brisbane operator.",
+      "Local searches land on you, not Brisbane.",
     icon: MapPinned,
     title: "A page for every suburb",
   },
   {
     description:
-      "Every page laid out to produce a call, so the moment you put Google Ads behind it you are paying for clicks that convert instead of clicks that bounce.",
+      "Paid clicks that call instead of bounce.",
     icon: Target,
     title: "Built to convert Google Ads",
   },
   {
     description:
-      "Most of your visitors are on a phone, often on patchy regional signal. Compressed images and lean code mean the site still loads.",
+      "Loads on patchy regional signal.",
     icon: Gauge,
     title: "Fast on a phone",
   },
@@ -418,13 +418,14 @@ export function JohnnyCoolProposal({
               className={`chr-content-container ${styles.essentialsLayout}`}
             >
               <div className={`${styles.needsList} ${styles.essentialsList}`}>
-                {essentials.map(({ icon: Icon, title }) => (
+                {essentials.map(({ description, icon: Icon, title }) => (
                   <article key={title}>
                     <span className={styles.needsIcon}>
                       <Icon aria-hidden="true" />
                     </span>
                     <div>
                       <h3>{title}</h3>
+                      <p>{description}</p>
                     </div>
                   </article>
                 ))}

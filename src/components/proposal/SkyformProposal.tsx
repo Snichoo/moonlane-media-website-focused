@@ -122,67 +122,67 @@ type NeedItem = {
 const headlineNeeds: NeedItem[] = [
   {
     icon: Palette,
-    note: "Minimal, spacious and smooth. It is the first read on build quality, before a word is read.",
+    note: "The first read on build quality.",
     title: "Clean, modern, professional design",
   },
   {
     icon: Sparkles,
-    note: "The logo resolves as the page opens. A two-second detail that separates a premium builder from a template.",
+    note: "A two-second detail templates never have.",
     title: "Logo intro animation",
   },
   {
     icon: MonitorPlay,
-    note: "Footage of completed work behind the headline. Stills cannot carry the scale of a build.",
+    note: "Stills cannot carry the scale of a build.",
     title: "Video in the hero",
   },
   {
     icon: Trophy,
-    note: "Projects delivered, combined value, years operating. Turns experience into numbers a client can weigh.",
+    note: "Projects, value, years. Numbers they can weigh.",
     title: "Achievements stated plainly",
   },
   {
     icon: Images,
-    note: "Full-width photography, a page per project. The work is the strongest thing you have to sell.",
+    note: "Full-width photography. The work sells itself.",
     title: "Projects, shown large",
   },
   {
     icon: Quote,
-    note: "Named clients on real projects. Third-party proof beats any claim you make about yourself.",
+    note: "Named clients beat any claim you make.",
     title: "Testimonials",
   },
   {
     icon: PanelsTopLeft,
-    note: "Your top three as clear cards, so what you do lands in one glance.",
+    note: "Your top three, clear in one glance.",
     title: "Service cards",
   },
   {
     icon: BadgeCheck,
-    note: "Licences and accreditations in the footer. Quietly removes the last doubt before an enquiry.",
+    note: "Licences in the footer, doubt removed.",
     title: "Certifications",
   },
   {
     icon: Layers,
-    note: "Its own page for the detail, the scope and a full gallery of photos and video.",
+    note: "Scope, detail and a full gallery.",
     title: "A page per project",
   },
   {
     icon: UsersRound,
-    note: "Who you are and how you build. Construction buyers are picking people.",
+    note: "Construction buyers are picking people.",
     title: "About us",
   },
   {
     icon: PanelsTopLeft,
-    note: "Clients, partners and suppliers you work with. Borrowed credibility, instantly.",
+    note: "Clients and suppliers. Borrowed credibility.",
     title: "Brand carousel",
   },
   {
     icon: Images,
-    note: "A live feed of your latest posts, so visitors can go and see more of the work.",
+    note: "A live feed of your latest work.",
     title: "Instagram feed",
   },
   {
     icon: Phone,
-    note: "Phone, email and an enquiry form on every page.",
+    note: "Phone, email and a form on every page.",
     title: "Contact in the footer",
   },
 ];
@@ -497,13 +497,14 @@ export function SkyformProposal({
                 </figure>
               </div>
               <div className={styles.needsList}>
-                {headlineNeeds.map(({ icon: Icon, title }) => (
+                {headlineNeeds.map(({ icon: Icon, note, title }) => (
                   <article key={title}>
                     <span className={styles.needsIcon}>
                       <Icon aria-hidden="true" />
                     </span>
                     <div>
                       <h3>{title}</h3>
+                      <p>{note}</p>
                     </div>
                   </article>
                 ))}
