@@ -2525,18 +2525,7 @@
   opacity: 0.7;
 }
 
-.growthNote {
-  margin: clamp(18px, 2.6vh, 30px) auto 0;
-  max-width: 1500px;
-  opacity: 0.6;
-  text-align: center;
-  width: calc(100% - clamp(32px, 8vw, 160px));
-}
 
-.growthNote p {
-  font-size: clamp(12px, 0.92vw, 14.5px);
-  margin: 0;
-}
 
 @media screen and (max-width: 1239px) {
   .growthGrid {
@@ -2559,7 +2548,46 @@
     font-size: 30px;
   }
 
-  .growthNote {
-    width: calc(100% - 36px);
+}
+
+/* Benefits as a ticked list rather than a paragraph: on a pricing card the
+   eye scans for what it gets, and prose makes it hunt. */
+.growthList {
+  display: grid;
+  gap: 9px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.growthList li {
+  display: grid;
+  font-size: clamp(13px, 1vw, 15.5px);
+  gap: 10px;
+  grid-template-columns: 15px minmax(0, 1fr);
+  line-height: 1.4;
+  opacity: 0.82;
+}
+
+.growthList svg {
+  height: 15px;
+  margin-top: 3px;
+  opacity: 0.55;
+  width: 15px;
+}
+
+/* The theme puts a yellow dot on every `ul li` via ::before. On a pricing
+   card the tick is the point, so the dot only doubles up. */
+.growthList li::before {
+  content: none;
+}
+
+@media screen and (max-width: 766px) {
+  .growthList {
+    gap: 7px;
+  }
+
+  .growthList li {
+    font-size: 13.5px;
   }
 }

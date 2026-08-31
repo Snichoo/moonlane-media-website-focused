@@ -101,7 +101,7 @@ const tradesWork = [
  * The short list, deliberately.
  *
  * The construction deck this is modelled on runs thirteen points off a
- * competitor sweep. Johnny Cool does not need a survey of the market — it
+ * competitor sweep. Johnny Cool does not need a survey of the market. It
  * needs the handful of things that decide whether a Gympie breakdown call
  * reaches this business or the next one down the search results.
  */
@@ -614,9 +614,9 @@ export function JohnnyCoolProposal({
             >
               <p className="small-title">Growing it after launch</p>
               <h2 className="sub-title" id="growth-title">
-                Optional from here,
+                Keep the phone ringing
                 <br />
-                <span className="highlight">and priced separately.</span>
+                <span className="highlight">once you are live.</span>
               </h2>
             </div>
             <div className={styles.growthGrid}>
@@ -625,10 +625,24 @@ export function JohnnyCoolProposal({
                 <strong className={styles.growthPrice}>
                   $300<small>per week</small>
                 </strong>
-                <p>
-                  Campaigns built, run and tuned against the calls they actually
-                  produce, rather than clicks and impressions.
-                </p>
+                <ul className={styles.growthList}>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>Built, launched and managed for you</span>
+                  </li>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>Tuned against calls, not clicks</span>
+                  </li>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>Every trade and every town you target</span>
+                  </li>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>You see what each call actually cost</span>
+                  </li>
+                </ul>
                 <div className={styles.growthAside}>
                   <Info aria-hidden="true" />
                   <span>
@@ -643,15 +657,24 @@ export function JohnnyCoolProposal({
                 <strong className={styles.growthPrice}>
                   $200<small>per week</small>
                 </strong>
-                <p>
-                  One photo post and one video post a week, properly edited —
-                  cut to music and hooked in the first second so people stop
-                  scrolling. We tell you exactly what to film.
-                </p>
-                <div className={styles.growthAside}>
-                  <Info aria-hidden="true" />
-                  <span>The video is the part that brings the leads in.</span>
-                </div>
+                <ul className={styles.growthList}>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>One photo post and one video post a week</span>
+                  </li>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>Cut to music and hooked in the first second</span>
+                  </li>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>We tell you exactly what to film</span>
+                  </li>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>The video is what brings the leads in</span>
+                  </li>
+                </ul>
               </article>
 
               <article className={styles.growthCard}>
@@ -659,22 +682,28 @@ export function JohnnyCoolProposal({
                 <strong className={styles.growthPrice}>
                   Quoted<small>per shoot</small>
                 </strong>
-                <p>
-                  If filming it yourself is not practical, we can organise
-                  someone local to come out and shoot it for you.
-                </p>
+                <ul className={styles.growthList}>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>A local videographer arranged for you</span>
+                  </li>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>For when filming it yourself is not practical</span>
+                  </li>
+                  <li>
+                    <Check aria-hidden="true" />
+                    <span>Footage used on social and on the website</span>
+                  </li>
+                </ul>
                 <div className={styles.growthAside}>
                   <Info aria-hidden="true" />
-                  <span>Priced on what the shoot actually needs.</span>
+                  <span>
+                    Priced on what the shoot needs, and paid directly to the
+                    videographer.
+                  </span>
                 </div>
               </article>
-            </div>
-            <div className={styles.growthNote}>
-              <p>
-                None of this is required. The {totalInvestment} website stands
-                on its own, and you can start or stop any of the above at any
-                time.
-              </p>
             </div>
           </section>
 
