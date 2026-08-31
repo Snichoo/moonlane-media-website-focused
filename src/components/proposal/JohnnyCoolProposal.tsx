@@ -125,9 +125,9 @@ const essentials: ServiceItem[] = [
   },
   {
     description:
-      "Built around Gympie and the Sunshine Coast suburbs you actually service, so local searches land on you rather than a Brisbane operator.",
+      "One for each town you cover across Gympie and the Sunshine Coast. Someone searching for their own suburb lands on a page about their suburb, not a Brisbane operator.",
     icon: MapPinned,
-    title: "Found where you work",
+    title: "A page for every suburb",
   },
   {
     description:
