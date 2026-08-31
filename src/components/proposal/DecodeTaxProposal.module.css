@@ -2095,10 +2095,10 @@
 }
 
 .needsLayout {
-  align-items: start;
+  align-items: center;
   display: grid;
-  gap: clamp(20px, 2.4vw, 40px);
-  grid-template-columns: minmax(0, 22%) minmax(0, 1fr);
+  gap: clamp(20px, 2.4vw, 44px);
+  grid-template-columns: minmax(0, 28%) minmax(0, 1fr);
   width: 100%;
 }
 
@@ -2144,18 +2144,18 @@
 /* Cropped hard: these are references, and at full aspect the two stacked
    cards alone are taller than the slide has to give. */
 .mediaVideo {
-  aspect-ratio: 2.9 / 1;
+  aspect-ratio: 2 / 1;
   background: #000;
 }
 
 .mediaImage {
-  aspect-ratio: 2.6 / 1;
+  aspect-ratio: 2 / 1;
   object-position: center top;
 }
 
 .needsList {
   display: grid;
-  gap: clamp(9px, 1.1vh, 13px) clamp(18px, 2.2vw, 38px);
+  gap: clamp(14px, 2.4vh, 30px) clamp(18px, 2.2vw, 38px);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
   min-width: 0;
@@ -2169,28 +2169,26 @@
 }
 
 .needsIcon {
+  align-items: center;
   background: #fdce08;
   border-radius: 50%;
-  display: block;
+  display: inline-flex;
   flex: none;
   height: 32px;
-  position: relative;
+  justify-content: center;
   width: 32px;
 }
 
 .needsIcon svg {
-  height: 23px;
-  left: 12px;
-  position: absolute;
-  top: 9px;
-  width: 23px;
+  height: 18px;
+  width: 18px;
 }
 
 .needsList h3 {
-  font-size: clamp(15px, 1.25vw, 18px);
+  font-size: clamp(15px, 1.35vw, 20px);
   line-height: 1.25;
-  margin: 0 0 4px;
-  padding-top: 7px;
+  margin: 0;
+  padding-top: 5px;
 }
 
 .needsList p {
@@ -2272,8 +2270,6 @@
 
   .needsIcon svg {
     height: 20px;
-    left: 10px;
-    top: 7px;
     width: 20px;
   }
 
@@ -2319,8 +2315,6 @@
 
 .supportPoints .needsIcon svg {
   height: 42px;
-  left: 22px;
-  top: 16px;
   width: 42px;
 }
 
@@ -2350,8 +2344,6 @@
 
   .supportPoints .needsIcon svg {
     height: 32px;
-    left: 17px;
-    top: 12px;
     width: 32px;
   }
 
@@ -2373,31 +2365,32 @@
   width: 100%;
 }
 
+/* Six titles with no supporting copy leave a lot of slide, so everything
+   scales up to fill it rather than hovering in a thin band. */
 .essentialsList {
-  gap: clamp(18px, 2.8vh, 36px) clamp(24px, 3vw, 54px);
+  gap: clamp(26px, 5.5vh, 64px) clamp(24px, 3vw, 54px);
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .essentialsList > article {
-  gap: 4px 16px;
-  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 4px 18px;
+  grid-template-columns: 62px minmax(0, 1fr);
 }
 
 .essentialsList .needsIcon {
-  height: 44px;
-  width: 44px;
+  height: 54px;
+  width: 54px;
 }
 
 .essentialsList .needsIcon svg {
   height: 30px;
-  left: 17px;
-  top: 12px;
   width: 30px;
 }
 
 .essentialsList h3 {
-  font-size: clamp(17px, 1.5vw, 23px);
-  padding-top: 8px;
+  font-size: clamp(18px, 1.75vw, 27px);
+  padding-top: 0;
 }
 
 .essentialsList p {
@@ -2428,8 +2421,6 @@
 
   .essentialsList .needsIcon svg {
     height: 24px;
-    left: 13px;
-    top: 9px;
     width: 24px;
   }
 
@@ -2589,5 +2580,257 @@
 
   .growthList li {
     font-size: 13.5px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Redesigned cover.
+
+   The old one leaned on a stock flower video for interest and led with
+   the price, which is the last thing you want a client reading before
+   they know what they are buying. This is a centred, quiet layout: the
+   client's own logo does the work, and the only figure on it is the
+   delivery window.
+
+   Deliberately new class names rather than edits to .homeBanner and
+   .coverFlower, because those are still rendered by the Decode, JH
+   Plumbing and Urgent proposals that are already out with clients.
+   --------------------------------------------------------------- */
+.pitchCover {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100svh;
+  overflow: hidden;
+  padding: calc(var(--deck-header) + clamp(20px, 4vh, 48px)) clamp(24px, 6vw, 80px)
+    clamp(76px, 12vh, 120px);
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+/* Replaces the flower: a soft brand-yellow bloom behind the logo, so the
+   whitespace reads as composed rather than unfinished. */
+.pitchCover::before {
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 34%,
+    rgb(253 206 8 / 30%) 0%,
+    rgb(253 206 8 / 8%) 45%,
+    rgb(253 206 8 / 0%) 72%
+  );
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.pitchInner {
+  margin: 0 auto;
+  max-width: 880px;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+}
+
+.pitchEyebrow {
+  font-family: Montserrat, sans-serif;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 800;
+  letter-spacing: 2.4px;
+  margin: 0 0 clamp(20px, 3.4vh, 34px);
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.pitchMark {
+  margin: 0 0 clamp(22px, 3.6vh, 38px);
+}
+
+.pitchMark img {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  width: clamp(240px, 27vw, 400px);
+}
+
+.pitchLead {
+  font-size: clamp(17px, 1.55vw, 24px);
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0 auto clamp(28px, 4.4vh, 44px);
+  max-width: 30ch;
+}
+
+.pitchMeta {
+  align-items: center;
+  border-top: 1px solid rgb(25 25 25 / 14%);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: Montserrat, sans-serif;
+  font-size: 11px;
+  gap: clamp(16px, 3vw, 44px);
+  justify-content: center;
+  letter-spacing: 0.6px;
+  margin: clamp(30px, 4.6vh, 52px) auto 0;
+  max-width: 640px;
+  padding-top: clamp(16px, 2.4vh, 24px);
+  text-transform: uppercase;
+}
+
+.pitchMeta span {
+  opacity: 0.62;
+}
+
+.pitchMeta strong {
+  opacity: 1;
+}
+
+@media screen and (max-width: 766px) {
+  .pitchCover {
+    padding-bottom: 96px;
+  }
+
+  .pitchMark img {
+    width: min(250px, 76vw);
+  }
+
+  .pitchLead {
+    font-size: 16.5px;
+    max-width: 26ch;
+  }
+
+  .pitchMeta {
+    gap: 10px 20px;
+    font-size: 10px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Selected work, as openable cards.
+
+   The old list was four names in boxes with a small external-link glyph,
+   which nobody read as clickable. Each card now leads with a screenshot
+   of that site's hero and carries an explicit "Open site" action.
+   --------------------------------------------------------------- */
+.workGrid {
+  display: grid;
+  gap: clamp(12px, 1.4vw, 22px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 auto;
+  max-width: 1500px;
+  width: calc(100% - clamp(32px, 8vw, 160px));
+}
+
+.workCard {
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.workCard:hover,
+.workCard:focus-visible {
+  border-color: #191919;
+  box-shadow: 0 12px 28px rgb(25 25 25 / 12%);
+  transform: translateY(-3px);
+}
+
+.workShot {
+  aspect-ratio: 16 / 10;
+  background: #f2f2f2;
+  border-bottom: 1px solid #ececec;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  object-position: center top;
+  width: 100%;
+}
+
+.workBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: clamp(13px, 1.1vw, 18px);
+}
+
+.workName {
+  font-size: clamp(14px, 1.05vw, 17px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.workResult {
+  font-size: clamp(11.5px, 0.85vw, 13px);
+  line-height: 1.35;
+  opacity: 0.6;
+}
+
+/* The whole card is the link, but people click what looks like a button. */
+.workOpen {
+  align-items: center;
+  color: #191919;
+  display: flex;
+  font-family: Montserrat, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  gap: 6px;
+  letter-spacing: 0.7px;
+  margin-top: auto;
+  padding-top: 10px;
+  text-transform: uppercase;
+}
+
+.workCard:hover .workOpen {
+  color: #191919;
+}
+
+.workOpen span {
+  border-bottom: 2px solid #fdce08;
+  padding-bottom: 2px;
+}
+
+.workOpen svg {
+  height: 14px;
+  width: 14px;
+}
+
+.workHint {
+  font-size: clamp(12px, 0.92vw, 14.5px);
+  margin: 10px 0 0;
+  opacity: 0.66;
+}
+
+@media screen and (max-width: 1239px) {
+  .workGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 766px) {
+  .workGrid {
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: calc(100% - 36px);
+  }
+
+  .workBody {
+    gap: 4px;
+    padding: 10px;
+  }
+
+  .workName {
+    font-size: 13px;
+  }
+
+  .workResult {
+    font-size: 11px;
+  }
+
+  .workOpen {
+    font-size: 10px;
+    padding-top: 8px;
   }
 }

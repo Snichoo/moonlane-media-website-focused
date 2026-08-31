@@ -8,10 +8,10 @@ export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Website Proposal for Johnny Cool | Moonlane Media",
+    absolute: "Proposal for Johnny Cool | Moonlane Media",
   },
   description:
-    "A website design and development proposal prepared by Moonlane Media for Johnny Cool Refrigeration, Air-Conditioning & Electrical Pty Ltd.",
+    "A website, Google Ads and social media proposal prepared by Moonlane Media for Johnny Cool Refrigeration, Air-Conditioning & Electrical Pty Ltd.",
   alternates: {
     canonical: PROPOSAL_PATH,
   },
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_AU",
     siteName: "Moonlane Media",
-    title: "Website Proposal for Johnny Cool",
+    title: "Proposal for Johnny Cool",
     description:
-      "A tailored website design and development proposal from Moonlane Media.",
+      "A tailored website, Google Ads and social media proposal from Moonlane Media.",
     url: PROPOSAL_PATH,
     images: [
       {
@@ -49,9 +49,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Website Proposal for Johnny Cool",
+    title: "Proposal for Johnny Cool",
     description:
-      "A tailored website design and development proposal from Moonlane Media.",
+      "A tailored website, Google Ads and social media proposal from Moonlane Media.",
     images: ["/wp-content/uploads/2018/11/home-intro-2019.png"],
   },
 };

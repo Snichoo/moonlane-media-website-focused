@@ -55,6 +55,8 @@ type WorkItem = {
   href: string;
   name: string;
   result?: string;
+  /** Screenshot of that site's hero, so the card shows the work itself. */
+  shot?: string;
 };
 
 type AcceptanceState = {
@@ -79,21 +81,25 @@ const tradesWork = [
     href: "https://oldmateplumbing.com.au/",
     name: "Old Mate Plumbing Co.",
     result: "600% increase in lead quality and ROI in the first month",
+    shot: "/images/work/old-mate-plumbing.jpg",
   },
   {
     href: "https://solutionsplumbing.com.au/",
     name: "Solutions Plumbing",
     result: "Over 150 leads a month",
+    shot: "/images/work/solutions-plumbing.jpg",
   },
   {
     href: "https://asaptrades.com.au/",
     name: "ASAP Trades",
     result: "Over 200 extra leads a month and a 200% increase in ROI",
+    shot: "/images/work/asap-trades.jpg",
   },
   {
     href: "https://www.friendlyplumbing.com.au/",
     name: "Friendly Plumbing",
     result: "Eight service pages and suburb pages across Greater Sydney",
+    shot: "/images/work/friendly-plumbing.jpg",
   },
 ] as const;
 
@@ -243,7 +249,7 @@ export function JohnnyCoolProposal({
   acceptanceEndpoint = "/api/proposals/johnny-cool/accept",
   clientName = "Johnny Cool",
   coverLead = "A fast, mobile-first website that shows all five trades properly and makes calling you the easiest thing on the page.",
-  deposit = "$1,500",
+  deposit = "50%",
   logoSrc = "/images/johnnycool/johnnycool-logo.png",
   offerNote,
   totalInvestment = "$3,000",
@@ -335,7 +341,7 @@ export function JohnnyCoolProposal({
       </header>
 
       <main
-        aria-label={`Website proposal for ${clientName}`}
+        aria-label={`Proposal for ${clientName}`}
         className={`${styles.deck} sub-page case-study-page`}
         id="proposal-deck"
         ref={deckRef}
@@ -349,61 +355,39 @@ export function JohnnyCoolProposal({
             id="proposal"
             tabIndex={-1}
           >
-            <div className={`home-banner ${styles.homeBanner}`}>
-              <video
-                aria-hidden="true"
-                autoPlay
-                className="home-banner-video"
-                loop
-                muted
-                playsInline
-                preload="metadata"
-              >
-                <source
-                  src="/wp-content/uploads/2021/05/cut-flower-open-451.mp4"
-                  type="video/mp4"
-                />
-              </video>
-              <div aria-hidden="true" className="layers-part">
-                <div className="layer layer-1" />
-                <div className="layer layer-2" />
-                <div className="layer layer-3" />
-                <div className="layer layer-4" />
-                <div className="layer layer-5" />
-                <div className="layer layer-6" />
-              </div>
-              <div aria-hidden="true" className={styles.coverFlower} />
-              <div className="chr-content-container">
-                <div className={`home-banner-content ${styles.coverContent}`}>
-                  <p className="small-title">Website proposal for</p>
-                  <h1 className={styles.coverLogoTitle} id="proposal-cover-title">
-                    <Image
-                      alt={clientName}
-                      height={259}
-                      priority
-                      src={logoSrc}
-                      width={404}
-                    />
-                  </h1>
-                  <p className={styles.coverLead}>{coverLead}</p>
-                  <a
-                    className="button"
-                    href="#essentials"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      goToSlide(1);
-                    }}
-                  >
-                    View the proposal
-                  </a>
-                  <div className={styles.coverFacts}>
-                    <span>
-                      <strong>2&ndash;3 weeks</strong> target delivery
-                    </span>
-                    <span>
-                      <strong>{totalInvestment}</strong> one-off
-                    </span>
-                  </div>
+            <div className={styles.pitchCover}>
+              <div className={styles.pitchInner}>
+                <p className={styles.pitchEyebrow}>Proposal for</p>
+                <h1 className={styles.pitchMark} id="proposal-cover-title">
+                  <Image
+                    alt={clientName}
+                    height={259}
+                    priority
+                    src={logoSrc}
+                    width={404}
+                  />
+                </h1>
+                <p className={styles.pitchLead}>{coverLead}</p>
+                <a
+                  className="button"
+                  href="#essentials"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    goToSlide(1);
+                  }}
+                >
+                  View the proposal
+                </a>
+                <div className={styles.pitchMeta}>
+                  <span>
+                    <strong>2&ndash;3 weeks</strong> target delivery
+                  </span>
+                  <span>
+                    <strong>Unlimited</strong> revisions
+                  </span>
+                  <span>
+                    <strong>Five trades</strong> covered
+                  </span>
                 </div>
               </div>
             </div>
@@ -432,14 +416,13 @@ export function JohnnyCoolProposal({
               className={`chr-content-container ${styles.essentialsLayout}`}
             >
               <div className={`${styles.needsList} ${styles.essentialsList}`}>
-                {essentials.map(({ description, icon: Icon, title }) => (
+                {essentials.map(({ icon: Icon, title }) => (
                   <article key={title}>
                     <span className={styles.needsIcon}>
                       <Icon aria-hidden="true" />
                     </span>
                     <div>
                       <h3>{title}</h3>
-                      <p>{description}</p>
                     </div>
                   </article>
                 ))}
@@ -518,27 +501,40 @@ export function JohnnyCoolProposal({
                 <br />
                 <span className="highlight">our previous work</span>
               </h2>
+              <p className={styles.workHint}>
+                Click any site below to open it in a new tab.
+              </p>
             </div>
-            <div className={styles.accountingList}>
-              {workItems.map((project, index) => (
+            <div className={styles.workGrid}>
+              {workItems.map((project) => (
                 <a
+                  className={styles.workCard}
                   href={project.href}
                   key={project.name}
                   rel="noreferrer"
                   target="_blank"
                 >
-                  <span className={styles.listNumber}>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className={styles.accountingName}>
-                    <strong>{project.name}</strong>
+                  {project.shot ? (
+                    <Image
+                      alt={`${project.name} homepage`}
+                      className={styles.workShot}
+                      height={600}
+                      loading="eager"
+                      sizes="(max-width: 766px) 50vw, 25vw"
+                      src={project.shot}
+                      width={960}
+                    />
+                  ) : null}
+                  <span className={styles.workBody}>
+                    <span className={styles.workName}>{project.name}</span>
                     {project.result ? (
-                      <small className={styles.accountingResult}>
-                        {project.result}
-                      </small>
+                      <span className={styles.workResult}>{project.result}</span>
                     ) : null}
+                    <span className={styles.workOpen}>
+                      <span>Open site</span>
+                      <ExternalLink aria-hidden="true" />
+                    </span>
                   </span>
-                  <ExternalLink aria-hidden="true" />
                 </a>
               ))}
             </div>
@@ -722,10 +718,12 @@ export function JohnnyCoolProposal({
                     <strong>$0</strong>
                     <small>per month</small>
                   </p>
+                  <Gauge aria-hidden="true" />
+                  <span>Fast, and stays fast</span>
+                  <ServerCog aria-hidden="true" />
+                  <span>Enterprise Vercel network</span>
                   <Globe2 aria-hidden="true" />
                   <span>Domain ownership</span>
-                  <ServerCog aria-hidden="true" />
-                  <span>Vercel hosting</span>
                   <MailCheck aria-hidden="true" />
                   <span>Email stays connected</span>
                 </div>
