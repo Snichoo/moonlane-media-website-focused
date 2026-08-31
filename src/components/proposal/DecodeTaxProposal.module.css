@@ -2742,10 +2742,20 @@
   display: none;
 }
 
-.coverCentred .coverContent {
+/* Undoing the theme's left-aligned banner box.
+   It sets width:60%, min-width:1000px and padding-left:70px on this element
+   with four classes inside a media query, so this needs five to win. The box
+   itself was already centring; the 70px of one-sided padding is what put
+   every child 35px right of centre, which is subtle enough to look like a
+   rendering artefact rather than a rule. */
+.proposal .deck .coverCentred :global(.chr-content-container .home-banner-content) {
   margin: 0 auto;
   max-width: 780px;
+  min-width: 0;
+  padding-left: 0;
+  padding-right: 0;
   text-align: center;
+  width: 100%;
 }
 
 .coverCentred .coverLogoTitle img {
