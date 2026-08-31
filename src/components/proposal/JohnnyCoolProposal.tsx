@@ -15,7 +15,7 @@ import {
   ExternalLink,
   Gauge,
   Globe2,
-  Images,
+  Info,
   Layers,
   MapPinned,
   MessageSquareText,
@@ -39,6 +39,7 @@ const slides = [
   "Delivery promise",
   "Selected work",
   "Investment",
+  "Growing it after launch",
   "Editing and support",
   "How it works",
   "Accept proposal",
@@ -131,9 +132,9 @@ const essentials: ServiceItem[] = [
   },
   {
     description:
-      "You already have the team and the fleet on camera. Real faces and real vans outsell stock photography everywhere, and especially in a regional town.",
-    icon: Images,
-    title: "Your own people, not stock",
+      "Every page laid out to produce a call, so the moment you put Google Ads behind it you are paying for clicks that convert instead of clicks that bounce.",
+    icon: Target,
+    title: "Built to convert Google Ads",
   },
   {
     description:
@@ -602,6 +603,82 @@ export function JohnnyCoolProposal({
           </section>
 
           <section
+            aria-labelledby="growth-title"
+            className={`${styles.slide} ${styles.accountingSlide}`}
+            data-proposal-slide
+            id="growth"
+            tabIndex={-1}
+          >
+            <div
+              className={`chr-content-container ${styles.accountingHeading}`}
+            >
+              <p className="small-title">Growing it after launch</p>
+              <h2 className="sub-title" id="growth-title">
+                Optional from here,
+                <br />
+                <span className="highlight">and priced separately.</span>
+              </h2>
+            </div>
+            <div className={styles.growthGrid}>
+              <article className={styles.growthCard}>
+                <p className={styles.growthLabel}>Google Ads management</p>
+                <strong className={styles.growthPrice}>
+                  $300<small>per week</small>
+                </strong>
+                <p>
+                  Campaigns built, run and tuned against the calls they actually
+                  produce, rather than clicks and impressions.
+                </p>
+                <div className={styles.growthAside}>
+                  <Info aria-hidden="true" />
+                  <span>
+                    Ad spend is separate and paid straight to Google. $40 a day
+                    is a sensible place to start.
+                  </span>
+                </div>
+              </article>
+
+              <article className={styles.growthCard}>
+                <p className={styles.growthLabel}>Social media management</p>
+                <strong className={styles.growthPrice}>
+                  $200<small>per week</small>
+                </strong>
+                <p>
+                  One photo post and one video post a week, properly edited —
+                  cut to music and hooked in the first second so people stop
+                  scrolling. We tell you exactly what to film.
+                </p>
+                <div className={styles.growthAside}>
+                  <Info aria-hidden="true" />
+                  <span>The video is the part that brings the leads in.</span>
+                </div>
+              </article>
+
+              <article className={styles.growthCard}>
+                <p className={styles.growthLabel}>Videography</p>
+                <strong className={styles.growthPrice}>
+                  Quoted<small>per shoot</small>
+                </strong>
+                <p>
+                  If filming it yourself is not practical, we can organise
+                  someone local to come out and shoot it for you.
+                </p>
+                <div className={styles.growthAside}>
+                  <Info aria-hidden="true" />
+                  <span>Priced on what the shoot actually needs.</span>
+                </div>
+              </article>
+            </div>
+            <div className={styles.growthNote}>
+              <p>
+                None of this is required. The {totalInvestment} website stands
+                on its own, and you can start or stop any of the above at any
+                time.
+              </p>
+            </div>
+          </section>
+
+          <section
             aria-labelledby="support-title"
             className={`${styles.slide} ${styles.textImageSlide} single-part text-and-image-part`}
             data-proposal-slide
@@ -648,7 +725,7 @@ export function JohnnyCoolProposal({
                     </span>
                     <h3>No lock-in</h3>
                     <p>
-                      No mandatory maintenance plan. Later updates are $50 per
+                      No mandatory maintenance plan. Later updates are $40 per
                       hour.
                     </p>
                   </article>
