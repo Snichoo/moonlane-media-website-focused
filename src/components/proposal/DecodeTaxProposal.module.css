@@ -2364,3 +2364,81 @@
     font-size: 14.5px;
   }
 }
+
+/* Johnny Cool essentials slide.
+   A short list rather than the full competitor-analysis grid, so there is no
+   reference column to sit beside and each point can take the full width at a
+   size you can read from across a desk. */
+.essentialsLayout {
+  width: 100%;
+}
+
+.essentialsList {
+  gap: clamp(18px, 2.8vh, 36px) clamp(24px, 3vw, 54px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.essentialsList > article {
+  gap: 4px 16px;
+  grid-template-columns: 52px minmax(0, 1fr);
+}
+
+.essentialsList .needsIcon {
+  height: 44px;
+  width: 44px;
+}
+
+.essentialsList .needsIcon svg {
+  height: 30px;
+  left: 17px;
+  top: 12px;
+  width: 30px;
+}
+
+.essentialsList h3 {
+  font-size: clamp(17px, 1.5vw, 23px);
+  padding-top: 8px;
+}
+
+.essentialsList p {
+  font-size: clamp(13px, 1.05vw, 16px);
+  line-height: 1.45;
+}
+
+@media screen and (max-width: 1239px) {
+  .essentialsList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 766px) {
+  .essentialsList {
+    gap: 18px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .essentialsList > article {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+
+  .essentialsList .needsIcon {
+    height: 34px;
+    width: 34px;
+  }
+
+  .essentialsList .needsIcon svg {
+    height: 24px;
+    left: 13px;
+    top: 9px;
+    width: 24px;
+  }
+
+  .essentialsList h3 {
+    font-size: 16px;
+    padding-top: 5px;
+  }
+
+  .essentialsList p {
+    font-size: 13.5px;
+  }
+}
