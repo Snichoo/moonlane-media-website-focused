@@ -403,46 +403,48 @@ export function SkyformProposal({
             id="proposal"
             tabIndex={-1}
           >
-            <div className={styles.pitchCover}>
-              <div className={styles.pitchInner}>
-                <p className={styles.pitchEyebrow}>Website proposal for</p>
-                {logoSrc ? (
-                  <h1 className={styles.pitchMark} id="proposal-cover-title">
-                    <Image
-                      alt={clientName}
-                      height={434}
-                      priority
-                      src={logoSrc}
-                      width={640}
-                    />
-                  </h1>
-                ) : (
-                  <h1 className="title" id="proposal-cover-title">
-                    <span className={styles.coverLine}>{coverPrimary}</span>
-                    <span className={`highlight ${styles.coverLine}`}>{coverHighlight}</span>
-                  </h1>
-                )}
-                <p className={styles.pitchLead}>{coverLead}</p>
-                <a
-                  className="button"
-                  href="#needs"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    goToSlide(1);
-                  }}
-                >
-                  View the proposal
-                </a>
-                <div className={styles.pitchMeta}>
-                  <span>
-                    <strong>2&ndash;3 weeks</strong> target delivery
-                  </span>
-                  <span>
-                    <strong>Unlimited</strong> revisions
-                  </span>
-                  <span>
-                    <strong>9</strong> sections
-                  </span>
+            <div className={`home-banner ${styles.homeBanner} ${styles.coverCentred}`}>
+              <div className="chr-content-container">
+                <div className={`home-banner-content ${styles.coverContent}`}>
+                  <p className="small-title">Website proposal for</p>
+                  {logoSrc ? (
+                    <h1 className={styles.coverLogoTitle} id="proposal-cover-title">
+                      <Image
+                        alt={clientName}
+                        height={434}
+                        priority
+                        src={logoSrc}
+                        width={640}
+                      />
+                    </h1>
+                  ) : (
+                    <h1 className="title" id="proposal-cover-title">
+                      <span className={styles.coverLine}>{coverPrimary}</span>
+                      <span className={`highlight ${styles.coverLine}`}>{coverHighlight}</span>
+                    </h1>
+                  )}
+                  <p className={styles.coverLead}>{coverLead}</p>
+                  <a
+                    className="button"
+                    href="#needs"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      goToSlide(1);
+                    }}
+                  >
+                    View the proposal
+                  </a>
+                  <div className={styles.coverFacts}>
+                    <span>
+                      <strong>2&ndash;3 weeks</strong> target delivery
+                    </span>
+                    <span>
+                      <strong>Unlimited</strong> revisions
+                    </span>
+                    <span>
+                      <strong>Nine</strong> sections
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

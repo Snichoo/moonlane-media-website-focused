@@ -503,10 +503,11 @@
 
 .serviceSlide :global(.services-items-container > .single-item > svg) {
   height: 35px;
-  left: 18px;
+  /* Circle is 48px at 0,0, so a 35px glyph centres at 6.5px on each side. */
+  left: 6.5px;
   margin: 0;
   position: absolute;
-  top: 13px;
+  top: 6.5px;
   width: 35px;
   z-index: 1;
 }
@@ -585,6 +586,14 @@
 .finalBar :global(.svg-wrapper svg) {
   height: 34px;
   width: 34px;
+}
+
+/* The theme sets this circle with four classes, so matching it takes five to
+   win rather than a tie broken by load order. */
+.proposal .deck .compactBar :global(.single-item .svg-wrapper)::before,
+.proposal .deck .finalBar :global(.single-item .svg-wrapper)::before {
+  left: -7px;
+  top: -7px;
 }
 
 .compactBar :global(.title),
@@ -1521,7 +1530,8 @@
 
   .serviceSlide :global(.services-items-container > .single-item > svg) {
     height: 24px;
-    left: 12px;
+    /* Circle is 34px at 0,7 here, so the glyph centres at 5,12. */
+    left: 5px;
     top: 12px;
     width: 24px;
   }
@@ -2155,7 +2165,7 @@
 
 .needsList {
   display: grid;
-  gap: clamp(14px, 2.4vh, 30px) clamp(18px, 2.2vw, 38px);
+  gap: clamp(14px, 2.6vh, 34px) clamp(18px, 2.2vw, 38px);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
   min-width: 0;
@@ -2163,9 +2173,10 @@
 }
 
 .needsList > article {
+  align-items: center;
   display: grid;
-  gap: 2px 12px;
-  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 2px 14px;
+  grid-template-columns: 46px minmax(0, 1fr);
 }
 
 .needsIcon {
@@ -2174,21 +2185,21 @@
   border-radius: 50%;
   display: inline-flex;
   flex: none;
-  height: 32px;
+  height: 38px;
   justify-content: center;
-  width: 32px;
+  width: 38px;
 }
 
 .needsIcon svg {
-  height: 18px;
-  width: 18px;
+  height: 21px;
+  width: 21px;
 }
 
 .needsList h3 {
-  font-size: clamp(15px, 1.35vw, 20px);
-  line-height: 1.25;
+  font-size: clamp(16px, 1.6vw, 24px);
+  line-height: 1.22;
   margin: 0;
-  padding-top: 5px;
+  padding-top: 0;
 }
 
 .needsList p {
@@ -2584,128 +2595,6 @@
 }
 
 /* ---------------------------------------------------------------
-   Redesigned cover.
-
-   The old one leaned on a stock flower video for interest and led with
-   the price, which is the last thing you want a client reading before
-   they know what they are buying. This is a centred, quiet layout: the
-   client's own logo does the work, and the only figure on it is the
-   delivery window.
-
-   Deliberately new class names rather than edits to .homeBanner and
-   .coverFlower, because those are still rendered by the Decode, JH
-   Plumbing and Urgent proposals that are already out with clients.
-   --------------------------------------------------------------- */
-.pitchCover {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  min-height: 100svh;
-  overflow: hidden;
-  padding: calc(var(--deck-header) + clamp(20px, 4vh, 48px)) clamp(24px, 6vw, 80px)
-    clamp(76px, 12vh, 120px);
-  position: relative;
-  text-align: center;
-  width: 100%;
-}
-
-/* Replaces the flower: a soft brand-yellow bloom behind the logo, so the
-   whitespace reads as composed rather than unfinished. */
-.pitchCover::before {
-  background: radial-gradient(
-    ellipse 70% 55% at 50% 34%,
-    rgb(253 206 8 / 30%) 0%,
-    rgb(253 206 8 / 8%) 45%,
-    rgb(253 206 8 / 0%) 72%
-  );
-  content: "";
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
-}
-
-.pitchInner {
-  margin: 0 auto;
-  max-width: 880px;
-  position: relative;
-  width: 100%;
-  z-index: 2;
-}
-
-.pitchEyebrow {
-  font-family: Montserrat, sans-serif;
-  font-size: clamp(10px, 0.85vw, 12px);
-  font-weight: 800;
-  letter-spacing: 2.4px;
-  margin: 0 0 clamp(20px, 3.4vh, 34px);
-  opacity: 0.5;
-  text-transform: uppercase;
-}
-
-.pitchMark {
-  margin: 0 0 clamp(22px, 3.6vh, 38px);
-}
-
-.pitchMark img {
-  display: block;
-  height: auto;
-  margin: 0 auto;
-  width: clamp(240px, 27vw, 400px);
-}
-
-.pitchLead {
-  font-size: clamp(17px, 1.55vw, 24px);
-  font-weight: 600;
-  line-height: 1.45;
-  margin: 0 auto clamp(28px, 4.4vh, 44px);
-  max-width: 30ch;
-}
-
-.pitchMeta {
-  align-items: center;
-  border-top: 1px solid rgb(25 25 25 / 14%);
-  display: flex;
-  flex-wrap: wrap;
-  font-family: Montserrat, sans-serif;
-  font-size: 11px;
-  gap: clamp(16px, 3vw, 44px);
-  justify-content: center;
-  letter-spacing: 0.6px;
-  margin: clamp(30px, 4.6vh, 52px) auto 0;
-  max-width: 640px;
-  padding-top: clamp(16px, 2.4vh, 24px);
-  text-transform: uppercase;
-}
-
-.pitchMeta span {
-  opacity: 0.62;
-}
-
-.pitchMeta strong {
-  opacity: 1;
-}
-
-@media screen and (max-width: 766px) {
-  .pitchCover {
-    padding-bottom: 96px;
-  }
-
-  .pitchMark img {
-    width: min(250px, 76vw);
-  }
-
-  .pitchLead {
-    font-size: 16.5px;
-    max-width: 26ch;
-  }
-
-  .pitchMeta {
-    gap: 10px 20px;
-    font-size: 10px;
-  }
-}
-
-/* ---------------------------------------------------------------
    Selected work, as openable cards.
 
    The old list was four names in boxes with a small external-link glyph,
@@ -2832,5 +2721,69 @@
   .workOpen {
     font-size: 10px;
     padding-top: 8px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Centred cover.
+
+   Same treatment as the original (eyebrow, logo, lead, pill button,
+   divided fact row) with the flower video and flower image removed and
+   the column centred instead of pinned left. Only the alignment is new;
+   the type and spacing are the ones that were already there.
+   --------------------------------------------------------------- */
+.coverCentred > :global(.chr-content-container) {
+  justify-content: center;
+}
+
+/* The gradient existed to keep text readable over the flower video. With
+   no video it is white on white, so it only risks muddying the edges. */
+.coverCentred::after {
+  display: none;
+}
+
+.coverCentred .coverContent {
+  margin: 0 auto;
+  max-width: 780px;
+  text-align: center;
+}
+
+.coverCentred .coverLogoTitle img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.coverCentred .coverLead {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 34ch;
+}
+
+.coverCentred .coverFacts {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Evens out the divided row once it is centred: the first cell no longer
+   sits against a left edge, so it should not lose its padding. */
+.coverCentred .coverFacts span:first-child {
+  padding-left: 17px;
+}
+
+@media screen and (max-width: 766px) {
+  .coverCentred .coverContent {
+    max-width: none;
+  }
+
+  .coverCentred .coverFacts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .coverCentred .coverFacts span {
+    padding: 0 8px;
+  }
+
+  .coverCentred .coverFacts span:first-child {
+    padding-left: 8px;
   }
 }

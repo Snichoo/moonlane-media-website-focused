@@ -355,39 +355,41 @@ export function JohnnyCoolProposal({
             id="proposal"
             tabIndex={-1}
           >
-            <div className={styles.pitchCover}>
-              <div className={styles.pitchInner}>
-                <p className={styles.pitchEyebrow}>Proposal for</p>
-                <h1 className={styles.pitchMark} id="proposal-cover-title">
-                  <Image
-                    alt={clientName}
-                    height={259}
-                    priority
-                    src={logoSrc}
-                    width={404}
-                  />
-                </h1>
-                <p className={styles.pitchLead}>{coverLead}</p>
-                <a
-                  className="button"
-                  href="#essentials"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    goToSlide(1);
-                  }}
-                >
-                  View the proposal
-                </a>
-                <div className={styles.pitchMeta}>
-                  <span>
-                    <strong>2&ndash;3 weeks</strong> target delivery
-                  </span>
-                  <span>
-                    <strong>Unlimited</strong> revisions
-                  </span>
-                  <span>
-                    <strong>Five trades</strong> covered
-                  </span>
+            <div className={`home-banner ${styles.homeBanner} ${styles.coverCentred}`}>
+              <div className="chr-content-container">
+                <div className={`home-banner-content ${styles.coverContent}`}>
+                  <p className="small-title">Proposal for</p>
+                  <h1 className={styles.coverLogoTitle} id="proposal-cover-title">
+                    <Image
+                      alt={clientName}
+                      height={259}
+                      priority
+                      src={logoSrc}
+                      width={404}
+                    />
+                  </h1>
+                  <p className={styles.coverLead}>{coverLead}</p>
+                  <a
+                    className="button"
+                    href="#essentials"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      goToSlide(1);
+                    }}
+                  >
+                    View the proposal
+                  </a>
+                  <div className={styles.coverFacts}>
+                    <span>
+                      <strong>2&ndash;3 weeks</strong> target delivery
+                    </span>
+                    <span>
+                      <strong>Unlimited</strong> revisions
+                    </span>
+                    <span>
+                      <strong>Five trades</strong> covered
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
