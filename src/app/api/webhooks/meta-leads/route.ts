@@ -201,7 +201,7 @@ const sendLeadEmail = async (
     campaign,
   ]
     .filter(Boolean)
-    .join(" — ");
+    .join(" - ");
 
   const html = `
     <div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#191919">

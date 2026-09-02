@@ -131,7 +131,7 @@ export async function POST(request: Request) {
   const from =
     process.env.CONTACT_FROM_EMAIL ||
     "Moonlane Media <contact@moonlanemedia.com.au>";
-  const subject = `Proposal accepted — ${CLIENT_NAME} — ${TOTAL_INVESTMENT}`;
+  const subject = `Proposal accepted: ${CLIENT_NAME} (${TOTAL_INVESTMENT})`;
   const rows: Array<[string, string]> = [
     ["Status", "ACCEPTANCE NOTIFICATION"],
     ["Client", CLIENT_NAME],

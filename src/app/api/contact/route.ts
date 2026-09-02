@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     ["Email", email],
     ["Phone", phone],
     ["Message", message],
-    ["Page", [pageTitle, pageUrl].filter(Boolean).join(" — ")],
+    ["Page", [pageTitle, pageUrl].filter(Boolean).join(" - ")],
     ["Google click ID", clean(attribution.gclid, 500)],
     ["GBRAID", clean(attribution.gbraid, 500)],
     ["WBRAID", clean(attribution.wbraid, 500)],
@@ -137,7 +137,7 @@ export async function POST(request: Request) {
   const { data, error } = await resend.emails.send({
     from,
     to,
-    subject: `${subject} — ${name}`,
+    subject: `${subject}: ${name}`,
     replyTo: email,
     html,
     text,
