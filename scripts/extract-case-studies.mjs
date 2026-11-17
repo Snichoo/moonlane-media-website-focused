@@ -65,7 +65,7 @@ function rebrand(s) {
   s = s.split('hello@chromatix.com.au').join('contact@moonlanemedia.com');
   s = s.split('03 9912 6403').join('0414 134 081');
   s = s.split('0399126403').join('0414134081');
-  s = s.split('Suite 169, Tenancy 111, 793 Burke Road, Camberwell VIC 3124').join('3/77 Hudson Road, Albion QLD 4010');
+  s = s.split('Suite 169, Tenancy 111, 793 Burke Road, Camberwell VIC 3124').join('50 Hudson Road, Albion QLD 4010');
   s = s.split('Camberwell office').join('Albion office');
   s = s.split('https://api.chromatix.com.au/v1/email/chromatix-com-au').join('#');
   s = s.split('https://www.facebook.com/chromatixau').join('#');

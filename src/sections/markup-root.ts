@@ -64,7 +64,7 @@ export const confidenceBar = replaceOnce(
 const OLD_OFFICE =
   '<a href="https://www.google.com.au/maps/place/101%20Collins%20Street%2C%20Melbourne%20VIC%203000/" rel="noopener" target="_blank">Level 27, 101 Collins Street, Melbourne VIC 3000</a>';
 const NEW_OFFICE =
-  '<a href="https://www.google.com.au/maps/place/77%20Hudson%20Road%2C%20Albion%20QLD%204010/" rel="noopener" target="_blank">77 Hudson Road, Albion QLD 4010</a>';
+  '<a href="https://www.google.com.au/maps/place/50%20Hudson%20Road%2C%20Albion%20QLD%204010/" rel="noopener" target="_blank">50 Hudson Road, Albion QLD 4010</a>';
 const SYDNEY_OFFICE = "264 George Street, Sydney NSW 2000";
 
 /** The footer's row of award logos, then the two-office list collapsed to one. */
