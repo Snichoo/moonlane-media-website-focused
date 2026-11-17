@@ -575,3 +575,84 @@ form.form-sent > *:not(.form-success) {
     overflow-x: auto;
   }
 }
+
+/* ---- Section two: Sam's portrait and signature (main site only) ----
+   Replaces the theme's office-team photo. The cutout stands in a white circle
+   and rises out of its top edge: the photo layer is clipped to the circle's
+   lower half (bottom corners rounded by 50% of the box) but left open above,
+   so his head and shoulders break the outline. The signature sits under it. */
+.founder-portrait {
+  overflow: visible;
+  /* room for the absolutely placed signature, so it never runs into the
+     next section when the columns stack on mobile */
+  margin-bottom: 200px;
+}
+
+.founder-portrait-circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+}
+
+.founder-portrait-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  clip-path: inset(-40% 0 0 0 round 0 0 50% 50%);
+}
+
+.founder-portrait-photo img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 84%;
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+}
+
+.founder-sign {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 18px;
+  color: #111;
+  text-align: center;
+}
+
+.founder-sign img {
+  width: 210px;
+  height: auto;
+}
+
+.founder-sign-name {
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.founder-sign-role {
+  margin-top: 2px;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 766px) {
+  /* the theme also shifts the circle down 60px with `top`, which layout
+     does not count, so the signature needs that much more room here */
+  .founder-portrait {
+    margin-bottom: 250px;
+  }
+
+  .founder-sign img {
+    width: 170px;
+  }
+}
