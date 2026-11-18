@@ -583,9 +583,22 @@ form.form-sent > *:not(.form-success) {
    so his head and shoulders break the outline. The signature sits under it. */
 .founder-portrait {
   overflow: visible;
-  /* room for the absolutely placed signature, so it never runs into the
-     next section when the columns stack on mobile */
-  margin-bottom: 200px;
+}
+
+/* The theme pushes this circle down with `top` (60/80/100px by width), which
+   layout ignores, so the signature hung past the yellow section on wide
+   screens. Those offsets become real margins here, plus room underneath for
+   the absolutely placed signature, so the section always grows to fit it. */
+.front-page .section-two .image-wrapper .chr-video-poster.founder-portrait {
+  top: 0;
+  margin-top: 80px;
+  margin-bottom: 250px;
+}
+
+@media screen and (min-width: 1450px) {
+  .front-page .section-two .image-wrapper .chr-video-poster.founder-portrait {
+    margin-top: 100px;
+  }
 }
 
 .founder-portrait-circle {
@@ -646,10 +659,9 @@ form.form-sent > *:not(.form-success) {
 }
 
 @media screen and (max-width: 766px) {
-  /* the theme also shifts the circle down 60px with `top`, which layout
-     does not count, so the signature needs that much more room here */
-  .founder-portrait {
-    margin-bottom: 250px;
+  .front-page .section-two .image-wrapper .chr-video-poster.founder-portrait {
+    margin-top: 60px;
+    margin-bottom: 215px;
   }
 
   .founder-sign img {

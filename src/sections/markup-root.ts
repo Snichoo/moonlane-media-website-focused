@@ -80,11 +80,11 @@ const FOUNDER_PORTRAIT =
   '<img src="/images/founder/portrait-sam-800.webp" ' +
   'srcset="/images/founder/portrait-sam-800.webp 800w, /images/founder/portrait-sam-1200.webp 1200w, /images/founder/portrait-sam-1600.webp 1600w" ' +
   'sizes="(max-width: 767px) 80vw, 480px" width="800" height="1072" ' +
-  'alt="Sam Newman, founder of Moonlane Media" loading="lazy" decoding="async">' +
+  'alt="Sam Nichols, founder of Moonlane Media" loading="lazy" decoding="async">' +
   "</span>" +
   '<span class="founder-sign">' +
   '<img src="/images/founder/sam-signature.webp" alt="Sam&#8217;s signature" width="500" height="300" loading="lazy" decoding="async">' +
-  '<span class="founder-sign-name">Sam Newman</span>' +
+  '<span class="founder-sign-name">Sam Nichols</span>' +
   '<span class="founder-sign-role">Founder, Moonlane Media</span>' +
   "</span></span>";
 
